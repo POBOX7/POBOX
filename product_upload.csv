@@ -1,0 +1,2 @@
+sr_no,store_name,department_name,category_name,sub_category_name,product_name,description,price,discount_price,gst,pst,is_trending,sku
+1,Walmart,Deli,Dips & Spreads,Dips,Test,,2.99,2.45,7,5,Yes,#76584HH12
