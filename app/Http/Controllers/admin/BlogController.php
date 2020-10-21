@@ -43,16 +43,28 @@ class BlogController extends Controller
 
         $validatedData = $request->validate([
             'blog_title'=> 'required|unique:blogs,blog_title',
-            'blog_image'=> 'required',
             'blog_date'=> 'required',
             'blog_description'=> 'required',
         ]); 
 
+
+          if (isset($request->blog_image)) {
+                  $maxFileSize = 5242880;
+                    $fileSize = $request->blog_image->getSize();
+                    if($fileSize >= $maxFileSize){
+                        return redirect()->back()->with('error', 'Image too large. Image must be less than 5MB.');
+                  }
+              }
+             
+
+       
         $image = $request->blog_image;
         $destinationPath = 'assets/upload_images/blog';
         $extension = $image->getClientOriginalExtension();
         $filename = time().rand(5, 15).'.'.$extension;       
         $image->move($destinationPath, $filename); 
+
+
 
            //Compress Image Code Here
             
@@ -95,8 +107,9 @@ class BlogController extends Controller
         $date = date_create($request->blog_date);
         $newDate = date_format($date,"Y/m/d H:i:s");
 
-        $new_slug = strtolower($request->blog_title);                    
-        $new_slug = str_replace(' ', '-', $new_slug);
+        $new_slug = strtolower($request->blog_title);
+        $new_slugs =preg_replace('/[-?]/', '', $new_slug);                    
+        $new_slug = str_replace(' ', '-', $new_slugs);
         $add_data = array(
                             'post_category'       => $request->post_category,
                             'blog_title'        => $request->blog_title,
@@ -108,6 +121,7 @@ class BlogController extends Controller
                             'created_at'        => date('Y-m-d H:i:s'),
                             'updated_at'        => date('Y-m-d H:i:s')
                         );
+
 
         Blogs::insert($add_data);
         return redirect()->route('admin.blog')->with('success', 'Blog created successfully.');
@@ -145,12 +159,23 @@ class BlogController extends Controller
                 'blog_title'=> 'required',
                 //'blog_date'=> 'required',
                 'blog_description'=> 'required',
+                //'blog_image' => 'required|blog_image|mimes:jpeg,png,jpg|max:5120'
         ]);
+         if (isset($request->blog_image)) {
+                  $maxFileSize = 5242880;
+                    $fileSize = $request->blog_image->getSize();
+                    if($fileSize >= $maxFileSize){
+                        return redirect()->back()->with('error', 'Image too large. Image must be less than 5MB.');
+                  }
+              }
         $date = date_create($request->blog_date);
         $newDate = date_format($date,"Y/m/d H:i:s");
 
-         $new_slug = strtolower($request->blog_title);                    
-        $new_slug = str_replace(' ', '-', $new_slug);
+         $new_slug = strtolower($request->blog_title);
+        $new_slugs =preg_replace('/[-?]/', '', $new_slug); 
+         $new_slugsss =strip_tags($new_slugs);
+                           
+        $new_slug = str_replace(' ', '-', $new_slugsss);
         $update_data = array(
                                 'post_category'       => $request->post_category,
                                 'blog_title'        => $request->blog_title,

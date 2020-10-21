@@ -18,7 +18,9 @@
               <div class="form-group row">
                 <label for="exampleInputPassword2" class="col-sm-3 col-form-label">Title</label>
                 <div class="col-sm-4">
+                 
                   <input type="text" class="form-control" id="title" name="title" placeholder="Title" value="{{$staticpageDetail->title}}" readonly>
+                
                   @if ($errors->has('title'))
                     <span style="color: red">{{ $errors->first('title') }}</span>
                   @endif
@@ -29,21 +31,24 @@
               <div class="form-group row">
                 <label for="heading_image" class="col-sm-3 col-form-label">Heading Banner</label>
                 <div class="col-sm-4">
+                   
                   <input type="file" class="form-control" id="heading_image" name="heading_image" accept="image/*">
+                   
                   <p>(Size : 1232x194)</p>
                   @if ($errors->has('heading_image'))
                     <span style="color: red">{{ $errors->first('heading_image') }}</span>
                   @endif
                 </div>
-                <div class="col-sm-4">
-                  <img src="{{url('assets/upload_images/pages')}}/{{$staticpageDetail->heading_image}}"  style="width:200px;height: 100px;"> 
-                </div>
+               
               </div>
 
               <div class="form-group row">
                 <label for="image" class="col-sm-3 col-form-label">Content</label>
                 <div class="col-sm-9">
+                  
                   <textarea id="editor" name="content" placeholder="">{{$staticpageDetail->content}}</textarea>
+                  
+                   
                   @if ($errors->has('content'))
                     <span style="color: red">{{ $errors->first('content') }}</span>
                   @endif

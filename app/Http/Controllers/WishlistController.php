@@ -40,13 +40,18 @@ class WishlistController extends Controller {
    public function wishlist() 
   {
     $user_id = Auth::id(); 
+    
     if($user_id){
-      $wishlist       = Wishlist::where('user_id',$user_id)->get()->pluck('product_id');
+
+      $wishlist   = Wishlist::where('user_id',$user_id)->get()->pluck('product_id');
       $productDetail  = Product::whereIn('id',$wishlist)->get()->toArray();
+
       foreach ($productDetail as $key => $value) {
-         $product = ProductImage::where('product_id',$value['id'])->first();
-         $productDetail[$key]['product_image'] = $product->product_image;
+
+         //$product = ProductImage::where('product_id',$value['id'])->first();
+         $productDetail[$key]['product_image'] = $value['image'];
       }
+      //dd($productDetail);
 
       if(empty($productDetail)){
         return view('wishlist.Blankwishlist');

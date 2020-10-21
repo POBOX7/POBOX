@@ -47,7 +47,9 @@
                                 <td>
                                   {{-- <a href="{{route('edit.category',base64_encode($category->id) )}}" class="btn btn-outline-primary">Edit</a> --}}
                                   <a href="{{route('edit.category',base64_encode($category->id) )}}"><i class="ti-pencil-alt" style="font-size: 2rem;"></i></a>
+                                  @if($category->id != 1 && $category->id != 2 && $category->id != 3 )
                                   <a onclick="showSwal({{$category->id}})"><i class="ti-trash" style="font-size: 2rem;color: #007bfe;"></i></a>
+                                   @endif
                                 </td>
                             </tr>
                           @endforeach

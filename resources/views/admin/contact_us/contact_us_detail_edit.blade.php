@@ -9,7 +9,7 @@
       <div class="col-12 stretch-card">
         <div class="card">
           <div class="card-body">
-            <h4 class="card-title">UPDATE CONTACTUS DETAILS</h4>
+            <h4 class="card-title">UPDATE CONTACT US DETAILS</h4>
             {{-- <p class="card-description">
               Horizontal form layout
             </p> --}}
@@ -30,7 +30,7 @@
               <div class="form-group row">
                 <label for="exampleInputPassword2" class="col-sm-3 col-form-label">Phone Number</label>
                 <div class="col-sm-4">
-                  <input type="text" class="form-control" id="phone_number" name="phone_number" placeholder="Phone Number" maxlength="10" value="{{$ContactUsDetailEdit->phone_number}}" required>
+                  <input type="text" class="form-control" id="phone_number" name="phone_number" placeholder="Phone Number" maxlength="14" value="{{$ContactUsDetailEdit->phone_number}}" required>
                   @if ($errors->has('phone_number'))
                     <span style="color: red">{{ $errors->first('phone_number') }}</span>
                   @endif

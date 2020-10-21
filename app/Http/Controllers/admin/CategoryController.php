@@ -43,8 +43,17 @@ class CategoryController extends Controller
      */
     public function storeCategory( Request $request ) {    
         $validatedData = $request->validate([
-            'name'=> 'required|max:20'
+            'name'=> 'required|max:20',
+           // 'image' => 'required|image|mimes:jpeg,png,jpg|max:5120'
         ]); 
+
+         if (isset($request->image)) {
+          $maxFileSize = 5242880;
+            $fileSize = $request->image->getSize();
+            if($fileSize >= $maxFileSize){
+                return redirect()->back()->with('error', 'Image too large. Image must be less than 5MB.');
+          }
+      }
 
         $image = $request->image;
         $destinationPath = 'assets/upload_images/category';
@@ -54,7 +63,7 @@ class CategoryController extends Controller
         $filename = time().'.'.$extension;
 
         $image_resize = Image::make($request->file('image')->getRealPath());              
-        $image_resize->resize(200, 100);
+        $image_resize->resize(380, 555);
         $image_resize->save(public_path('assets/upload_images/category/thumb/' .$filename));
         $image->move($destinationPath, $filename); 
         
@@ -112,9 +121,16 @@ class CategoryController extends Controller
     public function updateCategory(Request $request ,$id)
     {
         $request->validate([
-                'name' => 'required|max:20'  
+                'name' => 'required|max:20',
+                //'image' => 'required|image|mimes:jpeg,png,jpg|max:5120'  
         ]);
-
+         if (isset($request->image)) {
+          $maxFileSize = 5242880;
+            $fileSize = $request->image->getSize();
+            if($fileSize >= $maxFileSize){
+                return redirect()->back()->with('error', 'Image too large. Image must be less than 5MB.');
+          }
+      }
         $update_data = array(
                                 'name' => $request->name,
                                 'updated_at'    => date('Y-m-d H:i:s')
@@ -127,7 +143,7 @@ class CategoryController extends Controller
             $filename = time().'.'.$extension;
 
             $image_resize = Image::make($request->file('image')->getRealPath());              
-            $image_resize->resize(200, 100);
+            $image_resize->resize(380, 555);
             $image_resize->save(public_path('assets/upload_images/category/thumb/' .$filename));
             $image->move($destinationPath, $filename); 
 

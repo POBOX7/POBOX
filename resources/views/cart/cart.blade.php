@@ -153,13 +153,28 @@ small {
                                                             <li style="background: {{$value->hex_code}}"></li>
                                                         </ul>
                                                     </div>
+                                                    <span style="margin-top: 5px;"><label style="font-weight: 600;color: #7a7d82;font-size: 12px;">HSN:</label><span style="color: #7a7d82;font-size: 14px;font-weight: 400;">{{$value->hsn_no}}</span></span>
 
                                                 </h2>
                                             </td>
-                                            <td><strike>₹{{$value->mrp}}</strike>&nbsp;<span class="product-price">₹{{$value->price}}</span></td>
+                                            
+                                            
+                                             
+                                            <td>
+                                                @if($value->discount != 0 )
+                                                <strike>₹{{$value->mrp}}</strike>&nbsp;
+                                                <span class="product-price">₹{{$value->price}}</span>
+                                                @else
+                                                <span class="product-price">₹{{$value->price}}</span>
+                                                @endif
+                                            </td>
                                             <td>
                                                 <div class="quantity-container">
-                                <input type="hidden" name="user_id" name="user_id" id="user_id" value="{{auth()->user()['id']}}">
+                                                    @if(isset(Auth::user()->id))
+                                                        <input type="hidden" name="user_id" id="user_id" value="{{Auth::user()->id}}">
+                                                    @else
+                                                        <input type="hidden" name="user_id" id="user_id" value="0">
+                                                    @endif
                                                     <div class="qtybtn minus" id="minus_{{$value->product_id}}_{{$value->size_id}}">-</div>
                                                     <input type="number" name="qty[]" id="quantity_{{$value->product_id}}_{{$value->size_id}}" name="quantity" value="{{$value->qty}}" data-value="{{$value->qty}}" / style="float:left;height: 43px;border: 1px solid #e1e1e1;width: 56px;text-align: center;">
                                                     <div class="qtybtn plus" id="plus_{{$value->product_id}}_{{$value->size_id}}" style="font-size: 25px;">+</div>
@@ -264,16 +279,16 @@ small {
                                             <td id="discount">₹{{$discount}}</td>
                                         </tr>
                                         
-                                        <tr>
+                                       {{--  <tr>
                                             <td>Applicable GST(5%)</td>
                                             <td id="gst">₹{{round($GST)}}</td>
-                                        </tr>
+                                        </tr> --}}
                                        
                                     </tbody>
                                     <tfoot>
                                         <tr>
                                             <td>Order Total</td>
-                                            <td>₹<span id="grand_total">{{round(($Subtotal - $discount) + $GST)}}</span></td>
+                                            <td>₹<span id="grand_total">{{round(($Subtotal - $discount))}}</span></td>
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -305,10 +320,10 @@ small {
                 window.location.reload();
             }
             $('.minus').click(function(){
-                var user_id = 0;//Guest User Cart User ID
-                var actualUserId = document.getElementById("user_id").value;
-                if(actualUserId > 0){
-                    user_id=actualUserId;
+                var actualUserId = 0;//Guest User Cart User ID
+                var user_id = document.getElementById("user_id").value;
+                if(user_id > 0){
+                    actualUserId = user_id;
                 }
 
                 var id =  this.id;
@@ -322,7 +337,7 @@ small {
                 var price =  $('#price_'+productData[1]+'_'+productData[2]).val();
                 var mrp_price =  $('#mrp_'+productData[1]+'_'+productData[2]).val();
                 var size =  $('#size_'+productData[1]+'_'+productData[2]).val();
-               var product_ids =  $('#product_ids_'+productData[1]+'_'+productData[2]).val();
+                var product_ids =  $('#product_ids_'+productData[1]+'_'+productData[2]).val();
                 if(current_qty == 1 ){
                   return false; 
                 }
@@ -336,7 +351,7 @@ small {
                 allProductTotal();
 
                 //Quantity Update
-                 var current_qty = current_qty;
+                var current_qty = current_qty;
                 var product_id = id.slice(6, 8);
                  //var userid = 100;
                 if(actualUserId > 0){
@@ -367,7 +382,7 @@ small {
                       cache:false,
                       data:{
                         'current_qty' : current_qty,
-                        'product_id' : product_id,
+                        'product_id' : product_ids,
                         'price' : total_price,
                         'mrp' : total_mrp_price,
                         'size' : size,
@@ -382,10 +397,10 @@ small {
 
             });
             $('.plus').click(function(){
-                 var user_id = 0;//Guest User Cart User ID
-                var actualUserId = document.getElementById("user_id").value;
-                if(actualUserId > 0){
-                    user_id=actualUserId;
+                var actualUserId = 0;//Guest User Cart User ID
+                var user_id = document.getElementById("user_id").value;
+                if(user_id > 0){
+                    actualUserId = user_id;
                 }
                 var id =  this.id;
                 var productData = id.split("_"); 
@@ -448,7 +463,7 @@ small {
                       cache:false,
                       data:{
                         'current_qty' : current_qty,
-                        'product_id' : product_id,
+                        'product_id' : product_ids,
                         'price' : total_price,
                         'mrp' : total_mrp_price,
                         'size' : size,
@@ -491,7 +506,7 @@ small {
                 $('#sub_total').text("₹"+parseFloat(total));
                 $('#discount').text("₹"+parseFloat(discount_total));
                 $('#gst').text("₹"+parseFloat(gst_total_new));
-                $('#grand_total').html((parseFloat(total - discount_total)) + gst_total_new);
+                $('#grand_total').html((parseFloat(total - discount_total)));
             }
         
             (function($) {

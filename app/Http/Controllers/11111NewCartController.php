@@ -78,7 +78,7 @@ class CartController extends Controller {
   
   public function checkoutDetail() 
   {
-   
+   dd("hi");
     //$id = 136;
     $addresses = [];
     $productDetail = [];

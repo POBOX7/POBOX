@@ -1,3 +1,5 @@
+@extends('new_resources.layouts.new_app') 
+@section('content')
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,7 +9,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-  <title>404 HTML Template by Colorlib</title>
+  <title>404 PO Box</title>
 
   <!-- Google font -->
   <link href="https://fonts.googleapis.com/css?family=Montserrat:200,400,700" rel="stylesheet">
@@ -26,7 +28,7 @@
 
 <body>
 
-  <div id="notfound">
+  <div>  <!-- id="notfound" -->
     <div class="notfound">
       <div class="notfound-404">
         <h1>Oops!</h1>
@@ -55,10 +57,12 @@
 }
 
 .notfound {
-  max-width: 520px;
+  /*max-width: 520px;*/
   width: 100%;
   line-height: 1.4;
   text-align: center;
+  margin-bottom: 50px;
+    margin-top: 50px;
 }
 
 .notfound .notfound-404 {
@@ -142,3 +146,4 @@
 }
 
 </style>
+@endsection

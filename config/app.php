@@ -166,6 +166,7 @@ return [
         Illuminate\Html\HtmlServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
+        //Milon\Barcode\BarcodeServiceProvider::class,
         //\Phonedotcom\SmsVerification\SmsVerificationProvider::class,
 
         /*
@@ -238,6 +239,8 @@ return [
         'Alert' => UxWeb\SweetAlert\SweetAlert::class,
         'Image' => Intervention\Image\Facades\Image::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+        'DNS1D' => Milon\Barcode\Facades\DNS1DFacade::class,
+        'DNS2D' => Milon\Barcode\Facades\DNS2DFacade::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
 
     ],

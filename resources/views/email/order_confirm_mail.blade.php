@@ -97,11 +97,17 @@
 <table class="maintable" style="border: 0px !important;width: 100%;">
     <tr style="text-align: center!important;">
         <td style="width: 100%;" style="text-align: center;">
-            <img style="text-align: center;" src="http://pobox.rethinksoft.com/admin/images/favicon.png" style="width: 200px;">
+            <img style="text-align: center;" src="http://admin.poboxfashion.com/assets/upload_images/favicon.png" style="width: 200px;">
         </td>
     </tr>
+
         <td style="width: 55%;">
-          @foreach($oderData as $keyOderData => $OderDatas)
+            @foreach($oderData as $keyOderData => $OderDatas)
+    <p style="font-size: 20px;">PO Box:Order {{$OderDatas['ordernumber']}} is Confirmed</p>
+    <p>Dear {{$oderData[$keyOderData]['address_data']['name']}}</p>
+    <p>Thank you for shopping with us. Your order number {{$OderDatas['ordernumber']}} is confirmed. Once your order is dispatched you will receive further e-mail.</p>
+    <p>Thank you,<br>Team PO Box.</p>
+          
             <table style="width: 100%;" >                
                 <tr style="">
                     <td colspan="2" style="text-align: center;background-color: #E0E0E0;">
@@ -184,79 +190,72 @@
                         @php($Subtotal  = 0)
                         <table border= "1" class="item-table order-table" style="width: 100%;" >
                             
+                                                
                                                 <tr style="border:1px solid #000;">
                                                 <td>Sr. No #</td>
                                                 <td>Image</td>
                                                 <td>Name</td>
                                                 <td>Size</td>
                                                 <td>Color</td>
+                                                <td>HSN No</td>
                                                 <td>Qty</td>
-                                                <td>SKU</td>
+                                                <td>Price</td>
+                                                <td>Coupon Discount</td>
+                                                <td>GST</td>
                                                 <td>Price</td>
                                               </tr>
                                                
                                                @foreach($productDetail as $keyProduct_data => $product_data)
-                                             <!--  http://pobox.rethinksoft.com/assets/upload_images/product/{{$product_data['image']}} -->
+                                             <!--  https://poboxfashion.com/assets/upload_images/product/{{$product_data['image']}} -->
+                                            <!--  {{ asset('assets/upload_images/product') }}/{{$product_data->getProduct->image}} -->
                                                         <tr>
                                                     <td>{{$keyProduct_data + 1 }}</td>
-                                                    <td><img src="http://pobox.rethinksoft.com/assets/upload_images/product/{{$product_data->getProduct['image']}}"  style="width: 50px!important;height: 50px!important;"></td>
+                                                    
+                                                    <td><img src="http://admin.poboxfashion.com/assets/upload_images/product/{{$product_data->getProduct->image}}"  style="width: 50px!important;height: 50px!important;"></td>
                                                     <td>{{$product_data->getProduct['name'] }}</td>
                                                     
                                                        <td>{{$product_data['size_name'] }}</td>
                                                    
                                                     <td><p style="margin-left: 15px;text-align: center!important; color:white;background:{{$product_data['hex_code'] }}!important;border: 1px solid #000;height: 15px;width: 15px;"></p></td>
-                                                    <td>{{$product_data['qty'] }}</td>
-                                                    <td>{{$product_data['sku'] }}</td>
+                                                     <td>{{$product_data->hsn_no }}</td>
+                                                    <td>{{$product_data->qty }}</td>
                                                     <td>
-                            
-                            @php($Subtotal += ($product_data['qty'] * $product_data['price']))
-                           
-
-                                                    {{$product_data['price'] * $product_data['qty'] }}</td>
+                                                        {{$product_data->price}}
+                                                      
+                                                    </td>
+                                                    <td>
+                                                      
+                                                        @if($product_data->discount_price > 0)
+                                                          {{$product_data->discount_price}}
+                                                        @else
+                                                          -
+                                                        @endif
+                                                      
+                                                    </td>
+                                                    <td>
+                                                      <span>{{$product_data->gst_amount}}</span>
+                                                      <br>
+                                                      @if($OderDatas->getAddress->state == 'Gujarat')
+                                                        <span>
+                                                              <label style="font-weight: 600;color: #7a7d82;font-size: 12px;">CGST : </label> {{$product_data->gst_amount/2}} <br>
+                                                              <label style="font-weight: 600;color: #7a7d82;font-size: 12px;">SGST :</label>{{$product_data->gst_amount/2}} <br>
+                                                          </span>
+                                                      @else
+                                                          <span>
+                                                              <label style="font-weight: 600;color: #7a7d82;font-size: 12px;">IGST : </label> {{$product_data->gst_amount}} <br>
+                                                          </span>
+                                                      @endif
+                                                    </td>
+                                                    <td>
+                                                      <span>{{($product_data->price * $product_data->qty) + $product_data->gst_amount}}</span>
+                                                    </td>
                                                   </tr>
-
 
                                                    @endforeach
                                           
                             
                             <tr>
-                                <td style="text-align: right!important;" colspan="7">Subtotal</td>
-                             
-                                <td style="text-align: center;">
-
-                                     {{$Subtotal}} 
-                                </td>
-                            </tr>
-
-                                
-                            <tr>
-                                <td style="text-align: right!important;" colspan="7">Coupon Discount</td>
-                                <td style="text-align: center;">
-                                  {{$OderDatas->coupon_amount}} 
-                                </td>
-                            </tr>
-
-                            
-                           
-
-                          <!-- <tr>
-                                <td style="text-align: right!important;" colspan="7">Shipping charge</td>
-                                <td style="text-align: center;">
-                                    0
-                                </td>
-                            </tr>
- -->
-                            <tr>
-                                <td style="text-align: right!important;" colspan="7">Applicable GST(5%)</td>
-                                <td style="text-align: center;">
-                                 {{$OderDatas['gstAmount']}}
-                                </td>
-                            </tr>
-
-
-
-                            <tr>
-                                <td style="text-align: right!important;" colspan="7">Total</td>
+                                <td style="text-align: right!important;" colspan="10">Total</td>
                                 <td style="text-align: center;">
                                     {{$OderDatas['totalamount']}}
                                 </td>
@@ -278,6 +277,20 @@
                     </td>
                 </tr>
                 <tr><td colspan="2"><hr  /></td></tr>
+                <tr>
+                   <td class="part1" style="text-transform: uppercase;width: 50%;">     
+                        <b>Company Name :-</b> V B FABRIC EXPORTS PVT LTD<br>
+                        <b>ADDRESS :-</b> B-117 , GROUND FLOOR SUMEL BUSINESS PARK-2, NEAR VANIJYA BHAVAN, KANKARIA ROAD,<br>
+                        AHMEDABAD-380001,<br>
+                          GUJARAT, INDIA<br>
+                    </td>
+                    <td class="part2" style="text-transform: uppercase;width: 50%;float: right;">
+                              <b>GSTIN:-</b> 24AAECV5166F1ZC<br>
+                              <b>GSTIN/UIN:-</b>24AAECV5166F1ZC<br>
+                              <b>STATE NAME:-</b> GUJARAT, CODE 24<br>
+                              <b>MOBILE NO:-</b>9879899004<br>
+                    </td>    
+                </tr>
                 <tr>
                     <td colspan="2" class="" style="font-weight: bold;text-align: center;">                        
                         <br />THIS IS A COMPUTER GENERATED INVOICE AND DOES NOT REQUIRE SIGNATURE<br />

@@ -55,6 +55,8 @@ class StockController extends Controller
                             ->orderByDesc('id')
                             ->get();
 
+                            //dd($productList);
+
         return view('admin.stock.stock_history')->with('productList', $productList)->with('productDetail', $productDetail); 
     }
 

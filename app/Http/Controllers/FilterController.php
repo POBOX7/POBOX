@@ -125,7 +125,32 @@ class FilterController extends Controller {
             if($brand != null){  
               $products = $products->where('brand_id',$brand);
             }
-            if($color != null){  
+
+               if(count($color) !== 0){  
+          $products = $products->whereIn('color_id',$color);
+            }
+           if ($sorting_filter !=null) {
+            
+                 if($sorting_filter[0] == "featured"){
+              $products = $products->where('is_featured',1);
+                } 
+                if($sorting_filter[0] == "name_a_to_z"){  
+              $products = $products->orderBy('name','ASC');
+                }
+                if($sorting_filter[0] == "name_z_to_a"){  
+              $products = $products->orderBy('name','DESC');
+                }
+                if($sorting_filter[0] == "price_low_to_high"){  
+                $products = $products->orderBy('price','ASC');
+                }
+                if($sorting_filter[0] == "price_high_to_low"){  
+           $products = $products->orderBy('price','DESC');
+                }
+                if($sorting_filter[0] == "menu_order"){ 
+              $products = $products;
+                }
+          }
+            /*if($color != null){  
               $products = $products->whereIn('color_id',$color);
             }
             if($sorting_filter[0] == "featured"){  
@@ -145,7 +170,7 @@ class FilterController extends Controller {
             }
             if($sorting_filter[0] == "menu_order"){ 
               $products = $products;
-            }
+            }*/
        }  
       $products = $products->get(); 
       $newArrivalProductDatas = array();
@@ -184,7 +209,31 @@ if($request->page_url == "kurties"){
             if($brand != null){  
               $products = $products->where('brand_id',$brand);
             }
-            if($color != null){  
+               if(count($color) !== 0){  
+          $products = $products->whereIn('color_id',$color);
+            }
+           if ($sorting_filter !=null) {
+            
+                 if($sorting_filter[0] == "featured"){
+              $products = $products->where('is_featured',1);
+                } 
+                if($sorting_filter[0] == "name_a_to_z"){  
+              $products = $products->orderBy('name','ASC');
+                }
+                if($sorting_filter[0] == "name_z_to_a"){  
+              $products = $products->orderBy('name','DESC');
+                }
+                if($sorting_filter[0] == "price_low_to_high"){  
+                $products = $products->orderBy('price','ASC');
+                }
+                if($sorting_filter[0] == "price_high_to_low"){  
+           $products = $products->orderBy('price','DESC');
+                }
+                if($sorting_filter[0] == "menu_order"){ 
+              $products = $products;
+                }
+          }
+            /*if($color != null){  
               $products = $products->whereIn('color_id',$color);
             }
             if($sorting_filter[0] == "featured"){  
@@ -204,7 +253,7 @@ if($request->page_url == "kurties"){
             }
             if($sorting_filter[0] == "menu_order"){ 
               $products = $products;
-            }
+            }*/
        }  
       $products = $products->get(); 
 	  
@@ -244,7 +293,31 @@ if($request->page_url == "kurta-sets"){
             if($brand != null){  
               $products = $products->where('brand_id',$brand);
             }
-            if($color != null){  
+               if(count($color) !== 0){  
+          $products = $products->whereIn('color_id',$color);
+            }
+           if ($sorting_filter !=null) {
+            
+                 if($sorting_filter[0] == "featured"){
+              $products = $products->where('is_featured',1);
+                } 
+                if($sorting_filter[0] == "name_a_to_z"){  
+              $products = $products->orderBy('name','ASC');
+                }
+                if($sorting_filter[0] == "name_z_to_a"){  
+              $products = $products->orderBy('name','DESC');
+                }
+                if($sorting_filter[0] == "price_low_to_high"){  
+                $products = $products->orderBy('price','ASC');
+                }
+                if($sorting_filter[0] == "price_high_to_low"){  
+           $products = $products->orderBy('price','DESC');
+                }
+                if($sorting_filter[0] == "menu_order"){ 
+              $products = $products;
+                }
+          }
+            /*if($color != null){  
               $products = $products->whereIn('color_id',$color);
             }
             if($sorting_filter[0] == "featured"){  
@@ -264,7 +337,7 @@ if($request->page_url == "kurta-sets"){
             }
             if($sorting_filter[0] == "menu_order"){ 
               $products = $products;
-            }
+            }*/
        }  
       $products = $products->get(); 
       $newArrivalProductDatas = array();
@@ -304,7 +377,31 @@ if($request->page_url == "dresses"){
             if($brand != null){  
               $products = $products->where('brand_id',$brand);
             }
-            if($color != null){  
+               if(count($color) !== 0){  
+          $products = $products->whereIn('color_id',$color);
+            }
+           if ($sorting_filter !=null) {
+            
+                 if($sorting_filter[0] == "featured"){
+              $products = $products->where('is_featured',1);
+                } 
+                if($sorting_filter[0] == "name_a_to_z"){  
+              $products = $products->orderBy('name','ASC');
+                }
+                if($sorting_filter[0] == "name_z_to_a"){  
+              $products = $products->orderBy('name','DESC');
+                }
+                if($sorting_filter[0] == "price_low_to_high"){  
+                $products = $products->orderBy('price','ASC');
+                }
+                if($sorting_filter[0] == "price_high_to_low"){  
+           $products = $products->orderBy('price','DESC');
+                }
+                if($sorting_filter[0] == "menu_order"){ 
+              $products = $products;
+                }
+          }
+           /* if($color != null){  
               $products = $products->whereIn('color_id',$color);
             }
             if($sorting_filter[0] == "featured"){  
@@ -324,7 +421,7 @@ if($request->page_url == "dresses"){
             }
             if($sorting_filter[0] == "menu_order"){ 
               $products = $products;
-            }
+            }*/
        }  
       $products = $products->get(); 
       $newArrivalProductDatas = array();
@@ -343,8 +440,10 @@ if($request->page_url == "dresses"){
 
 /*New arrival filter start*/ 
 if($request->page_url == "new-arrival"){
+
     if($clearall != null){
-          $products = Product::where('is_new_arrival',1)->where('status',1)->where('is_deleted',0)->orderBy('created_at','DESC');   
+          $products = Product::where('is_new_arrival',1)->where('status',1)->where('is_deleted',0)->orderBy('created_at','DESC');  
+
         }else{ 
 		     $clearall = null;
             $products = new Product();
@@ -363,16 +462,40 @@ if($request->page_url == "new-arrival"){
             if($brand != null){  
 		      $products = $products->where('brand_id',$brand);
             }
-            if($color != null){  
+             if(count($color) !== 0){  
+          $products = $products->whereIn('color_id',$color);
+            }
+           if ($sorting_filter !=null) {
+            
+                 if($sorting_filter[0] == "featured"){
+              $products = $products->where('is_featured',1);
+                } 
+                if($sorting_filter[0] == "name_a_to_z"){  
+              $products = $products->orderBy('name','ASC');
+                }
+                if($sorting_filter[0] == "name_z_to_a"){  
+              $products = $products->orderBy('name','DESC');
+                }
+                if($sorting_filter[0] == "price_low_to_high"){  
+                $products = $products->orderBy('price','ASC');
+                }
+                if($sorting_filter[0] == "price_high_to_low"){  
+           $products = $products->orderBy('price','DESC');
+                }
+                if($sorting_filter[0] == "menu_order"){ 
+              $products = $products;
+                }
+          }
+           /* if($color != null){  
 		      $products = $products->whereIn('color_id',$color);
             }
             if($sorting_filter[0] == "featured"){
 		      $products = $products->where('is_featured',1);
-            }  
-            if($sorting_filter[0] == "name_a_to_z"){  
+            }  */
+            /*if($sorting_filter[0] == "name_a_to_z"){  
 		      $products = $products->orderBy('name','ASC');
-            }
-            if($sorting_filter[0] == "name_z_to_a"){  
+            }*/
+          /*  if($sorting_filter[0] == "name_z_to_a"){  
 		      $products = $products->orderBy('name','DESC');
             }
             if($sorting_filter[0] == "price_low_to_high"){  
@@ -383,7 +506,7 @@ if($request->page_url == "new-arrival"){
             }
             if($sorting_filter[0] == "menu_order"){ 
        	  $products = $products;
-            }
+            }*/
        }  
        
 		$products = $products->get(); 

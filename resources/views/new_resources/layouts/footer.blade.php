@@ -7,16 +7,22 @@
             <div class="widget">
                 <h4 class="widget-title">Contact Us</h4>
                 <ul class="contact-info">
-                    <li>
+                   <!--  <li>
                         <span class="contact-info-label"><i class="fa fa-clock"></i></span>11:00 A.M. to 07:00 P.M.
+                    </li> -->
+                    <li>
+                        <span class="contact-info-label"><i class="fa fa-mobile" aria-hidden="true"></i></span><a href="">{{$ContactUsDetails->phone_number}}</a>
                     </li>
                     <li>
-                        <span class="contact-info-label"><i class="fa fa-mobile" aria-hidden="true"></i></span><a href="tel:">+91 9879899004</a>
+                        <span class="contact-info-label"><i class="fa fa-envelope" aria-hidden="true"></i></span><a href="">{{$ContactUsDetails->email}}</a>
                     </li>
-                    <li>
-                        <span class="contact-info-label"><i class="fa fa-envelope" aria-hidden="true"></i></span><a href="email"> vihang@vbfabric.com</a>
-                    </li>
+
                 </ul>
+                <div class="social-icons">
+                            <a href="{{$ContactUsDetails['facebook_link']}}" class="social-icon" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                            <a href="{{$ContactUsDetails['twitter_link']}}" class="social-icon" target="_blank"><i class="fab fa-twitter"></i></a>
+                            <a href="{{$ContactUsDetails['linkedin_link']}}" class="social-icon" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                        </div>
             </div><!-- End .widget -->
         </div><!-- End .col-lg-3 -->
 
@@ -37,10 +43,10 @@
                 <h4 class="widget-title">Help &amp; Support</h4>
                 <ul class="links">
                     <li><a href="{{route('shippingInfo')}}">Shipping Info</a></li>
-                    <li><a href="{{route('returnPolicy')}}">Return Policy</a></li>
-                    <li><a href="{{route('howToOrder')}}">How to Order</a></li>
+                    <li><a href="{{route('returnPolicy')}}">Refund and Cancellation</a></li>
+                    <!-- <li><a href="{{route('howToOrder')}}">How to Order</a></li>
               
-                    <li><a href="{{route('howToTrack')}}">How to Track</a></li>
+                    <li><a href="{{route('howToTrack')}}">How to Track</a></li> -->
                     <li><a href="{{route('sizeInformation')}}">Size Guide</a></li>
                 </ul>            
             </div>
@@ -335,5 +341,16 @@ $("body").addClass("" + userversion + "");
 }
 ul.contact-info {
     list-style: none;
+}
+.footer .social-icon,.footer .social-icon:hover {
+  
+    background-color: transparent!important;
+    color: black!important;
+}
+.footer .social-icons i {
+    font-size: 18px;
+}
+.footer .social-icon {
+    width: 25px!important;
 }
 </style>

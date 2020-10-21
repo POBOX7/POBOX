@@ -50,6 +50,8 @@
                           Blog
                           @elseif($banner->page_id == 9 )
                           Contact Us
+                          @elseif($banner->page_id == 10 )
+                          Size Guide
                         @endif
                         
                       </td>

@@ -15,11 +15,16 @@
 Auth::routes();
 
 
+Route::get('admin.login', 'Auth\AdminLoginController@showLoginForm')->name('admin.login');
+
 Route::prefix('admin')->group(function() {
 
 Route::get('home', 'admin\AdminController@index')->name('admin');
 Route::get('home', 'admin\HomeController@index')->name('home');
 Route::get('admin', 'admin\AdminController@index')->name('admin');
+
+
+Route::get('/admin/404','admin\HomeController@adminErrors')->name('404_page');
 
 	//Graph ajax
 Route::any('order-year', 'admin\HomeController@orderYearAjax')->name('orderYearAjax');
@@ -182,7 +187,7 @@ Route::any('revenue-year', 'admin\HomeController@revenueYearAjax')->name('revenu
 	//Contact us detail
 	Route::get('contact_us_detail/index', 'admin\ContactUsController@contactUsDetailindex')->name('admin.contact_us_detail.index');
 	Route::get('contact_us_detail/add','admin\ContactUsController@addContactUsDetail')->name('add.contact_us_detail');
-	Route::post('contact_us_detail/store','admin\ContactUsController@storeContactUsDetail')->name('store.blogCategory');
+	Route::post('contact_us_detail/store','admin\ContactUsController@storeContactUsDetail');
 	Route::get('contact_us_detail/edit/{id}','admin\ContactUsController@editContactUsDetail')->name('edit.contact_us_detail');
 	Route::any('contact_us_detail/{id}','admin\ContactUsController@updateContactUsDetail')->name('update.contact_us_detail');
 	Route::get('contact_us_detail-destroy/{id}', 'admin\ContactUsController@contactUsDetailDestroy')->name('destroy.contact_us_detail');
@@ -223,6 +228,7 @@ Route::any('revenue-year', 'admin\HomeController@revenueYearAjax')->name('revenu
     Route::get('refund-order/{id}', 'admin\OrderController@refundOrder')->name('refund.order');
     Route::post('order-status', 'admin\OrderController@orderStatus')->name('status.order');
     Route::any('order/export', 'admin\OrderController@export')->name('export.order');
+    Route::post('shipment-detail', 'admin\OrderController@addShipmentDetail')->name('shipment.order');
 
 });
 Route::middleware('auth')->prefix('admin')->namespace('Admin')->group( function () {
@@ -239,6 +245,7 @@ Route::get('/404','HomeController@errors')->name('404');
 
 Route::get('/logout', 'LoginController@logout');
 Route::get('/home','HomeController@index')->name('home_1');
+Route::get('/','HomeController@index')->name('home_1');
 
 Route::post('/register', 'RegisterController@registerStore')->name('register.store');
 Route::post('/checkemail', 'RegisterController@checkemail')->name('checkemail');
@@ -265,7 +272,7 @@ Route::post('/store-address','RegisterController@StoreAddress')->name('store.add
 
 Route::post('/customerSubcribe', 'RegisterController@customerSubcribeStore')->name('customerSubcribe.store');
 Route::get('/blank','TestNewArrivalController@blank')->name('blank');
-Route::get('/new-arrival-old','NewArrivalController@newArrival')->name('newArrival');
+//Route::get('/new-arrival-old','NewArrivalController@newArrival')->name('newArrival');
 Route::get('/new-arrival','NewArrivalOldController@newArrival')->name('newArrival');
 Route::get('/price-filter', 'TestNewArrivalController@PriceFilter')->name('price.filter');
 Route::get('/colorbox', 'TestNewArrivalController@Colorbox') ;
@@ -359,6 +366,9 @@ Route::get('/order-status/{id}','OrderController@orderStatus')->name('orderStatu
 Route::get('/order-invoice/{id}','OrderController@viewInvoice')->name('orderinvoice');
 
 Route::get('/order-summary/{id}','NewCartController@orderSummary')->name('orderSummary');
+
+Route::get('/order-confirm','NewCartController@orderConfirm')->name('orderConfirm');
+Route::post('/checkoutOrder','NewCartController@checkoutOrder')->name('checkoutOrder');
 ////////////////////////////////////////////Fronted Route End//////////////////////////////////////////////
 
 

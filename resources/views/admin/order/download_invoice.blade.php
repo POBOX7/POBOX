@@ -97,7 +97,8 @@
 <table class="maintable" style="border: 0px !important;">
     <tr style="text-align: center!important;">
         <td style="width: 100%;" style="text-align: center;">
-            <img style="text-align: center;" src="http://pobox.rethinksoft.com/admin/images/favicon.png" style="width: 200px;">
+            <img style="text-align: center;" src="http://admin.poboxfashion.com/assets/upload_images/favicon.png" style="width: 200px;">
+            <!-- <img style="text-align: center;" src="{{asset('assets/images/product/favicon.png')}}" style="width: 200px;"> -->
         </td>
     </tr>
         <td style="width: 55%;">
@@ -135,36 +136,44 @@
                 <tr>
                     <td class="part1" style="text-transform: uppercase;width: 49%;">
                        <strong>Shipping Address : </strong><br/>
-                        <b>Name:</b> {{$oderData[$keyOderData]['address_data']['name']}}  <br/>
-                        <b>Address:</b>{{$oderData[$keyOderData]['address_data']['address_line_one']}}<br>
-                                                    <b>Address Line 2 :</b> {{$oderData[$keyOderData]['address_data']['address_line_two']}}<br>
-                                                    <b>Address Line 3 :</b> {{$oderData[$keyOderData]['address_data']['address_line_three']}}  <br/>
+                        <b>Name:</b> {{$OderDatas->getAddress->name}}  <br/>
+                        <b>Address:</b>{{$OderDatas->getAddress->address_line_one}}<br>
+                        <b>Address Line 2 :</b> {{$OderDatas->getAddress->address_line_two}}<br>
+                        <b>Address Line 3 :</b> {{$OderDatas->getAddress->address_line_three}}  <br/>
                             
-                       <b>City:</b> {{$oderData[$keyOderData]['address_data']['city']}}  <br>
-                       <b>Country:</b> {{$oderData[$keyOderData]['address_data']['country']}}  <br/> 
-                       <b>State:</b> {{$oderData[$keyOderData]['address_data']['state']}}<br/>
+                        <b>City:</b> {{$OderDatas->getAddress->city}}  <br>
+                        <b>Country:</b> {{$OderDatas->getAddress->country}}  <br/> 
+                        <b>State:</b> {{$OderDatas->getAddress->state}}<br/>
                       
-                       <b>Phone No:</b> {{$oderData[$keyOderData]['address_data']['phone_number']}} <br/> 
+                        <b>Phone No:</b> {{$OderDatas->getAddress->phone_number}} <br/> 
 
-                        <b>Pincode:</b>
-                         {{$oderData[$keyOderData]['address_data']['pincode']}}  <br/>
+                        <b>Pincode:</b>{{$OderDatas->getAddress->pincode}}  <br/>
                     </td>
                     <td class="part2" style="text-transform: uppercase;width: 49%;">
                         <br />
                         <strong>Billing Address : </strong><br/>
-                       <b>Name:</b> {{$oderData[$keyOderData]['address_data']['name']}}  <br/>
-                         <b>ADDRESS:</b>{{$oderData[$keyOderData]['address_data']['address_line_one']}}<br>
-                                                    <b>Address Line 2 :</b> {{$oderData[$keyOderData]['address_data']['address_line_two']}}<br>
-                                                    <b>Address Line 3 :</b> {{$oderData[$keyOderData]['address_data']['address_line_three']}} <br/>
-                       
-                        <b>City:</b> {{$oderData[$keyOderData]['address_data']['city']}}  <br>
-                        <b>Country:</b> {{$oderData[$keyOderData]['address_data']['country']}}  <br/> 
-                       <b>State:</b> {{$oderData[$keyOderData]['address_data']['state']}}<br/>
-                      
-                       <b>Phone No:</b> {{$oderData[$keyOderData]['address_data']['phone_number']}}  <br/>
-                       <b>Pincode:</b> {{$oderData[$keyOderData]['address_data']['pincode']}}  <br/> 
-                       
+                        @if($OderDatas->bill_address == 'New')
+                            <b>Name:</b> {{$billAddress->name}}  <br/>
+                            <b>Address:</b>{{$billAddress->address_line_one}}<br>
+                            <b>Address Line 2 :</b> {{$billAddress->address_line_two}}<br>
+                            <b>Address Line 3 :</b> {{$billAddress->address_line_three}}  <br/>
+                            <b>City:</b> {{$billAddress->city}}  <br>
+                            <b>Country:</b> {{$billAddress->country}}  <br/> 
+                            <b>State:</b> {{$billAddress->state}}<br/>
+                            <b>Phone No:</b> {{$billAddress->phone_number}} <br/> 
+                            <b>Pincode:</b>{{$billAddress->pincode}}  <br/>
+                        @else
                         
+                            <b>Name:</b> {{$OderDatas->getAddress->name}}  <br/>
+                            <b>Address:</b>{{$OderDatas->getAddress->address_line_one}}<br>
+                            <b>Address Line 2 :</b> {{$OderDatas->getAddress->address_line_two}}<br>
+                            <b>Address Line 3 :</b> {{$OderDatas->getAddress->address_line_three}}  <br/>
+                            <b>City:</b> {{$OderDatas->getAddress->city}}  <br>
+                            <b>Country:</b> {{$OderDatas->getAddress->country}}  <br/> 
+                            <b>State:</b> {{$OderDatas->getAddress->state}}<br/>
+                            <b>Phone No:</b> {{$OderDatas->getAddress->phone_number}} <br/> 
+                            <b>Pincode:</b>{{$OderDatas->getAddress->pincode}}  <br/>
+                        @endif
                     </td>
                 </tr>
                 <tr><td colspan="2"><hr  /></td></tr>
@@ -189,8 +198,11 @@
                                                 <td>Name</td>
                                                 <td>Size</td>
                                                 <td>Color</td>
+                                                <td>HSN No</td>
                                                 <td>Qty</td>
-                                                <td>SKU</td>
+                                                <td>Price</td>
+                                                <td>Coupon Discount</td>
+                                                <td>GST</td>
                                                 <td>Price</td>
                                               </tr>
                                                
@@ -198,64 +210,57 @@
                                              <!--  http://pobox.rethinksoft.com/assets/upload_images/product/{{$product_data['image']}} -->
                                                         <tr>
                                                     <td>{{$keyProduct_data + 1 }}</td>
-                                                    <td><img src="http://pobox.rethinksoft.com/assets/upload_images/product/{{$product_data->getProduct['image']}}"  style="width: 50px!important;height: 50px!important;"></td>
+                                                    <td>
+                                                        <img src="http://admin.poboxfashion.com/assets/upload_images/product/{{$product_data->getProduct->image}}" alt="product" style="width: 50px!important;height: 50px!important;">
+                                                    </td>
                                                     <td>{{$product_data->getProduct['name'] }}</td>
                                                     
                                                        <td>{{$product_data['size_name'] }}</td>
                                                    
-                                                    <td><p style="margin-left: 15px;text-align: center!important; color:white;background:{{$product_data['hex_code'] }}!important;border: 1px solid #000;height: 15px;width: 15px;"></p></td>
-                                                    <td>{{$product_data['qty'] }}</td>
-                                                    <td>{{$product_data['sku'] }}</td>
                                                     <td>
-                            
-                            @php($Subtotal += ($product_data['qty'] * $product_data['price']))
-                           
-
-                                                    {{$product_data['price'] * $product_data['qty'] }}</td>
+                                                        <p style="margin-left: 15px;text-align: center!important; color:white;background:{{$product_data['hex_code'] }}!important;border: 1px solid #000;height: 15px;width: 15px;"></p>
+                                                    </td>
+                                                    <td>{{$product_data->hsn_no }}</td>
+                                                    <td>{{$product_data->qty }}</td>
+                                                    <td>
+                                                        {{$product_data->price}}
+                                                      
+                                                    </td>
+                                                    <td>
+                                                      
+                                                        @if($product_data->discount_price > 0)
+                                                          {{$product_data->discount_price}}
+                                                        @else
+                                                          -
+                                                        @endif
+                                                      
+                                                    </td>
+                                                    <td>
+                                                      <span>{{$product_data->gst_amount}}</span>
+                                                      <br>
+                                                      @if($OderDatas->getAddress->state == 'Gujarat')
+                                                        <span>
+                                                              <label style="font-weight: 600;color: #7a7d82;font-size: 12px;">CGST : </label> {{$product_data->gst_amount/2}} <br>
+                                                              <label style="font-weight: 600;color: #7a7d82;font-size: 12px;">SGST :</label>{{$product_data->gst_amount/2}} <br>
+                                                          </span>
+                                                      @else
+                                                          <span>
+                                                              <label style="font-weight: 600;color: #7a7d82;font-size: 12px;">IGST : </label> {{$product_data->gst_amount}} <br>
+                                                          </span>
+                                                      @endif
+                                                    </td>
+                                                    <td>
+                                                      <span>{{($product_data->price * $product_data->qty) + $product_data->gst_amount}}</span>
+                                                    </td>
                                                   </tr>
 
 
                                                    @endforeach
                                           
                             
-                            <tr>
-                                <td style="text-align: right!important;" colspan="7">Subtotal</td>
-                             
-                                <td style="text-align: center;">
-
-                                     {{$Subtotal}} 
-                                </td>
-                            </tr>
-
-                                
-                            <tr>
-                                <td style="text-align: right!important;" colspan="7">Coupon Discount</td>
-                                <td style="text-align: center;">
-                                  {{$OderDatas->coupon_amount}} 
-                                </td>
-                            </tr>
-
                             
-                           
-
-                          <!-- <tr>
-                                <td style="text-align: right!important;" colspan="7">Shipping charge</td>
-                                <td style="text-align: center;">
-                                    0
-                                </td>
-                            </tr>
- -->
                             <tr>
-                                <td style="text-align: right!important;" colspan="7">Applicable GST(5%)</td>
-                                <td style="text-align: center;">
-                                 {{$OderDatas['gstAmount']}}
-                                </td>
-                            </tr>
-
-
-
-                            <tr>
-                                <td style="text-align: right!important;" colspan="7">Total</td>
+                                <td style="text-align: right!important;" colspan="10">Total</td>
                                 <td style="text-align: center;">
                                     {{$OderDatas['totalamount']}}
                                 </td>
@@ -272,15 +277,33 @@
                         <br /> -->
                         <br />
                         <strong>CUSTOMER ACKNOWLEDGEMENT</strong><br />
-                        I, {{$oderData[$keyOderData]['address_data']['name']}} , hereby confirm that the above product/s are purchased for my personal consumptions and not for resale
+                       
+                        I,{{$OderDatas->getAddress->name}} , hereby confirm that the above product/s are purchased for my personal consumptions and not for resale
                         <br />
                     </td>
                 </tr>
                 <tr><td colspan="2"><hr  /></td></tr>
                 <tr>
+                   <td class="part1" style="text-transform: uppercase;width: 50%;">     
+                        <b>Company Name :-</b> V B FABRIC EXPORTS PVT LTD<br>
+                        <b>ADDRESS :-</b> B-117 , GROUND FLOOR SUMEL BUSINESS PARK-2, NEAR VANIJYA BHAVAN, KANKARIA ROAD,<br>
+                        AHMEDABAD-380001,<br>
+                          GUJARAT, INDIA<br>
+                    </td>
+                    <td class="part2" style="text-transform: uppercase;width: 50%;float: right;">
+                              <b>GSTIN:-</b> 24AAECV5166F1ZC<br>
+                              <b>GSTIN/UIN:-</b>24AAECV5166F1ZC<br>
+                              <b>STATE NAME:-</b> GUJARAT, CODE 24<br>
+                              <b>MOBILE NO:-</b>9879899004<br>
+                    </td>    
+                </tr> 
+                          
+                <tr>
+
                     <td colspan="2" class="" style="font-weight: bold;text-align: center;">                        
                         <br />THIS IS A COMPUTER GENERATED INVOICE AND DOES NOT REQUIRE SIGNATURE<br />
                     </td>
+
                 </tr>
                 <tr><td colspan="2"><hr  /></td></tr>
             </table>

@@ -10,7 +10,7 @@
                   <h4 class="card-title">BLOG CATEGORY SHOW</h4>
                 </div>
                 <div class="col-md-6" style="text-align: right">
-                  <a href="{{route('add.blog_category')}}"   class="btn btn-info">Add New</a>
+                  <a href="{{route('add.blog_category')}}"   class="btn btn-success">Add New</a>
                 </div>
               </div>
               <div class="row">

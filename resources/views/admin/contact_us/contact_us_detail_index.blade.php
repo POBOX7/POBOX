@@ -14,12 +14,16 @@
               <div class="row">
                 <div class="col-12">
                   <div class="table-responsive">
-                    <table id="order-listing" class="table">
+                    <table  class="table">
                       <thead>
                         <tr>
                             <th>Sr. No #</th>
                             <th>Email</th>
                             <th>Phone Number</th>
+                            <th>Address</th>
+                            <th>Facebook Link</th>
+                            <th>Twitter Link</th>
+                            <th>Linkedin</th>
                             <th>Actions</th>
                         </tr>
                       </thead>
@@ -30,6 +34,11 @@
                                 <td>{{$key + 1}}</td>
                                 <td>{{$contactUsDetail->email}}</td>
                                  <td>{{$contactUsDetail->phone_number}}</td>
+                                 <td>{{$contactUsDetail->address}}</td>
+                                 <td>{{$contactUsDetail->facebook_link}}</td>
+                                 <td>{{$contactUsDetail->twitter_link}}</td>
+                                 <td>{{$contactUsDetail->linkedin_link}}</td>
+                                 
                                 <td>
                                  
                                   <a href="{{route('edit.contact_us_detail',base64_encode($contactUsDetail->id) )}}"><i class="ti-pencil-alt" style="font-size: 2rem;"></i></a>

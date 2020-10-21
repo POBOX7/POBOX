@@ -20,7 +20,6 @@ define('LARAVEL_START', microtime(true));
 | loading any of our classes later on. It feels great to relax.
 |
 */
-
 require __DIR__.'/../vendor/autoload.php';
 
 /*
@@ -48,6 +47,8 @@ $app = require_once __DIR__.'/../bootstrap/app.php';
 | and wonderful application we have prepared for them.
 |
 */
+/*echo "sdfsdf123";
+exit();*/
 
 $kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
 

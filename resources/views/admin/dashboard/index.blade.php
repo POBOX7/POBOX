@@ -3,6 +3,7 @@
 <!-- Main content -->
 <div class="row">
             <div class="col-md-6 col-lg-3 grid-margin stretch-card">
+              <a href="{{route('admin.order')}}" style="width: 100%;float: left;">
               <div class="card">
                 <div class="card-body">
                   <div class="d-flex align-items-center justify-content-md-center">
@@ -14,8 +15,10 @@
                   </div>
                 </div>
               </div>
+            </a>
             </div>
             <div class="col-md-6 col-lg-3 grid-margin stretch-card">
+               <a href="{{ route('customer') }}" style="width: 100%;float: left;">
               <div class="card">
                 <div class="card-body">
                   <div class="d-flex align-items-center justify-content-md-center">
@@ -27,8 +30,10 @@
                   </div>
                 </div>
               </div>
+            </a>
             </div>
             <div class="col-md-6 col-lg-3 grid-margin stretch-card">
+               <a href="{{route('supplier')}}" style="width: 100%;float: left;">
               <div class="card">
                 <div class="card-body">
                   <div class="d-flex align-items-center justify-content-md-center">
@@ -40,8 +45,10 @@
                   </div>
                 </div>
               </div>
+            </a>
             </div>
             <div class="col-md-6 col-lg-3 grid-margin stretch-card">
+               <a href="{{ route('product') }}" style="width: 100%;float: left;">
               <div class="card">
                 <div class="card-body">
                   <div class="d-flex align-items-center justify-content-md-center">
@@ -53,10 +60,13 @@
                   </div>
                 </div>
               </div>
+            </a>
             </div>
 
           
+          
           <div class="col-md-6 col-lg-3 grid-margin stretch-card">
+            <a href="{{route('admin.order')}}" style="width: 100%;float: left;">
               <div class="card">
                 <div class="card-body">
                   <div class="d-flex align-items-center justify-content-md-center">
@@ -68,8 +78,11 @@
                   </div>
                 </div>
               </div>
+              </a>
             </div>
+          
             <div class="col-md-6 col-lg-3 grid-margin stretch-card">
+              <a href="{{route('admin.order')}}" style="width: 100%;float: left;">
               <div class="card">
                 <div class="card-body">
                   <div class="d-flex align-items-center justify-content-md-center">
@@ -81,6 +94,7 @@
                   </div>
                 </div>
               </div>
+            </a>
             </div>
           </div>
           
@@ -331,6 +345,9 @@
                   }
                 </script>
 <style type="text/css">
+.content-wrapper a {
+    color: #000;
+}
   .morris-hover.morris-default-style {
     padding: 6px;
     color: #666;

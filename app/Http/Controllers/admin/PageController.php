@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 
-
+use App\Pages;
 
 class PageController extends Controller 
 {
@@ -27,7 +27,7 @@ class PageController extends Controller
      */
     public function index()
     {
-        $staticPages = DB::table('pages')->select('id','title','content','heading_image')->get();
+        $staticPages = Pages::where('is_delete',0)->get();
         return view('admin.staticpage.staticpage_index')->with('staticPages', $staticPages); 
     }
 
@@ -56,8 +56,15 @@ class PageController extends Controller
             $update_data['heading_image'] = $filename;
         }
 
-        $update = DB::table('pages')->where('id',$id)
-        ->update($update_data);
+
+      $checkPagesData = Pages::where('id',$id)->first();
+         if (is_null($checkPagesData)) {
+           Pages::insert($update_data);
+       }
+       if (!is_null($checkPagesData)) {
+      $update = DB::table('pages')->where('id',$id)->update($update_data);
+       }
+       
         return redirect()->route('static-pages')->with('success', 'Details updated successfully.');
     }
 

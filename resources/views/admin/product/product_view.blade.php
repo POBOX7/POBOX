@@ -127,7 +127,7 @@
                   @endif
                 </div>
               </div>
-           <div class="form-group row">
+           {{-- <div class="form-group row">
                 <label for="exampleInputPassword2" class="col-sm-2 col-form-label">GST %</label>
                 <div class="col-sm-2">
                  <input type="number" class="form-control" id="gstper" name="gstper" value="5"  min="0" readonly>
@@ -148,11 +148,11 @@
                     <span style="color: red">{{ $errors->first('gst') }}</span>
                   @endif
                 </div>
-@php($Amount = $productDetail->mrp  - $productDetail->price)
-@php($saveAmount = $Amount)
-@php($TotalAmount = $productDetail->mrp - $Amount)
-@php($GstAmount = $TotalAmount * 5 / 100)
-@php($finalAmountAfterGst = $TotalAmount + $GstAmount)
+                @php($Amount = $productDetail->mrp  - $productDetail->price)
+                @php($saveAmount = $Amount)
+                @php($TotalAmount = $productDetail->mrp - $Amount)
+                @php($GstAmount = $TotalAmount * 5 / 100)
+                @php($finalAmountAfterGst = $TotalAmount + $GstAmount)
                 <label for="exampleInputPassword2" class="col-sm-2 col-form-label">Final amount after GST</label>
                 <div class="col-sm-2">
                    <div class="input-group">
@@ -165,7 +165,7 @@
                     <span style="color: red">{{ $errors->first('gst') }}</span>
                   @endif
                 </div>
-              </div>
+              </div> --}}
 
               <div class="form-group row">
                 <label for="exampleInputPassword2" class="col-sm-2 col-form-label">SKU</label>
@@ -197,7 +197,7 @@
 
               <div class="form-group row">
                 <label for="exampleInputPassword2" class="col-sm-1 col-form-label">Trending</label>
-                <div class="col-sm-3">
+                <div class="col-sm-1">
                   @if($productDetail->is_trending == 1)
                     ON
                   @else
@@ -206,7 +206,7 @@
                 </div>
              
                 <label for="exampleInputPassword2" class="col-sm-1 col-form-label">Featured</label>
-                <div class="col-sm-3">
+                <div class="col-sm-1">
                   @if($productDetail->is_featured == 1)
                     ON
                   @else
@@ -218,6 +218,14 @@
                 <label for="image" class="col-sm-1 col-form-label">Default Image</label>
                 <div class="col-sm-3">
                   <img src="{{url('assets/upload_images/product')}}/{{$productDetail->image}}"  style="width:100px;height: 100px;"> 
+                </div>
+
+                <label for="exampleInputPassword2" class="col-sm-2 col-form-label">HSN No</label>
+                <div class="col-sm-2">
+                  <input type="text" class="form-control" id="sku" name="sku" value="{{$productDetail->hsn_no}}" readonly>
+                  @if ($errors->has('sku'))
+                    <span style="color: red">{{ $errors->first('sku') }}</span>
+                  @endif
                 </div>
               </div>
 

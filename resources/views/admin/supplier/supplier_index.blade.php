@@ -31,7 +31,7 @@
                             <th>Name</th>
                             <th>Address</th>
                             <th>GST No</th>
-                            <th>Adhar No</th>
+                            <th>Aadhar No</th>
                             <th>Pan No</th>
                             <th>Bank Name</th>
                             <th>Account</th>

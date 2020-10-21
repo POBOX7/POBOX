@@ -64,7 +64,14 @@
                                     Sold
                                   @endif
                                   </td>
-                                <td>{{$product->description}}</td>
+                                <td>
+                                  @if($product->type == 4)
+                                    <a target="_blank" href="{{ route('view.order',$product->order_id) }}">{{$product->description}}</a>
+                                  @else
+                                    <a target="_blank" href="{{ route('detail.purchase', base64_encode($product->order_id) ) }}">{{$product->description}}</a>
+                                  @endif
+                                  
+                                </td>
                                 
                                 
                             </tr>

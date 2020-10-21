@@ -66,7 +66,7 @@ class ProductController extends Controller
 
     public function storeBulkUpload( Request $request ) {    
         $validatedData = $request->validate([
-            'image'  => 'required',
+             'image' => 'required'
         ]); 
         
         $image = $request->image;
@@ -145,7 +145,13 @@ class ProductController extends Controller
             'size'  => 'required',
 
         ]); 
-
+           if (isset($request->image)) {
+                  $maxFileSize = 5242880;
+                    $fileSize = $request->image->getSize();
+                    if($fileSize >= $maxFileSize){
+                        return redirect()->back()->with('error', 'Image too large. Image must be less than 5MB.');
+                  }
+              }
         if(isset($request->is_featured) && $request->is_featured == 'on' ){
             $is_featured = 1;
         }else{
@@ -222,8 +228,9 @@ class ProductController extends Controller
                             'is_new_arrival'    => $is_new_arrival,
                             'mrp'               => $request->mrp,
                             'price'             => $request->price,
-                            'gst'               => $request->gst,
-                            'gstper'             => $request->gstper,
+                            'hsn_no'            => $request->hsn_no,
+                            //'gst'               => $request->gst,
+                            //'gstper'             => $request->gstper,
                             'discount'          => $request->discount,
                             'created_at'	    => date('Y-m-d H:i:s'),
                             'updated_at'	    => date('Y-m-d H:i:s')
@@ -234,6 +241,15 @@ class ProductController extends Controller
         if(!empty($request->product_image)){
             foreach ($request->product_image as $key => $value) {
                 if(!empty($value)){
+
+                     if (isset($value)) {
+                          $maxFileSize = 5242880;
+                            $fileSize = $value->getSize();
+                            if($fileSize >= $maxFileSize){
+                                return redirect()->back()->with('error', 'Image too large. Image must be less than 5MB.');
+                          }
+                      }
+                      
                     $image = $value;
                     $destinationPath = 'assets/upload_images/product';
                     $extension= $image->getClientOriginalExtension();
@@ -317,7 +333,7 @@ class ProductController extends Controller
         $colorList =Colors::select('id','name')->where('status',1)->where('is_deleted','=',0)->get();
         $sizeList = Sizes::select('id','name')->where('status',1)->where('is_deleted','=',0)->get();
         $productDetail = DB::table('products')
-        								->select('id','category_id','image','status','name','sku','price','sub_title','short_description','description','brand_id','color_id','mrp','discount','is_featured','gst','is_new_arrival','is_trending','barcode')
+        								->select('id','category_id','image','status','name','sku','price','sub_title','short_description','description','brand_id','color_id','mrp','discount','is_featured','gst','is_new_arrival','is_trending','barcode','hsn_no')
         								->where('id',$id)
         								->get()
         								->first();
@@ -339,7 +355,7 @@ class ProductController extends Controller
                             ->join('category', 'category.id', '=', 'products.category_id')
                             ->join('brands', 'brands.id', '=', 'products.brand_id')
                             ->join('colors', 'colors.id', '=', 'products.color_id')
-                            ->select('products.id','products.image','products.status','products.name','category.name AS category_name','brands.name AS brand_name','colors.name AS color_name','sku','price','sub_title','short_description','description','mrp','discount','is_featured','is_new_arrival','is_trending','sku','gst','barcode')
+                            ->select('products.id','products.image','products.status','products.name','category.name AS category_name','brands.name AS brand_name','colors.name AS color_name','sku','price','sub_title','short_description','description','mrp','discount','is_featured','is_new_arrival','is_trending','sku','gst','barcode','hsn_no')
                             ->where('products.id',$id)
                             ->first();
         // print_r('<pre>');
@@ -387,6 +403,7 @@ class ProductController extends Controller
     public function updateProduct(Request $request ,$id)
     {
         $request->validate([
+                //'image' => 'image|mimes:jpeg,png,jpg|max:5120',
                 'category_id'   => 'required',
                 'name'          =>'required|max:20',
                 'mrp'           => 'required',
@@ -395,7 +412,15 @@ class ProductController extends Controller
                 'sku'           => 'required',
                 'size'          => 'required',
         ]);
-       
+        //dd($request);
+       if (isset($request->image)) {
+                  $maxFileSize = 5242880;
+                    $fileSize = $request->image->getSize();
+                    if($fileSize >= $maxFileSize){
+                        return redirect()->back()->with('error', 'Image too large. Image must be less than 5MB.');
+                  }
+              }
+              
         if(isset($request->is_featured) && $request->is_featured == 'on' ){
             $is_featured = 1;
         }else{
@@ -429,8 +454,9 @@ class ProductController extends Controller
                                 'is_new_arrival'    => $is_new_arrival,
                                 'mrp'               => $request->mrp,
                                 'price'             => $request->price,
-                                'gst'               => $request->gst,
-                                'gstper'            => $request->gstper,
+                                'hsn_no'            => $request->hsn_no,
+                                //'gst'               => $request->gst,
+                                //'gstper'            => $request->gstper,
                                 'discount'          => $request->discount,
                                 'updated_at'        => date('Y-m-d H:i:s')
                             );
@@ -484,7 +510,15 @@ class ProductController extends Controller
 
         if(!empty($request->product_image)){
             foreach ($request->product_image as $key => $value) {
+             
                 if(!empty($value)){
+                     if (isset($value)) {
+                          $maxFileSize = 5242880;
+                            $fileSize = $value->getSize();
+                            if($fileSize >= $maxFileSize){
+                                return redirect()->back()->with('error', 'Image too large. Image must be less than 5MB.');
+                          }
+                      }
                     $image = $value;
                     $destinationPath = 'assets/upload_images/product';
                     $extension = $image->getClientOriginalExtension();

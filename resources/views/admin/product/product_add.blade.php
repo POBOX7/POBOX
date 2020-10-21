@@ -2,7 +2,7 @@
 @extends('admin.layouts.admin', ['pageTitle' => 'Add Vendor'])
 
 @section('content')
-
+<center><div id="result_product"></div></center>
 <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
 <div class="row">
@@ -146,10 +146,9 @@
                
               </div>
 
-              <div class="form-group row">
+             {{--  <div class="form-group row">
                 <label class="col-sm-1 col-form-label">GST %</label>
                 <div class="col-sm-2">
-                  {{-- <input type="number" class="form-control" id="discount" name="discount" placeholder="Discount %" readonly> --}}
                   <div class="input-group">
                       <div class="input-group-prepend">
                         <span class="input-group-text">%</span>
@@ -185,7 +184,7 @@
                     <span style="color: red">{{ $errors->first('gst') }}</span>
                   @endif
                 </div>
-              </div>
+              </div> --}}
 
               <div class="form-group row">
                 <label class="col-sm-1 col-form-label">SKU</label>
@@ -198,7 +197,7 @@
 
                 <label class="col-sm-1 col-form-label">Barcode</label>
                 <div class="col-sm-3">
-                  <input type="number" class="form-control" min="1" id="barcode" name="barcode" placeholder="barcode" required>
+                  <input type="number" class="form-control" min="1" id="barcode" name="barcode" placeholder="barcode">
                   @if ($errors->has('barcode'))
                     <span style="color: red">{{ $errors->first('barcode') }}</span>
                   @endif
@@ -237,10 +236,19 @@
               <div class="form-group row">
                 <label for="image" class="col-sm-2 col-form-label" >Default Image</label>
                 <div class="col-sm-4">
-                  <input type="file" class="form-control" id="type" name="image" accept="image/*" required>
+                  <input type="file" class="form-control image-file-default" id="type" name="image" accept="image/*" required>
+                  <div class="product-image-file-default-img"></div>
                   <p>(Size : 374x400)</p>
                   @if ($errors->has('image'))
                     <span style="color: red">{{ $errors->first('image') }}</span>
+                  @endif
+                </div>
+
+                <label class="col-sm-1 col-form-label">HSN No</label>
+                <div class="col-sm-2">
+                  <input type="text" class="form-control" id="hsn_no" name="hsn_no" placeholder="HSN No" required>
+                  @if ($errors->has('hsn_no'))
+                    <span style="color: red">{{ $errors->first('hsn_no') }}</span>
                   @endif
                 </div>
               </div>
@@ -252,7 +260,8 @@
                 <div class="form-group row" >
                   <label for="image" class="col-sm-3 col-form-label">Other Image</label>
                   <div class="col-sm-4">
-                    <input type="file" class="form-control" name="product_image[]" accept="image/*">
+                    <input type="file" class="form-control image-file-other" name="product_image[]" accept="image/*">
+                    <div class="product-image-file-other-img"></div>
                     (Size : 374x400)
                   </div>
 
@@ -298,7 +307,7 @@
                 </div>
               </div>
 
-              <button type="submit" class="btn btn-success mr-2">Submit</button>
+              <button type="submit" id="submit" class="btn btn-success mr-2">Submit</button>
               <a href="{{route('product')}}"   class="btn btn-light">Cancel</a>
             </form>
           </div>
@@ -428,7 +437,6 @@
       var gst =  mrp * 5 / 100;
       $('#price').val(mrp);
     }
-    
 
     $('#gst').val(gst.toFixed(2));
 
@@ -477,4 +485,5 @@
     
   };
 </script>
+
 @endsection

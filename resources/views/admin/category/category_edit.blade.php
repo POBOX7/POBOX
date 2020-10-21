@@ -1,6 +1,7 @@
 @extends('admin.layouts.admin', ['pageTitle' => 'Add Category'])
 
 @section('content')
+<center><div id="result"></div></center>
 <div class="row">
   <div class="col-md-12 d-flex align-items-stretch grid-margin">
     <div class="row flex-grow">
@@ -29,8 +30,9 @@
               <div class="form-group row">
                 <label for="image" class="col-sm-3 col-form-label">Image</label>
                 <div class="col-sm-4">
-                  <input type="file" class="form-control" id="type" name="image" accept="image/*">
-                  <p>(Size : 277x306)</p>
+                  <input type="file" class="form-control image-file" id="type" name="image" accept="image/*">
+                  <div class="result"></div>
+                  <p>(Size : 380x555)</p>
                   @if ($errors->has('image'))
                     <span style="color: red">{{ $errors->first('image') }}</span>
                   @endif
@@ -42,7 +44,7 @@
                 </div>
               </div>
 
-              <button type="submit" class="btn btn-success mr-2">Submit</button>
+              <button type="submit" id="submit" class="btn btn-success mr-2">Submit</button>
               <a href="{{route('category')}}"   class="btn btn-light">Cancel</a>
             </form>
           </div>
@@ -90,4 +92,5 @@
   };
 
 </script>
+
 @endsection

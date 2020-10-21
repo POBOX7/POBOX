@@ -1,32 +1,10 @@
 <style type="text/css">
-.welcome-msg::after {
-    border: 0!important;
-  }
-  @media only screen and (max-width: 768px) {
-  /* For mobile phones: */
-  [class*="login_popup"] {
-    z-index: 99;
-  }
-}
-@media (max-width: @screen-xs-min) {
-  .modal-xs { width: @modal-sm; }
-}
-.modal-backdrop
-{
-  display: none;
-}
-.cart-dropdown .dropdown-toggle::before {
-    display: inline-block!important;
-    margin: 2px 0 0!important;
-    color: #1d70ba!important;
-    font-size: 3.3rem!important;
-    line-height: 1!important;
-    content: '\e87f'!important;
-}
+.welcome-msg::after{border:0!important}@media only screen and (max-width:768px){[class*=login_popup]{z-index:99}}@media (max-width:@screen-xs-min){.modal-xs{width:@modal-sm}}.modal-backdrop{display:none}.cart-dropdown .dropdown-toggle::before{display:inline-block!important;margin:2px 0 0!important;color:#1d70ba!important;font-size:3.3rem!important;line-height:1!important;content:'\e87f'!important}
+@media only screen and (max-width:767px){.login-form form{padding:15px!important}}a.login-link{cursor:pointer}.modal{opacity:1;background:0 0}a#login{color:#0e7bc3!important}.modal.mobile-view.active{background:#fff!important}.modal-footer{border-top:hidden;margin-bottom:15px}.login-form button.btn.btn-success.btn-block.login-btn{background:#0e7bc3;border-radius:28px;opacity:1}.login-form .or-text{text-align:center;margin-top:30px;margin-bottom:30px}.login-form a.btn.btn-primary.btn-block{background:#3b5998 0 0 no-repeat padding-box;border-radius:28px;opacity:1;text-align:center}.login-form a.btn.btn-danger.btn-block{background:#f44336 0 0 no-repeat padding-box;border-radius:28px;opacity:1;text-align:center}.input-group-addon:last-child,.input-group-btn:first-child>.btn-group:not(:first-child)>.btn,.input-group-btn:first-child>.btn:not(:first-child),.input-group-btn:last-child>.btn,.input-group-btn:last-child>.btn-group>.btn,.input-group-btn:last-child>.dropdown-toggle,.login-form .input-group .form-control:last-child,input#confirm_password,input#password{border-bottom-left-radius:0;border-top-left-radius:0;background:#fff 0 0 no-repeat padding-box;border:1px solid #e1e1e1;border-radius:28px;opacity:1}input#cemail{width:100%}.login-form .input-group{width:100%}.login-form h2.text-center{font:Bold 36px/48px Segoe UI;letter-spacing:0;color:#0e7bc3;opacity:1}.login-form form a.text-success{color:#0e7bc3}.login-form form{margin-bottom:15px;padding:0 100px}.login-form h2.text-center{font:Bold 36px/48px Segoe UI;letter-spacing:0;color:#0e7bc3;opacity:1}.login-form h2{margin:0 0 15px}.login-form .hint-text{color:#777;padding-bottom:15px;text-align:center}.btn,.form-control{min-height:38px;border-radius:2px}.login-btn{font-size:15px;font-weight:700}.or-seperator{margin:20px 0 10px;text-align:center;border-top:1px solid #ccc}.or-seperator i{padding:0 10px;background:#f7f7f7;position:relative;top:-11px;z-index:1}.social-btn .btn{margin:15px 0;font-size:15px;text-align:left;line-height:24px}.social-btn .btn i{margin:4px 15px 0 5px;min-width:15px}.input-group-addon .fa{font-size:18px}div#reset_password p{text-align:center;font:Regular 18px/22px Lato;letter-spacing:0;color:#b7b7b7;opacity:1}
+i#display{position:absolute;right:16px;margin-top:18px}.show-button{position:absolute;right:22px;top:32px;border:0;background-color:transparent}input#newPass{width:100%}input#newPass{border-bottom-left-radius:0;border-top-left-radius:0;background:#fff 0 0 no-repeat padding-box;border:1px solid #e1e1e1;border-radius:28px;opacity:1}/*i.fa.fa-eye{position:absolute;margin-top:-18px;font-size:17px}*/
+.moblie_menu{display:none}@media only screen and (max-width:768px){[class*=header-top]{display:none}}.moblie_menu{display:inline}.header-center{margin-right:30px;margin-left:auto}
 </style>
 <!-- Login page code start -->
-<!-- Login page code start -->
-
 <div class="modal fade login_popup" id="login" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -45,7 +23,7 @@
         </div>
         <div class="form-group">
             <div class="input-group">
-                <input type="password" class="form-control" id="password" name="password" placeholder="Password" required="required">
+                <input type="password" class="form-control" id="password" name="password" placeholder="Password" minlength="8" required="required">
             </div>
         </div>        
         <div class="form-group">
@@ -72,147 +50,7 @@
   </div>
 </div>         
 
-<!-- <script type="text/javascript">
-     $('#login').on('shown.bs.modal', function() {
-        $(document).off('focusin.modal');
-    });
-</script>
- -->
-<style type="text/css">
 
-
-/*************************  Login page ***************/
-@media only screen and (max-width: 767px){
-     .login-form form {
-          padding: 15px!important;
-      }
-}
-a.login-link {
-    cursor: pointer;
-}
-.modal {
-    opacity: 1;
-   background: transparent;
-}
-a#login {
-    color: #0e7bc3!important;
-}
-/*body.modal-open {
-    padding: 0px!important;
-}*/
-.modal.mobile-view.active {
-    background: white!important;
-}
-.modal-footer {
-     border-top: hidden; 
-    margin-bottom: 15px;
-}
-.login-form button.btn.btn-success.btn-block.login-btn {
-    background: #0e7bc3; 0% 0% no-repeat padding-box;
-    border: 1px solid #E1E1E1;
-    border-radius: 28px;
-    opacity: 1;
-}
-.login-form .or-text {
-    text-align: center;
-    margin-top: 30px;
-    margin-bottom: 30px;
-}
-.login-form a.btn.btn-primary.btn-block {
-    background: #3B5998 0% 0% no-repeat padding-box;
-    border-radius: 28px;
-    opacity: 1;
-    text-align: center;
-}
-.login-form a.btn.btn-danger.btn-block {
-    background: #F44336 0% 0% no-repeat padding-box;
-    border-radius: 28px;
-    opacity: 1;
-    text-align: center;
-}
-.login-form .input-group .form-control:last-child, .input-group-addon:last-child, .input-group-btn:last-child>.btn, .input-group-btn:last-child>.btn-group>.btn, .input-group-btn:last-child>.dropdown-toggle, .input-group-btn:first-child>.btn:not(:first-child), .input-group-btn:first-child>.btn-group:not(:first-child)>.btn,input#password,input#confirm_password {
-    border-bottom-left-radius: 0;
-    border-top-left-radius: 0;
-    background: #FFFFFF 0% 0% no-repeat padding-box;
-    border: 1px solid #E1E1E1;
-    border-radius: 28px;
-    opacity: 1;
-}
-input#cemail {
-    width: 100%;
-}
-.login-form .input-group {
-    width: 100%;
-}
-.login-form h2.text-center {
-    font: Bold 36px/48px Segoe UI;
-    letter-spacing: 0px;
-    color: #0e7bc3;
-    opacity: 1;
-}
-.login-form form a.text-success {
-    color: #0e7bc3;
-}
- .login-form form {
-        margin-bottom: 15px;
-        padding: 0 100px;
-    }
-    .login-form h2.text-center {
-    font: Bold 36px/48px Segoe UI;
-    letter-spacing: 0px;
-    color: #0e7bc3;
-    opacity: 1;
-}
-    .login-form h2 {
-        margin: 0 0 15px;
-    }
-    .login-form .hint-text {
-        color: #777;
-        padding-bottom: 15px;
-        text-align: center;
-    }
-    .form-control, .btn {
-        min-height: 38px;
-        border-radius: 2px;
-    }
-    .login-btn {        
-        font-size: 15px;
-        font-weight: bold;
-    }
-    .or-seperator {
-        margin: 20px 0 10px;
-        text-align: center;
-        border-top: 1px solid #ccc;
-    }
-    .or-seperator i {
-        padding: 0 10px;
-        background: #f7f7f7;
-        position: relative;
-        top: -11px;
-        z-index: 1;
-    }
-    .social-btn .btn {
-        margin: 15px 0;
-        font-size: 15px;
-        text-align: left; 
-        line-height: 24px;       
-    }
-    .social-btn .btn i {
-        margin: 4px 15px  0 5px;
-        min-width: 15px;
-    }
-    .input-group-addon .fa{
-        font-size: 18px;
-    }
-div#reset_password p {
-    text-align: center;
-    font: Regular 18px/22px Lato;
-    letter-spacing: 0px;
-    color: #B7B7B7;
-    opacity: 1;
-    
-
-</style>
 
 <!------------------------------ Login page css end ------------------>
 
@@ -230,7 +68,6 @@ $(document).ready(function(){
      
   });
 });
-
 $(document).ready(function(){
   $("#login_close").click(function(){
     $("#email").val("");
@@ -276,8 +113,7 @@ $(document).ready(function(){
                 $("#myElem1").show();
               setTimeout(function() { $("#myElem").hide(); }, 3000);
               </script> --}}
-               <!--  <meta name="csrf-token" content="{{ csrf_token() }}" />
-                <input onblur="checkmain(this.value)" id="cemail" autofocus="not" type="email"  name="email"> -->
+             
                  @if ($errors->has('email'))
                 
                  <span class="help-block">
@@ -287,11 +123,9 @@ $(document).ready(function(){
             </div>
         </div>
 
-       
-
         <div class="form-group">
             <div class="input-group">
-                {!! Form::text('phone_number', null, ['class' => 'col-md-12 col-xs-12 form-control','placeholder' => 'Phone No','maxlength' => '10','required' => 'required','onKeyPress' => 'return isNumberKey(event)','id'=>'phone_number']) !!}
+                {!! Form::text('phone_number', null, ['class' => 'col-md-12 col-xs-12 form-control','placeholder' => 'Phone No','maxlength' => '14','required' => 'required','onKeyPress' => 'return isNumberKey(event)','id'=>'phone_number']) !!}
                  @if ($errors->has('phone_number'))
                  <span class="help-block">
                  <strong>{{ $errors->first('phone_number') }}</strong>
@@ -299,21 +133,14 @@ $(document).ready(function(){
                  @endif
             </div>
         </div>
-       <!--  <div class="form-group">
-            <div class="input-group">
-                {!! Form::text('address', null, ['class' => 'col-md-12 col-xs-12 form-control','placeholder' => 'Address','required' => 'required']) !!}
-                 @if ($errors->has('address'))
-                 <span class="help-block">
-                 <strong>{{ $errors->first('address') }}</strong>
-                 </span> 
-                 @endif
-            </div>
-        </div> -->
+      
        <div class="form-group">
             <div class="input-group">
-               <!--  <input id="password" type="password" pattern=".{8,}"   required title="8 characters minimum" class="form-control" required="required" placeholder="Password" name="password" > -->
-               <input name="password" type="password" onChange="validatePassword()"  required="required" placeholder="Password" id="password" class="form-control"/>
-                <span toggle="#password" class="fa fa-lg fa-eye-slash field-icon password"></span>
+             
+             <input type="password" id="newPass" name="newpass" required="required" class="commanClass password1" placeholder="Password" minlength="8">
+             
+               <i onclick="show('newPass')" class="fas fa-eye-slash" id="display"></i>
+
                  @if ($errors->has('password'))
                  <span class="help-block">
                  <strong>{{ $errors->first('password') }}</strong>
@@ -324,37 +151,68 @@ $(document).ready(function(){
 
         <div class="form-group">
             <div class="input-group">
-               <!--  <input id="confirm_password" type="password" pattern=".{8,}"   required title="8 characters minimum" required="required" class="form-control" placeholder="Confirm Password" name="confirm_password"> -->
-               <input name="confirm_password"  type="password" onChange="validatePassword()" required="required" class="form-control" placeholder="Confirm Password"  id="confirm_password" />
-                <span toggle="#confirm_password" class="fa fa-lg fa-eye-slash field-icon confirm_password"></span>
+              
+               <input name="confirm_password"  type="password"  required="required" class="form-control password2" placeholder="Confirm Password" minlength="8"  id="confirm_password" />
+            
+               <i onclick="show('confirm_password')" class="fas fa-eye-slash" id="display"></i>
                  @if ($errors->has('confirm_password'))
                  <span class="help-block">
                  <strong>{{ $errors->first('confirm_password') }}</strong>
                  </span> 
                  @endif
             </div>
+           
         </div>
+        <p id="validate-status"></p>
 
+        
 
+<script type="text/javascript">
+ function show(a) {
+  var x=document.getElementById(a);
+  var c=x.nextElementSibling
+  if (x.getAttribute('type') == "password") {
+  c.removeAttribute("class");
+  c.setAttribute("class","fas fa-eye");
+  x.removeAttribute("type");
+    x.setAttribute("type","text");
+  } else {
+  x.removeAttribute("type");
+    x.setAttribute('type','password');
+ c.removeAttribute("class");
+  c.setAttribute("class","fas fa-eye-slash");
+  }
+}
+</script>
         <div class="form-group">
            
-            <button type="submit" class="btn btn-success btn-block login-btn">Sign Up</button>
+            <button type="submit" id="submit" class="btn btn-success btn-block login-btn">Sign Up</button>
         </div>
-        
+     
     {!! Form::close() !!}
      <script type="text/javascript">
-      function onChange() {
-        var password = document.getElementById("password");
-        var confirm_password = document.getElementById("confirm_password");
-      alert(password);
-      alert(confirm_password);
-  const password = document.querySelector('input[name=password]');
-  const confirm = document.querySelector('input[name=confirm_password]');
-  if (confirm.value === password.value) {
-    confirm.setCustomValidity('');
-  } else {
-    confirm.setCustomValidity('Passwords do not match');
-  }
+   $(document).ready(function() {
+ // $(".password1").keyup(validate);
+  $(".password2").keyup(validate);
+});
+
+
+function validate() {
+  var password1 = $(".password1").val();
+  //alert(password1);
+  var password2 = $(".password2").val();
+//alert(password2);
+    
+ 
+    if(password1 == password2) {
+       $("#validate-status").text("");    
+       document.getElementById("submit").disabled = false;    
+    }
+    else {
+        $("#validate-status").text("Entered Password is not matching!! Try Again"); 
+        document.getElementById("submit").disabled = true;
+    }
+    
 }
 </script>
 
@@ -396,18 +254,14 @@ $(document).ready(function(){
     
     
 </div>
-<!-- <script>
-  $('#register').on('hidden.bs.modal', function () {
-    $('#register form')[0].reset();
-});
-</script> -->
+
       </div>
       <div class="modal-footer">
       </div>
     </div>
   </div>
 </div>         
-<script type="text/javascript">
+<!-- <script type="text/javascript">
       
 
     function validatePassword(){
@@ -424,14 +278,9 @@ $(document).ready(function(){
     }
 
     
-</script>
+</script> -->
         
-       <script type="text/javascript">
-         
-         function myFunction() {
-            document.getElementById("register").reset();
-        }
-       </script>
+     
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
 
@@ -457,29 +306,7 @@ $(document).ready(function(){
     right: 0;
 }
 </style>
-<script type="text/javascript">
-  $(".confirm_password").click(function() {
 
-  $(this).toggleClass("fa-eye fa-eye-slash");
-  var input = $($(this).attr("toggle"));
-  if (input.attr("type") == "password") {
-    input.attr("type", "text");
-  } else {
-    input.attr("type", "password");
-  }
-});
-
- $(".password").click(function() {
-
-  $(this).toggleClass("fa-eye fa-eye-slash");
-  var input = $($(this).attr("toggle"));
-  if (input.attr("type") == "password") {
-    input.attr("type", "text");
-  } else {
-    input.attr("type", "password");
-  }
-});
-</script>
 <!--------------------------------Register page end ------------------------>
 <!-------------------------------- Forgot Password page start ------------------------>
 <div class="modal fade" id="reset_password" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -519,21 +346,7 @@ $(document).ready(function(){
   </div>
 </div>      
 <!-------------------------------- Forgot Password page end ------------------------>
- <!-- <script type="text/javascript">
-    $('#register').on('hidden.bs.modal', function () {
-     location.reload();
-    })
-</script> -->
-<!-- <script type="text/javascript">
-    $('#login').on('hidden.bs.modal', function () {
-     location.reload();
-    })
-</script> -->
-<!-- <script type="text/javascript">
-    $('#reset_password').on('hidden.bs.modal', function () {
-     location.reload();
-    })
-</script> -->
+
 <header class="header">
    <div class="header-top">
       <div class="container">
@@ -623,11 +436,13 @@ $(document).ready(function(){
                 }
                 $.each(response.product_details, function(key, item){
                     total_price += parseFloat(item.price * item.qty);
+                    console.log(item.product_id);
+                    var url = '{{url('product-detail')}}/'+item.product_id;
                     html += `
                           <div class="product" data-price='`+parseFloat(item.price * item.qty)+`'>
                             <div class="product-details">
                               <h4 class="product-title">
-                                 <a href="">`+item.name+`</a>
+                                 <a href="`+url+`">`+item.name+`</a>
                               </h4>
 
                               <span class="cart-product-info">
@@ -636,7 +451,7 @@ $(document).ready(function(){
                               </span>
                            </div>
                            <figure class="product-image-container">
-                              <a href="" class="product-image">
+                              <a href="`+url+`" class="product-image">
                                <img src="`+asset_url+`/upload_images/product/`+item.image+`" alt="product">
                               </a>
                               <a href="javascript:void(0)" class="btn-remove" title="Remove Product"><i class="icon-cancel deleteCartProduct" data-id='`+item.cart_id+`'></i></a>
@@ -644,7 +459,7 @@ $(document).ready(function(){
                         </div>
                     `;
                 });
-
+                console.log(total_price);
                 
                 if(total_price > 0){
                   $(".cartEmpty").hide();
@@ -686,14 +501,15 @@ $(document).ready(function(){
                   if( $('.dropdown-cart-products').find('.product').length ==0)
                     $('.cart-dropdown .dropdown-cart-products').html('cart is empty');
 
-                    setTimeout(function(){
+                    /*setTimeout(function(){
                       var total_p=0;
                       $.each($('.dropdown-cart-products .product'), function(key, item){ 
                           total_p += $(this).data('price');
+
                           console.log(total_p,  $(this).data('price'), 'dfdf');
                       });
                       $('.cart-total-price').html(total_p);
-                    },200);
+                    },200);*/
                     getUserCart();
                 });
 
@@ -715,7 +531,7 @@ $(document).ready(function(){
                 // html = '<p>Cart is empty</p>';
                 total_price = 0;
                 html = '';
-                console.log(response.product_details,"here");
+                
                 if(typeof response.product_details !== 'undefined' && response.product_details !== 'undefined' && response.product_details !== undefined  && response.product_details.length > 0)
                 {
                   $(".cart-count").show();
@@ -749,6 +565,7 @@ $(document).ready(function(){
 
                 
                 if(total_price > 0){
+                  console.log(total_price);
                   $(".cartEmpty").hide();
                   $(".cartTotal").show();
                   $(".actionItems").show();
@@ -777,19 +594,10 @@ $(document).ready(function(){
                   }
                 }).done(function(response) { 
 
-
                     gol.parent().parent().parent().remove(); 
                   if( $('.dropdown-cart-products').find('.product').length ==0)
                     $('.cart-dropdown .dropdown-cart-products').html('cart is empty');
-
-                    setTimeout(function(){
-                      var total_p=0;
-                      $.each($('.dropdown-cart-products .product'), function(key, item){ 
-                          total_p += $(this).data('price');
-                          
-                      });
-                      $('.cart-total-price').html(total_p);
-                    },200);
+                  console.log($('.dropdown-cart-products').find('.product').length);
                     getGuestUserCart();
                 });
 
@@ -797,14 +605,10 @@ $(document).ready(function(){
           </script>
         @endif
             
-            <!-- <div class="header-contact">
-               <span>Call us now</span>
-               <a href="tel:#"><strong>+91 9879899004</strong></a>
-            </div> -->
             <!-- End .header-contact -->
             <div class="dropdown cart-dropdown">
                <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static" data-dismiss="modal" aria-hidden="true">
-                 <!--  <i class="fa fa-shopping-cart" aria-hidden="true"></i> -->
+               
                <span class="cart-count">0</span>
                </a>
                  <?php //if(isset(Auth::user()->id)) { ?>
@@ -838,10 +642,10 @@ $(document).ready(function(){
                         <!-- End .product -->
                      </div>
                      <!-- End .cart-product -->
-                     {{-- <div class="dropdown-cart-total cartTotal">
+                     <div class="dropdown-cart-total cartTotal">
                         <span>Total</span>
                         <span class="cart-total-price">?134.00</span>
-                     </div> --}}
+                     </div> 
                      <div class="dropdown-cart-total cartEmpty" style="display:none;">
                         <div class="col-md-12">
                           <img src="{{asset('/assets/images/blank-cart.png')}}">
@@ -860,7 +664,7 @@ $(document).ready(function(){
                         <a href="{{route('checkoutDetail')}}" class="btn">Checkout</a>
                         @else
             <a href="{{route('checkoutDetail')}}" class="btn">Checkout</a>
-                        <!---<a href="javascript:void(0)" data-toggle="modal" data-dismiss="modal"  data-target="#login" class="btn">Checkout</a>-->
+                    
                         @endif
                      </div>
                      <!-- End .dropdown-cart-total -->
@@ -905,23 +709,3 @@ $(document).ready(function(){
 <script type="text/javascript">
  function isNumberKey(e){var h=e.which?e.which:e.keyCode;return!(46!=h&&h>31&&(h<48||h>57))}function ValidateAlpha(e){var h=e.which?e.which:e.keyCode;return!(h<65||h>90)||!(h<97||h>123)||32==h}
 </script> 
-<style type="text/css">
-  .moblie_menu
-  {
-    display: none;
-  }
-@media only screen and (max-width: 768px) {
-  /* For mobile phones: */
-  [class*="header-top"] {
-    display: none
-  }
-}
-.moblie_menu
-  {
-    display: inline;
-  }
-.header-center {
-    margin-right: 30px;
-    margin-left: auto;
-}
-</style>

@@ -1,7 +1,8 @@
 @extends('admin.layouts.admin')
 
 @section('content')
-
+<div id="result"></div>
+<div id="shipment_addd"><span></span></div>
 <link rel="stylesheet" href="{{ asset('admin/vendors/datatables.net-bs4/dataTables.bootstrap4.css') }}" />
 <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
@@ -18,7 +19,14 @@
     height: 100px!important;
      border-radius: unset!important; 
 }
+option:disabled {
+    background: lightgray!important;
+}
+option:disabled selected {
+    background: lightgray!important;
+}
 </style>
+ 
 <div class="card">
             <div class="card-body">
               <div class="row">
@@ -59,6 +67,7 @@
                             <th>Order Number</th>
                             <th>Order By</th>
                             <th>Amount</th>
+                            <th>GST</th>
                             <th>Payment By</th>
                             <th>Txn Id</th>
                             <th>Current Status</th>
@@ -75,16 +84,43 @@
                                 <td>{{$OderDatas->ordernumber}}</td>
                                 <td>{{$oderData[$keyOderData]['user_data']['name']}}</td>
                                 <td>₹{{$OderDatas->totalamount}}</td>
+                                <td>₹{{$OderDatas->gstAmount}}</td>
                                 <td>Razorpay</td>
-                                <td>{{$oderData[$keyOderData]['PaymentHistoryData']['payment_id']}}</td>
+                                <td>
+                                 @if(isset($oderData[$keyOderData]['PaymentHistoryData']['payment_id']))
+                                  {{$oderData[$keyOderData]['PaymentHistoryData']['payment_id']}}
+                                  
+                                  @endif
+                                            </td>
                                 <td>
                                    <select class="orderStatus" id="status_{{$OderDatas->id}}">
-                                       <!--  <option value="0" <?php //if ($OderDatas->status == 0) {echo  'selected'; } ?>>PENDING</option> -->
-                                        <option value="1" <?php if ($OderDatas->status == 1) {echo  'selected'; } ?>
+                                   <?php if ($OderDatas->status == 1) { ?>
+                                          <option value="1" disabled <?php if ($OderDatas->status == 1) {echo  'selected'; } ?>
+                                          >CONFIRM</option>
+                                          <option value="2" <?php if ($OderDatas->status == 2) {echo  'selected'; } ?>>DISPATCH</option>
+                                          <option value="3" <?php if ($OderDatas->status == 3) {echo  'selected'; } ?>>DELIVERED</option>
+                                   <?php } ?>
+
+                                   <?php if ($OderDatas->status == 2) { ?>
+                                        <option value="1" disabled <?php if ($OderDatas->status == 1) {echo  'selected'; } ?>
                                         >CONFIRM</option>
-                                        <option value="2" <?php if ($OderDatas->status == 2) {echo  'selected'; } ?>>DISPATCH</option>
-                                       <!--  <option value="4">OUT FOR DELIVERY</option> -->
+                                        <option value="2" disabled <?php if ($OderDatas->status == 2) {echo  'selected'; } ?>>DISPATCH</option>
                                         <option value="3" <?php if ($OderDatas->status == 3) {echo  'selected'; } ?>>DELIVERED</option>
+                                    <?php } ?>
+
+
+                                    <?php if ($OderDatas->status == 3) { ?>
+                                        <option value="1" disabled <?php if ($OderDatas->status == 1) {echo  'selected'; } ?>
+                                        >CONFIRM</option>
+                                        <option value="2" disabled <?php if ($OderDatas->status == 2) {echo  'selected'; } ?>>DISPATCH</option>
+                                        <option value="3" <?php if ($OderDatas->status == 3) {echo  'selected'; } ?>>DELIVERED</option>
+                                    <?php } ?>
+
+
+
+
+                                     
+                                        
                                     </select>
                                     <script type="text/javascript">
                                       var lastValue;
@@ -105,171 +141,42 @@
                                  
                                  
                                   <a href="{{route('edit.order',$OderDatas->id)}}"><i class="ti-pencil-alt" style="font-size: 2rem;"></i></a>
-                                
-
-                                 <a onclick="showSwal({{$OderDatas->id}})"><i class="ti-trash" style="font-size: 2rem;color: #007bfe;"></i></a>
-                              <a href="{{route('view.order',$OderDatas->id)}}"><i class="ti-eye" style="font-size: 2rem;"></i></a>
-                                  <!-- <a href="" id="myBtn_{{$OderDatas->id}}" data-toggle="modal" data-target="#myModal_{{$OderDatas->id}}"><i class="ti-eye" style="font-size: 2rem;"></i></a> -->
+                                  <a onclick="showSwal({{$OderDatas->id}})"><i class="ti-trash" style="font-size: 2rem;color: #007bfe;"></i></a>
+                                  <a href="{{route('view.order',$OderDatas->id)}}"><i class="ti-eye" style="font-size: 2rem;"></i></a>
+                                  <a href="" id="myBtn_{{$OderDatas->id}}" data-toggle="modal" data-target="#myModal_{{$OderDatas->id}}"><i class="ti-truck" style="font-size: 2rem;"></i></a>
                                    <a href="{{route('admin.viewInvoice',$OderDatas->id)}}"><i class="fa fa-files-o" style="font-size: 2rem;"></i></a>
 
 
                                   <!-- Show order data code start -->
                                   <!-- The Modal -->
                                     <div id="myModal_{{$OderDatas->id}}" class="modal fade" role="dialog">
-                                      <div class="modal-dialog modal-lg">
+                                      <div class="modal-dialog modal-lg" style="width: 600px;">
 
                                         <!-- Modal content-->
                                         <div class="modal-content">
                                           <div class="modal-header">
-                                            <h4 class="modal-title">Order Details</h4>
+                                            <h4 class="modal-title">Shipping Details</h4>
                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                            
                                           </div>
+                                          <form class="form-horizontal form-label-left" method="post">
+                                            {{ csrf_field() }}  
                                           <div class="modal-body">
-                                    
-                                            
-                                            <table width="100%">
-                                              <tbody>
-                                                <tr>
-                                                <td>Sr. No #</td>
-                                                <td>Image</td>
-                                                <td>Name</td>
-                                                <td>Size</td>
-                                                <td>Color</td>
-                                                <td>Qty</td>
-                                                <td>SKU</td>
-                                                <td>Price</td>
-                                              </tr>
-                                               
-                                               @foreach($oderData[$keyOderData]['product_data'] as $keyProduct_data => $product_data)
-                                              
-                                                        <tr>
-                                                    <td>{{$keyOderData + 1 }}</td>
-                                                    <td><img src="{{asset('../assets/upload_images/product')}}/{{$product_data['image'] }}" width="50%"></td>
-                                                    <td>{{$product_data['name'] }}</td>
-                                                    
-                                                       <td>{{$product_data['order_detail_data']['size_name'] }}</td>
-                                                   
-                                                    <td><p style="color:white;background:{{$product_data['order_detail_data']['hex_code'] }}!important;border: 1px solid #000;height: 15px;width: 15px;"></p></td>
-                                                    <td>{{$product_data['order_detail_data']['qty'] }}</td>
-                                                    <td>{{$product_data['sku'] }}</td>
-                                                    <td>{{$product_data['price'] * $product_data['order_detail_data']['qty'] }}</td>
-                                                  </tr>
-                                                   @endforeach
-                                               
-                                            </tbody>
-                                           
-                                          </table>
+                                            <div class="row">
+                                              <div class="col-md-2 col-sm-2 col-xs-2" style="padding-left: 0;">
+                                                <label style="margin: 12px;">Description</label> 
+                                              </div>
 
-                                          <br>
-                                          <br>
-                                          <div style="overflow-x:auto;">
-                                          <!-- <table width="100%">
-                                            <tbody><tr>
-                                              <td>Shipment ID</td>
-                                              <td>Tracking Code</td>
-                                              <td>Tracking Url</td>
-                                              <td>Tracking Label</td>
-                                            </tr>
-
-                                                    <tr>
-                                                  <td>shp_9e026e4060e94b01a7f05432997b0a22</td>
-                                                  <td>9400136897846112054998</td>
-                                                  <td><a href="https://track.easypost.com/djE6dHJrXzNiYWQ1Yjg1OGYxNTRmYWFhMWE1MmMyYmFmMzYyNjYw" class="btn btn-success" target="_blank">Tracking URL</a></td>
-                                                  <td><a href="https://easypost-files.s3-us-west-2.amazonaws.com/files/postage_label/20171007/a8c20a8aa4a5441aa88af72ab738e4be.png" class="btn btn-success" target="_blank">View Tracking Label</a></td>
-                                                </tr>
-                                                
-                                           
-                                          </tbody>
-                                        </table>
-                                        
-                                        <br>
-                                        <br> -->
+                                              <div class="col-md-10 col-sm-10 col-xs-10">
+                                                <!-- <input id="description_{{$OderDatas->id}}" class="form-control col-md-7 col-xs-12" name="description_{{$OderDatas->id}}" placeholder="Description"  required="required" type="text" maxlength="160"> -->
+                                                <textarea id="description_{{$OderDatas->id}}" class="form-control col-md-7 col-xs-12" name="description_{{$OderDatas->id}}" placeholder="Description"  required="required" type="text" maxlength="160"></textarea>
+                                                <input type="hidden" id="orderid_{{$OderDatas->id}}" value="{{$OderDatas->id}}">
+                                              </div>
+                                            </div>
                                           </div>
-
-                                          <table width="45%" style="float:left;">
-                                           
-                                            <tbody>
-                                              <tr>
-                                              <td><b>Order Number</b></td>
-                                              <td>{{$OderDatas['ordernumber']}}</td>
-                                            </tr>
-                                            <tr>
-                                              <td><b>Payment Method</b></td>
-                                              <td>Razorpay</td>
-                                            </tr>   
-                                            <tr>
-                                              <td><b>Payment Status</b></td>
-                                              
-                                                 <!-- <td>Failed</td> -->
-                                                 <td>Success</td>
-                                             
-                                            </tr> 
-                                            <tr>
-                                              <td><b>Current Order Status</b></td>
-                                              <!-- PENDING   = 0 
-                                              CONFIRM   = 1
-                                              DISPATCH  = 2
-                                              DELIVERED = 3  -->
-                                              @if($OderDatas['status'] == 0)
-                                                 <td>PENDING</td>
-                                              @elseif($OderDatas['status'] == 1)
-                                                 <td>CONFIRM</td>
-                                              @elseif($OderDatas['status'] == 2)
-                                                 <td>DISPATCH</td>
-                                              @elseif($OderDatas['status'] == 3)
-                                                 <td>DELIVERED</td>
-                                              @endif
-                                              
-                                            </tr> 
-                                            <tr>
-                                              <td><b>Total Amount</b></td>
-                                              <td>{{$OderDatas['totalamount']}}</td>
-                                            </tr> 
-                                            <tr>
-                                              <td><b>Currency</b></td>
-                                              <td>₹</td>
-                                            </tr> 
-                                            <tr>
-                                              <td><b>Txn ID</b></td>
-                                              <td>{{$oderData[$keyOderData]['PaymentHistoryData']['payment_id']}}</td>
-                                            </tr> 
-
-                                          </tbody>
-                                         
-                                          </table>
-                                          <table width="45%" style="float:right;">
-  
-                                            <tbody><tr>
-                                              <td><b>Order By</b></td>
-                                              <td>{{$oderData[$keyOderData]['user_data']['name']}}</td>
-                                            </tr> 
-                                            <tr>
-                                              <td><b>Contact</b></td>
-                                              <td>{{$oderData[$keyOderData]['user_data']['phone_number']}}</td>
-                                            </tr> 
-                                            <tr>
-                                              <td><b>Email</b></td>
-                                              <td>{{$oderData[$keyOderData]['user_data']['email']}}</td>
-                                            </tr> 
-                                           
-                                            <tr>
-                                              <td><b>Shipping Address:</b></td>
-                                              <td>
-                                                    <b>Name :</b> {{$oderData[$keyOderData]['address_data']['name']}}<br>
-                                                    <b>Address Line 1 :</b> {{$oderData[$keyOderData]['address_data']['address_line_one']}}<br>
-                                                    <b>Address Line 2 :</b> {{$oderData[$keyOderData]['address_data']['address_line_two']}}<br>
-                                                    <b>Address Line 3 :</b> {{$oderData[$keyOderData]['address_data']['address_line_three']}}<br><br>
-                                                    <b>City :</b> {{$oderData[$keyOderData]['address_data']['city']}}<br>
-                                                    <b>State :</b> {{$oderData[$keyOderData]['address_data']['state']}}<br>
-                                                    <b>Phone no :</b> {{$oderData[$keyOderData]['address_data']['phone_number']}}
-                                            </td>
-                                            </tr>  
-                                             
-                                          </tbody></table>
-                                          </div>
+                                        </form>
                                           <div class="modal-footer">
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-success submit_shipping" id="submit_{{$OderDatas->id}}" style="line-height: 2.2;">Submit</button>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal" style="line-height: 2.2;">Close</button>
                                           </div>
                                         </div>
 
@@ -293,9 +200,35 @@
             </div>
           </div>
 
+          <div id="myModal" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-lg">
+
+              <!-- Modal content-->
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Order Details</h4>
+                </div>
+                <div class="modal-body" id="modaldata">
+                  
+                </div>
+                <div class="modal-footer" style="margin-top: 300px;">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+
+            </div>
+          </div>
 
 
-
+<style type="text/css">
+  .modal .modal-dialog .modal-content .modal-header {
+    padding: 10px 26px!important;
+}
+.modal-header .close {
+    margin: -13px -18px -25px auto!important;
+}
+</style>
 
          <script>
 
@@ -345,6 +278,66 @@
                 })
               }
             })(jQuery);
+          </script>
+
+          <script type="text/javascript">
+              $(".submit_shipping").click(function( event ) {
+                event.preventDefault();
+                var shipping_data = this.id;
+                var result = shipping_data.split('_');
+                console.log(result);
+                var order_id = $('#orderid_'+result[1]).val();
+                var description = $('#description_'+result[1]).val();
+                console.log(result[1]);
+                console.log(order_id);
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                $.ajax({
+                  data: {'order_id':order_id,'description':description},
+                  url: "{{ route('shipment.order') }}",
+                  type: "POST",
+                  dataType: 'json',
+                  success: function (data) {
+                     $("#result").html('<div class="alert alert-success"><button type="button" class="close">×</button>Shipping details submitted successfully</div>');
+                 window.setTimeout(function() {
+                    $(".alert").fadeTo(500, 0).slideUp(500, function(){
+                        $(this).remove(); 
+                    });
+                 }, 5000);
+                 $('.alert .close').on("click", function(e){
+                    $(this).parent().fadeTo(500, 0).slideUp(500);
+                 });
+                    
+                    $('#description_'+result[1]).val('');
+                    $('#myModal_'+result[1]).modal('hide');
+                  },
+                  error: function (data) {
+                      
+                  }
+              });
+
+              
+             }); 
+
+             $(".sendshipment").on("click",function(){
+               var address_id = $(this).attr('data-value');
+                $.ajax({
+                      type: "get",
+                      url: '/admin/getUserAddress/'+address_id,
+                      success:function(data){
+                        $(".to_name").val(data.name);
+                        $(".to_address").val(data.street_1);  
+                        $(".to_city").val(data.city);
+                        $(".to_state").val(data.state);
+                        $(".to_country").val(data.country);
+                        $(".to_zipcode").val(data.zipcode);
+                        $(".to_phone").val(data.phone);
+                      }
+                  });
+             }); 
           </script>
 
            <script type="text/javascript" src="{{ asset('assets/fancybox/lib/jquery.mousewheel.pack.js?v=3.1.3') }}"></script>

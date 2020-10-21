@@ -33,11 +33,18 @@ class ProductController extends Controller {
                         ->join('colors', 'colors.id', '=', 'products.color_id')
                         ->join('brands', 'brands.id', '=', 'products.brand_id')
                         ->join('category', 'category.id', '=', 'products.category_id')
-                        ->select('products.id as product_id','products.name','products.sku','products.price','products.mrp','products.short_description','hex_code','discount','description','category.name as category_name','brands.name as brand_name')
+                        ->select('products.id as product_id','products.name','products.sku','products.price','products.mrp','products.short_description','hex_code','discount','description','category.name as category_name','brands.name as brand_name','products.image as product_image')
                         ->where('products.id',$id)->first();
-     
-    $productDetail->product_image =  ProductImage::where('product_id',$id)->get();
+                        //dd($productDetail);
+    if (is_null($productDetail)) {
+      return redirect()->route('404');
+    }
+    $defult_image = array('product_image'=>$productDetail->product_image);
+    $product_image =  ProductImage::select('product_image')->where('product_id',$id)->get()->toArray();
 
+    array_push($product_image, $defult_image);
+    
+    $productDetail->product_image = $product_image;
     $productDetail->product_color =  DB::table('products')->join('colors', 'colors.id', '=', 'products.color_id')->select('products.id as product_id','hex_code')->where('products.id','!=',$id)->where('products.sku',$productDetail->sku)->where('products.is_deleted',0)->where('products.status',1)->get();
 
     $product_size =  DB::table('product_size')->select('size_id')->where('product_size.product_id',$id)->pluck('size_id')->toArray();

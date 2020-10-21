@@ -1,6 +1,7 @@
 @extends('admin.layouts.admin', ['pageTitle' => 'Add Category'])
 
 @section('content')
+<center><div id="result"></div></center>
 <link rel="stylesheet" href="{{ asset('assets/imagecrop/imgareaselect.css') }}">
 
   <!-- Add mousewheel plugin (this is optional) -->
@@ -33,6 +34,7 @@
                       <option value="8" <?php echo ($bannerDetail->page_id == 8)?'selected':'' ?>>Blog Page</option>
 
                       <option value="9" <?php echo ($bannerDetail->page_id == 9)?'selected':'' ?>>Contact Us Page</option>
+                       <option value="10" <?php echo ($bannerDetail->page_id == 10)?'selected':'' ?>>Size Guide</option>
                   	</select>
                   @if ($errors->has('page_id'))
                     <span style="color: red">{{ $errors->first('page_id') }}</span>
@@ -43,7 +45,8 @@
               <div class="form-group row">
                 <label for="image" class="col-sm-3 col-form-label">Image</label>
                 <div class="col-sm-4">
-                  <input type="file" class="form-control" id="image" name="image" accept="image/*">
+                  <input type="file" class="form-control image-file" id="image" name="image" accept="image/*">
+                  <div class="result"></div>
                   (Size : 1425x813)
                   @if ($errors->has('image'))
                     <span style="color: red">{{ $errors->first('image') }}</span>
@@ -78,7 +81,7 @@
               </div>
 
               
-              <button type="submit" class="btn btn-success mr-2">Submit</button>
+              <button type="submit" id="submit" class="btn btn-success mr-2">Submit</button>
               <a href="{{route('banner')}}"   class="btn btn-light">Cancel</a>
             </form>
           </div>
@@ -112,7 +115,7 @@
           nextEffect : 'none'
         });
         var p = $("#previewimage");
-        $("body").on("change", "#image", function(){
+        /*$("body").on("change", "#image", function(){
 
             var imageReader = new FileReader();
             imageReader.readAsDataURL(document.querySelector("#image").files[0]);
@@ -129,7 +132,8 @@
                 $('input[name="w"]').val(selection.width);
                 $('input[name="h"]').val(selection.height);            
             }
-        });
+        });*/
     });
 </script>
+
 @endsection

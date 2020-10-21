@@ -39,8 +39,8 @@
               <div class="form-group row">
                 <label for="gst_no" class="col-sm-3 col-form-label">GST No</label>
                 <div class="col-sm-4">
-                  <input type="text" class="form-control" id="gst_no" name="gst_no" value="{{$supplierDetail->gst_no}}" onkeyup="countChar(this)" maxlength="20" placeholder="Gst no">
-                  <span id="nameLimit_gst_no" style="color: red;">(30/30)</span>
+                  <input type="text" class="form-control" id="gst_no" name="gst_no" value="{{$supplierDetail->gst_no}}" onkeyup="countChar(this)" maxlength="15" placeholder="Gst no">
+                  <span id="nameLimit_gst_no" style="color: red;">(15/15)</span>
                   @if ($errors->has('gst_no'))
                     <span style="color: red">{{ $errors->first('gst_no') }}</span>
                   @endif
@@ -48,10 +48,10 @@
               </div>
 
               <div class="form-group row">
-                <label for="adhar_no" class="col-sm-3 col-form-label">Adhar No</label>
+                <label for="adhar_no" class="col-sm-3 col-form-label">Aadhar No</label>
                 <div class="col-sm-4">
-                  <input type="text" class="form-control" id="adhar_no" name="adhar_no" value="{{$supplierDetail->adhar_no}}" onkeyup="countChar(this)" maxlength="20" placeholder="Adhar no">
-                  <span id="nameLimit_adhar_no" style="color: red;">(30/30)</span>
+                  <input type="text" class="form-control" id="adhar_no" name="adhar_no" value="{{$supplierDetail->adhar_no}}" onkeyup="countChar(this)" maxlength="12" placeholder="Aadhar no">
+                  <span id="nameLimit_adhar_no" style="color: red;">(12/12)</span>
                   @if ($errors->has('adhar_no'))
                     <span style="color: red">{{ $errors->first('adhar_no') }}</span>
                   @endif
@@ -61,8 +61,8 @@
               <div class="form-group row">
                 <label for="pan_no" class="col-sm-3 col-form-label">Pan No</label>
                 <div class="col-sm-4">
-                  <input type="text" class="form-control" id="pan_no" name="pan_no" value="{{$supplierDetail->pan_no}}" onkeyup="countChar(this)" maxlength="20" placeholder="Pan no">
-                  <span id="nameLimit_pan_no" style="color: red;">(30/30)</span>
+                  <input type="text" class="form-control" id="pan_no" name="pan_no" value="{{$supplierDetail->pan_no}}" onkeyup="countChar(this)" maxlength="10" placeholder="Pan no">
+                  <span id="nameLimit_pan_no" style="color: red;">(10/10)</span>
                   @if ($errors->has('pan_no'))
                     <span style="color: red">{{ $errors->first('pan_no') }}</span>
                   @endif
@@ -115,9 +115,9 @@
   $(document).ready(function() {
     var set_name = 30;
     var set_address = 100;
-    var set_gst_no = 20;
-    var set_adhar_no = 20;
-    var set_pan_no = 20;
+    var set_gst_no = 15;
+    var set_adhar_no = 12;
+    var set_pan_no = 10;
     var set_bank_name = 20;
     var set_account_no = 20;
     var set_ifsc_code = 20;
@@ -157,11 +157,11 @@
     }else if(id == 'address'){
       var set = 100;
     }else if(id == 'gst_no'){
-      var set = 20;
+      var set = 15;
     }else if(id == 'adhar_no'){
-      var set = 20;
+      var set = 12;
     }else if(id == 'pan_no'){
-      var set = 20;
+      var set = 10;
     }else if(id == 'bank_name'){
       var set = 20;
     }else if(id == 'account_no'){

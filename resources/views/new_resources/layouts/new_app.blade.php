@@ -37,7 +37,7 @@
     
 </head>
 <body>
-	
+  
     <div class="page-wrapper">
         @include('new_resources.layouts.header') 
         @yield('content')
@@ -141,98 +141,37 @@
 }
           
        
-    </style>
-	<script>
+  </style>
+  <script>
     function padStart(str) {
         return ('0' + str).slice(-2)
     }
 
     function demoSuccessHandler(transaction) {
-    	
-        console.log(transaction);
-		$("#paymentid").val(transaction.razorpay_payment_id);
+      
+      	$("#paymentid").val(transaction.razorpay_payment_id);
 
-		var first_name = $('#first_name').val();
-        var last_name = $('#last_name').val();
-        var company_name = $('#company_name').val();
-        var phone_number = $('#phone_number').val();
-        var pincode = $('#pincode').val();
-        var address_line_one = $('#address_line_one').val();
-        var address_line_two = $('#address_line_two').val();
-       // var address_line_three = $('#address_line_three').val();
-        var city = $('#city').val();
-        var country = $('#country').val();
-        var state = $('#state').val();
-        var state_textbox = $('.state_textbox').val();
-        var totalamount = $(".final_price_payment").val();
-        var paymentid = $("#paymentid").val();
-        var address_selection = $('input[name="address_selection"]:checked').val();
-		var address = $('#address_old').val();
+        if($("#biiling_same_as_address").prop("checked") != true){
+          var billing_address = 'New';
+        }else{
+          var billing_address = 'Same';
+        }
 
-		var billing_first_name = $("#billing_first_name").val();
-		var billing_last_name = $("#billing_last_name").val();
-		var billing_company_name = $("#billing_company_name").val();
-		var billing_phone_number = $("#billing_phone_number").val();
-		var billing_pincode = $("#billing_pincode").val();
-		var billing_address_line_one = $("#billing_address_line_one").val();
-		var billing_address_line_two = $("#billing_address_line_two").val();
-		var billing_city = $("#billing_city").val();
-		var billing_country = $("#billing_country").val();
-		var billing_state = $("#billing_state").val();
-		//var state_textbox_billing = $(".state_textbox_billing").val();
-		var guest_email = $('#guest_email').val();
-		if($("#biiling_same_as_address").prop("checked") != true){
-			var billing_address = 'New';
-		}else{
-			var billing_address = 'Same';
-		}
-		$.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        $.ajax({
-          data: {	
-          			'first_name':first_name,
-          			'last_name':last_name,
-          			'company_name':company_name,
-          			'phone_number':phone_number,
-          			'pincode':pincode,
-          			'address_line_one':address_line_one,
-          			'address_line_two':address_line_two,
-          			'city':city,
-          			'country':country,
-          			'state':state,
-          			 'state_textbox':state_textbox,
-          			'totalamount':totalamount,
-          			'paymentid':paymentid,
-          			'address_selection':address_selection,
-          			'address':address,
-          			'billing_first_name':billing_first_name,
-          			'billing_last_name':billing_last_name,
-          			'billing_company_name':billing_company_name,
-          			'billing_phone_number':billing_phone_number,
-          			'billing_pincode':billing_pincode,
-          			'billing_address_line_one':billing_address_line_one,
-          			'billing_address_line_two':billing_address_line_two,
-          			'billing_city':billing_city,
-          			'billing_country':billing_country,
-          			'billing_state':billing_state,
-          			//'billing_state':state_textbox_billing,
-          			'billing_address':billing_address,
-          			'guest_email':guest_email
-          		},
-          url: "{{ route('checkoutPlaceOrder') }}",
-          type: "POST",
-          dataType: 'json',
-          success: function (data) {
-          	window.location.href = 'order-summary/'+data.order_id;
+      	$.ajax({
+          	url : '{{ route('checkoutPlaceOrder') }}',
+          	headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+          	type: 'POST',
+          	data: { 
+                'totalamount'     : $("#order_total").val(),
+                'paymentid'       : $("#paymentid").val(),
+                'bag_total'       : $("#bag_total").val(),
+                'gst_amount_total': $("#gst_amount_total").val(),
+                'order_total': 		$("#order_total").val(),
           },
-          error: function (data) {
-              
-          }
-      });
-		//$("#checkout_form").submit();
+        }).done(function(data) {
+        
+          window.location.href = 'order-summary/'+data.order_id;
+        });
     }
 </script>
 
@@ -241,587 +180,501 @@
       var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
       return emailReg.test( $email );
     } 
-    document.getElementById('paybtn').onclick = function () {
-   //alert($(".final_price_payment").val());
-    var out_of_stock_item =  $("#out_of_stock_item").val();
-    if(out_of_stock_item > 0){
-        //$('#').model('toggel');
-        $('#out_of_stock_popup').modal('show');
-        return false;
-    }
+   /* document.getElementById('paybtn').onclick = function () {*/
+    $( "#paybtn" ).click(function() {
+      var options = {
+                  key: "{{ env('RAZORPAY_KEY') }}",
+                  amount: Number($("#order_total").val())*100,
+                  name: 'POBOX',
+                  description: 'Purchase Product',
+                  image: 'https://i.imgur.com/n5tjHFD.png',
+                  handler: demoSuccessHandler
 
-    if($('input[name="answer"]:checked').val() == 'add_new_billing_address'){
-
-        var billing_first_name = $("#billing_first_name").val();
-        var billing_last_name = $("#billing_last_name").val();
-        var billing_company_name = $("#billing_company_name").val();
-        var billing_phone_number = $("#billing_phone_number").val();
-        var billing_pincode = $("#billing_pincode").val();
-        var billing_address_line_one = $("#billing_address_line_one").val();
-        var billing_address_line_two = $("#billing_address_line_two").val();
-        var billing_city = $("#billing_city").val();
-        var billing_country = $("#billing_country").val();
-        var billing_state = $("#billing_state").val();
-        var guest_email = $("#guest_email").val();
-        var numbers = /^[0-9]+$/;
-        
-        $("#billing_first_name").next().text("");
-        $("#billing_last_name").next().text("");
-        $("#billing_company_name").next().text("");
-        $("#billing_phone_number").next().text("");
-        $("#billing_pincode").next().text("");
-        $("#billing_address_line_one").next().text("");
-        $("#billing_address_line_two").next().text("");
-        $("#billing_city").next().text("");
-        $("#billing_country").next().text("");
-        $("#billing_state").next().text("");
-        $("#guest_email").next().text("");
-
-        if( billing_first_name != "" && billing_last_name != "" && billing_phone_number != "" && email != "" && billing_pincode != "" && billing_address_line_one != "" && billing_city != "" && billing_country != "" && billing_state != ""   && guest_email != ""){
-         // alert("1");
-         
-                 if(billing_phone_number.length != 10)
-              {
-                // alert(billing_phone_number.length);
-                $("#billing_phone_number").next().text("Mobile Number Must Be 10 Digits.");
-                return false;
-
-              }else{
-                  var options = {
-                    key: "{{ env('RAZORPAY_KEY') }}",
-                    amount: Math.floor($(".final_price_payment").val())*100,
-                    name: 'POBOX',
-                    description: 'Purchase Product',
-                    image: 'https://i.imgur.com/n5tjHFD.png',
-                    handler: demoSuccessHandler
-
-                }
-                window.r = new Razorpay(options);
-                  r.open()
               }
-        }else{
-                if( billing_first_name == "" ){
-                  $("#billing_first_name").next().text("First Name Field is Required..!");
-                }
-                if( billing_last_name == "" ){
-                  $("#billing_last_name").next().text("Last Name Field is Required..!");
-                }
-                 if(billing_phone_number == "")
-                {
-                  $("#billing_phone_number").next().text("Mobile Field is Required..!");
-                }
-                if($("#email").val)
-                {
-                  if(email == "")
-                  {
-                    $("#email").next().text("Email Field is Required..!");
-                  }else if(!validateEmail(email))
-                  {
-                    $("#email").next().text("Enter Valid Email..!");
-                  }
-                }     
-                if(billing_pincode == "")
-                {
-                  $("#billing_pincode").next().text("Pincode Field is Required..!");
-                }if(billing_address_line_one == "")
-                {
-                  $("#billing_address_line_one").next().text("Address Field is Required..!");
-                }if(billing_city == "")
-                {
-                  $("#billing_city").next().text("City Field is Required..!");
-                }if(billing_country == "" )
-                {
-                  $("#billing_country").next().text("Country Field is Required..!");
-                }
-                
-                 if(billing_state == "")
-                {
-                  $("#billing_state").next().text("State Field is Required..!");
-                }
-                if(guest_email == "")
-                {
-                  $("#guest_email").next().text("Email Field is Required..!");
-                }
-                 if(billing_phone_number.length != 10)
-              {
-                
-                $("#billing_phone_number").next().text("Mobile Number Field is Required..!");
-              }
-                
-           return false;
-        }
-    }
+      window.r = new Razorpay(options);
+              r.open();
 
-		if($('input[name="address_selection"]:checked').val() == 'old')
-		{
-		  if($("#address_old").val() == 0){
-				$("#spanaddress").text("Please Select Address..!");
-			}else if($("#biiling_same_as_address").prop("checked") != true){
-				
-				$("#spanaddress").text("");
-				$("#billingid").text("Please Select Billing Address..!");
-					
-				var first_name = $("#billing_first_name").val();
-				var last_name = $("#billing_last_name").val();
-				var company_name = $("#billing_company_name").val();
-				var phone_number = $("#billing_phone_number").val();
-				var pincode = $("#billing_pincode").val();
-				var address_line_one = $("#billing_address_line_one").val();
-				var address_line_two = $("#billing_address_line_two").val();
-				var city = $("#billing_city").val();
-				var billing_country = $("#billing_country").val();
-				var billing_state = $("#billing_state").val();
-				var guest_email = $("#guest_email").val();
-				var numbers = /^[0-9]+$/;
-				
-				$("#billing_first_name").next().text("");
-				$("#billing_last_name").next().text("");
-				$("#billing_company_name").next().text("");
-				$("#billing_phone_number").next().text("");
-				$("#billing_pincode").next().text("");
-				$("#billing_address_line_one").next().text("");
-				$("#billing_address_line_two").next().text("");
-				$("#billing_city").next().text("");
-				$("#billing_country").next().text("");
-				$("#billing_state").next().text("");
-				$("#guest_email").next().text("");
-				
-				if(first_name == "")
-				{
-					$("#billing_first_name").next().text("First Name Field is Required..!");
-				}
-				if(last_name == "")
-				{
-					$("#billing_last_name").next().text("Last Name Field is Required..!");
-				}
-				if(phone_number == "")
-				{
-					$("#billing_phone_number").next().text("Mobile Field is Required..!");
-				}
-				if(pincode == "")
-				{
-					$("#billing_pincode").next().text("Pincode Field is Required..!");
-				}if(address_line_one == "")
-				{
-					$("#billing_address_line_one").next().text("Address Field is Required..!");
-				}if(city == "")
-				{
-					$("#billing_city").next().text("City Field is Required..!");
-				}if(country == "")
-				{
-					$("#billing_country").next().text("Country Field is Required..!");
-				}if(billing_state == "")
-				{
-					$("#billing_state").next().text("State Field is Required..!");
-				}
-        if(guest_email == "")
-				{
-					$("#guest_email").next().text("Email Field is Required..!");
-				}
-				else if(phone_number.length != 10)
-				{
-				  $("#billing_phone_number").next().text("Mobile Number Must Be 10 Digits.");
-				}
-				else{
-					$("#billing_first_name").next().text("");
-					$("#billing_last_name").next().text("");
-					$("#billing_company_name").next().text("");
-					$("#billing_phone_number").next().text("");
-					$("#billing_pincode").next().text("");
-					$("#billing_address_line_one").next().text("");
-					$("#billing_address_line_two").next().text("");
-					$("#billing_city").next().text("");
-					$("#billing_country").next().text("");
-					$("#billing_state").next().text("");
-					$("#guest_email").next().text("");
-					$("#billingid").text("");
+      return false;
+      	var out_of_stock_item =  $("#out_of_stock_item").val();
+	    if(out_of_stock_item > 0){
+	        $('#out_of_stock_popup').modal('show');
+	        return false;
+	    }
 
-          var options = {
-              key: "{{ env('RAZORPAY_KEY') }}",
-              amount: Math.floor($(".final_price_payment").val())*100,
-              name: 'POBOX',
-              description: 'Purchase Product',
-              image: 'https://i.imgur.com/n5tjHFD.png',
-              handler: demoSuccessHandler
+	    if($('input[name="address_selection"]:checked').val() == 'old'){
+	        if($("#address_old").val() == 0){
+	          $("#spanaddress").text("Please Select Address..!");
+	        }else if($("#biiling_same_as_address").prop("checked") != true){
+	          
+	          $("#spanaddress").text("");
+	          $("#billingid").text("Please Select Billing Address..!");
+	            
+	          var first_name = $("#billing_first_name").val();
+	          var last_name = $("#billing_last_name").val();
+	          var company_name = $("#billing_company_name").val();
+	          var phone_number = $("#billing_phone_number").val();
+	          var pincode = $("#billing_pincode").val();
+	          var address_line_one = $("#billing_address_line_one").val();
+	          var address_line_two = $("#billing_address_line_two").val();
+	          var city = $("#billing_city").val();
+	          var billing_country = $("#billing_country").val();
+	          var billing_state = $("#billing_state").val();
+	          var guest_email = $("#guest_email").val();
+	          var numbers = /^[0-9]+$/;
+	          
+	          $("#billing_first_name").next().text("");
+	          $("#billing_last_name").next().text("");
+	          $("#billing_company_name").next().text("");
+	          $("#billing_phone_number").next().text("");
+	          $("#billing_pincode").next().text("");
+	          $("#billing_address_line_one").next().text("");
+	          $("#billing_address_line_two").next().text("");
+	          $("#billing_city").next().text("");
+	          $("#billing_country").next().text("");
+	          $("#billing_state").next().text("");
+	          $("#guest_email").next().text("");
+	          
+	          if(first_name == "")
+	          {
+	            $("#billing_first_name").next().text("First Name Field is Required..!");
+	          }
+	          if(last_name == "")
+	          {
+	            $("#billing_last_name").next().text("Last Name Field is Required..!");
+	          }
+	          if(phone_number == "")
+	          {
+	            $("#billing_phone_number").next().text("Mobile Field is Required..!");
+	          }
+	          if(pincode == "")
+	          {
+	            $("#billing_pincode").next().text("Pincode Field is Required..!");
+	          }if(address_line_one == "")
+	          {
+	            $("#billing_address_line_one").next().text("Address Field is Required..!");
+	          }if(city == "")
+	          {
+	            $("#billing_city").next().text("City Field is Required..!");
+	          }if(country == "")
+	          {
+	            $("#billing_country").next().text("Country Field is Required..!");
+	          }if(billing_state == "")
+	          {
+	            $("#billing_state").next().text("State Field is Required..!");
+	          }
+	          if(guest_email == "")
+	          {
+	            $("#guest_email").next().text("Email Field is Required..!");
+	          }
+	          else if(phone_number.length != 10)
+	          {
+	            $("#billing_phone_number").next().text("Mobile Number Must Be 10 Digits.");
+	          }
+	          else{
+	            $("#billing_first_name").next().text("");
+	            $("#billing_last_name").next().text("");
+	            $("#billing_company_name").next().text("");
+	            $("#billing_phone_number").next().text("");
+	            $("#billing_pincode").next().text("");
+	            $("#billing_address_line_one").next().text("");
+	            $("#billing_address_line_two").next().text("");
+	            $("#billing_city").next().text("");
+	            $("#billing_country").next().text("");
+	            $("#billing_state").next().text("");
+	            $("#guest_email").next().text("");
+	            $("#billingid").text("");
 
-          }
-          window.r = new Razorpay(options);
-						r.open()
+	            var options = {
+	                key: "{{ env('RAZORPAY_KEY') }}",
+	                amount: Math.floor($(".final_price_payment").val())*100,
+	                name: 'POBOX',
+	                description: 'Purchase Product',
+	                image: 'https://i.imgur.com/n5tjHFD.png',
+	                handler: demoSuccessHandler
 
-				}
-			}else if($("#biiling_same_as_address").prop("checked") == true){
-					$("#billing_first_name").next().text("");
-					$("#billing_last_name").next().text("");
-					$("#billing_company_name").next().text("");
-					$("#billing_phone_number").next().text("");
-					$("#billing_pincode").next().text("");
-					$("#billing_address_line_one").next().text("");
-					$("#billing_address_line_two").next().text("");
-					$("#billing_city").next().text("");
-					$("#billing_country").next().text("");
-					$("#billing_state").next().text("");
-					$("#billingid").text("");
+	            }
+	            window.r = new Razorpay(options);
+	            r.open()
 
-          var options = {
-            key: "{{ env('RAZORPAY_KEY') }}",
-            amount: Math.floor($(".final_price_payment").val())*100,
-            name: 'POBOX',
-            description: 'Purchase Product',
-            image: 'https://i.imgur.com/n5tjHFD.png',
-            handler: demoSuccessHandler
-          }
-          window.r = new Razorpay(options);
-						r.open()
-			}		
-		}else if($('input[name="address_selection"]:checked').val() == 'new'){
-      if($("#biiling_same_as_address").prop("checked") != true){
-        
-        $("#spanaddress").text("");
-        $("#billingid").text("Please Select Billing Address..!");
-          
-        var first_name = $("#billing_first_name").val();
-        var last_name = $("#billing_last_name").val();
-        var company_name = $("#billing_company_name").val();
-        var phone_number = $("#billing_phone_number").val();
-        var pincode = $("#billing_pincode").val();
-        var address_line_one = $("#billing_address_line_one").val();
-        var address_line_two = $("#billing_address_line_two").val();
-        var city = $("#billing_city").val();
-        var billing_country = $("#billing_country").val();
-        var billing_state = $("#billing_state").val();
-        var guest_email = $("#guest_email").val();
-        var numbers = /^[0-9]+$/;
-        
-        $("#billing_first_name").next().text("");
-        $("#billing_last_name").next().text("");
-        $("#billing_company_name").next().text("");
-        $("#billing_phone_number").next().text("");
-        $("#billing_pincode").next().text("");
-        $("#billing_address_line_one").next().text("");
-        $("#billing_address_line_two").next().text("");
-        $("#billing_city").next().text("");
-        $("#billing_country").next().text("");
-        $("#billing_state").next().text("");
-        $("#guest_email").next().text("");
-        
-        if(first_name == "")
-        {
-          $("#billing_first_name").next().text("First Name Field is Required..!");
-        }
-        if(last_name == "")
-        {
-          $("#billing_last_name").next().text("Last Name Field is Required..!");
-        }
-        if(phone_number == "")
-        {
-          $("#billing_phone_number").next().text("Mobile Field is Required..!");
-        }
-        if(pincode == "")
-        {
-          $("#billing_pincode").next().text("Pincode Field is Required..!");
-        }if(address_line_one == "")
-        {
-          $("#billing_address_line_one").next().text("Address Field is Required..!");
-        }if(city == "")
-        {
-          $("#billing_city").next().text("City Field is Required..!");
-        }if(country == "")
-        {
-          $("#billing_country").next().text("Country Field is Required..!");
-        }if(billing_state == "")
-        {
-          $("#billing_state").next().text("State Field is Required..!");
-        }
-        if(guest_email == "")
-        {
-          $("#guest_email").next().text("Email Field is Required..!");
-        }
-        else if(phone_number.length != 10)
-        {
-          $("#billing_phone_number").next().text("Mobile Number Must Be 10 Digits.");
-        }
-        else{
-          $("#billing_first_name").next().text("");
-          $("#billing_last_name").next().text("");
-          $("#billing_company_name").next().text("");
-          $("#billing_phone_number").next().text("");
-          $("#billing_pincode").next().text("");
-          $("#billing_address_line_one").next().text("");
-          $("#billing_address_line_two").next().text("");
-          $("#billing_city").next().text("");
-          $("#billing_country").next().text("");
-          $("#billing_state").next().text("");
-          $("#guest_email").next().text("");
-          $("#billingid").text("");
+	          }
+	        }else if($("#biiling_same_as_address").prop("checked") == true){
+	            $("#billing_first_name").next().text("");
+	            $("#billing_last_name").next().text("");
+	            $("#billing_company_name").next().text("");
+	            $("#billing_phone_number").next().text("");
+	            $("#billing_pincode").next().text("");
+	            $("#billing_address_line_one").next().text("");
+	            $("#billing_address_line_two").next().text("");
+	            $("#billing_city").next().text("");
+	            $("#billing_country").next().text("");
+	            $("#billing_state").next().text("");
+	            $("#billingid").text("");
 
-          var options = {
-              key: "{{ env('RAZORPAY_KEY') }}",
-              amount: Math.floor($(".final_price_payment").val())*100,
-              name: 'POBOX',
-              description: 'Purchase Product',
-              image: 'https://i.imgur.com/n5tjHFD.png',
-              handler: demoSuccessHandler
+	            var options = {
+	              key: "{{ env('RAZORPAY_KEY') }}",
+	              amount: Math.floor($(".final_price_payment").val())*100,
+	              name: 'POBOX',
+	              description: 'Purchase Product',
+	              image: 'https://i.imgur.com/n5tjHFD.png',
+	              handler: demoSuccessHandler
+	            }
+	            window.r = new Razorpay(options);
+	              r.open()
+	        }   
+      	}else if($('input[name="address_selection"]:checked').val() == 'new'){
+	        if($("#biiling_same_as_address").prop("checked") != true){
+	          
+	          $("#spanaddress").text("");
+	          $("#billingid").text("Please Select Billing Address..!");
+	            
+	          var first_name = $("#billing_first_name").val();
+	          var last_name = $("#billing_last_name").val();
+	          var company_name = $("#billing_company_name").val();
+	          var phone_number = $("#billing_phone_number").val();
+	          var pincode = $("#billing_pincode").val();
+	          var address_line_one = $("#billing_address_line_one").val();
+	          var address_line_two = $("#billing_address_line_two").val();
+	          var city = $("#billing_city").val();
+	          var billing_country = $("#billing_country").val();
+	          var billing_state = $("#billing_state").val();
+	          var guest_email = $("#guest_email").val();
+	          var numbers = /^[0-9]+$/;
+	          
+	          $("#billing_first_name").next().text("");
+	          $("#billing_last_name").next().text("");
+	          $("#billing_company_name").next().text("");
+	          $("#billing_phone_number").next().text("");
+	          $("#billing_pincode").next().text("");
+	          $("#billing_address_line_one").next().text("");
+	          $("#billing_address_line_two").next().text("");
+	          $("#billing_city").next().text("");
+	          $("#billing_country").next().text("");
+	          $("#billing_state").next().text("");
+	          $("#guest_email").next().text("");
+	          
+	          if(first_name == "")
+	          {
+	            $("#billing_first_name").next().text("First Name Field is Required..!");
+	          }
+	          if(last_name == "")
+	          {
+	            $("#billing_last_name").next().text("Last Name Field is Required..!");
+	          }
+	          if(phone_number == "")
+	          {
+	            $("#billing_phone_number").next().text("Mobile Field is Required..!");
+	          }
+	          if(pincode == "")
+	          {
+	            $("#billing_pincode").next().text("Pincode Field is Required..!");
+	          }if(address_line_one == "")
+	          {
+	            $("#billing_address_line_one").next().text("Address Field is Required..!");
+	          }if(city == "")
+	          {
+	            $("#billing_city").next().text("City Field is Required..!");
+	          }if(country == "")
+	          {
+	            $("#billing_country").next().text("Country Field is Required..!");
+	          }if(billing_state == "")
+	          {
+	            $("#billing_state").next().text("State Field is Required..!");
+	          }
+	          if(guest_email == "")
+	          {
+	            $("#guest_email").next().text("Email Field is Required..!");
+	          }
+	          else if(phone_number.length != 10)
+	          {
+	            $("#billing_phone_number").next().text("Mobile Number Must Be 10 Digits.");
+	          }
+	          else{
+	            $("#billing_first_name").next().text("");
+	            $("#billing_last_name").next().text("");
+	            $("#billing_company_name").next().text("");
+	            $("#billing_phone_number").next().text("");
+	            $("#billing_pincode").next().text("");
+	            $("#billing_address_line_one").next().text("");
+	            $("#billing_address_line_two").next().text("");
+	            $("#billing_city").next().text("");
+	            $("#billing_country").next().text("");
+	            $("#billing_state").next().text("");
+	            $("#guest_email").next().text("");
+	            $("#billingid").text("");
 
-          }
-          window.r = new Razorpay(options);
-            r.open()
+	            var options = {
+	                key: "{{ env('RAZORPAY_KEY') }}",
+	                amount: Math.floor($(".final_price_payment").val())*100,
+	                name: 'POBOX',
+	                description: 'Purchase Product',
+	                image: 'https://i.imgur.com/n5tjHFD.png',
+	                handler: demoSuccessHandler
 
-        }
-      }else if($("#biiling_same_as_address").prop("checked") == true){
-          $("#billing_first_name").next().text("");
-          $("#billing_last_name").next().text("");
-          $("#billing_company_name").next().text("");
-          $("#billing_phone_number").next().text("");
-          $("#billing_pincode").next().text("");
-          $("#billing_address_line_one").next().text("");
-          $("#billing_address_line_two").next().text("");
-          $("#billing_city").next().text("");
-          $("#billing_country").next().text("");
-          $("#billing_state").next().text("");
-          $("#billingid").text("");
+	            }
+	            window.r = new Razorpay(options);
+	              r.open()
 
-          var first_name = $("#first_name").val();
-          var last_name = $("#last_name").val();
-          var company_name = $("#company_name").val();
-          var phone_number = $("#phone_number").val();
-          var pincode = $("#pincode").val();
-          var address_line_one = $("#address_line_one").val();
-          var city = $("#city").val();
-          var country = $("#country").val();
-          var state = $("#state").val();
-          /*alert(state);*/
-          var state_textbox = $(".state_textbox").val();
-          //alert(state_textbox);
+	          }
+	        }else if($("#biiling_same_as_address").prop("checked") == true){
+	            $("#billing_first_name").next().text("");
+	            $("#billing_last_name").next().text("");
+	            $("#billing_company_name").next().text("");
+	            $("#billing_phone_number").next().text("");
+	            $("#billing_pincode").next().text("");
+	            $("#billing_address_line_one").next().text("");
+	            $("#billing_address_line_two").next().text("");
+	            $("#billing_city").next().text("");
+	            $("#billing_country").next().text("");
+	            $("#billing_state").next().text("");
+	            $("#billingid").text("");
 
-          $("#first_name").next().text("");
-          $("#last_name").next().text("");
-          $("#company_name").next().text("");
-          $("#phone_number").next().text("");
-          $("#pincode").next().text("");
-          $("#address_line_one").next().text("");
-          $("#address_line_two").next().text("");
-          $("#city").next().text("");
-          $("#country").next().text("");
-          $("#state").next().text("");
-          var numbers = /^[0-9]+$/;
+	            var first_name = $("#first_name").val();
+	            var last_name = $("#last_name").val();
+	            var company_name = $("#company_name").val();
+	            var phone_number = $("#phone_numbers").val();
+	            var pincode = $("#pincode").val();
+	            var address_line_one = $("#address_line_one").val();
+	            var city = $("#city").val();
+	            var country = $("#country").val();
+	            var state = $("#state").val();
+	            /*alert(state);*/
+	            var state_textbox = $(".state_textbox").val();
+	            //alert(state_textbox);
 
-           if( first_name != "" && last_name != "" && phone_number != "" && pincode != "" && address_line_one != "" && city != "" && country != "" && state != ""  && phone_number != ""){
+	            $("#first_name").next().text("");
+	            $("#last_name").next().text("");
+	            $("#company_name").next().text("");
+	            $("#phone_numbers").next().text("");
+	            $("#pincode").next().text("");
+	            $("#address_line_one").next().text("");
+	            $("#address_line_two").next().text("");
+	            $("#city").next().text("");
+	            $("#country").next().text("");
+	            $("#state").next().text("");
+	            var numbers = /^[0-9]+$/;
 
-             if(phone_number.length != 10)
-              {
-                $("#phone_number").next().text("Mobile Number Must Be 10 Digits.");
-              }else{
-                  var options = {
-                    key: "{{ env('RAZORPAY_KEY') }}",
-                    amount: Math.floor($(".final_price_payment").val())*100,
-                    name: 'POBOX',
-                    description: 'Purchase Product',
-                    image: 'https://i.imgur.com/n5tjHFD.png',
-                    handler: demoSuccessHandler
+	             if( first_name != "" && last_name != "" && phone_number != "" && pincode != "" && address_line_one != "" && city != "" && country != "" && state != ""  && phone_number != ""){
 
-                }
-                window.r = new Razorpay(options);
-                  r.open()
-              }
-          }else{
-              if( first_name == "" ){
-                $("#first_name").next().text("First Name Field is Required..!");
-              }
-              if( last_name == "" ){
-                $("#last_name").next().text("Last Name Field is Required..!");
-              }
-              if(phone_number == "")
-              {
-                $("#phone_number").next().text("Mobile Field is Required..!");
-              }
-              if($("#email").val)
-              {
-                if(email == "")
-                {
-                  $("#email").next().text("Email Field is Required..!");
-                }else if(!validateEmail(email))
-                {
-                  $("#email").next().text("Enter Valid Email..!");
-                }
-              }       
-              
-              if(pincode == "")
-              {
-                $("#pincode").next().text("Pincode Field is Required..!");
-              }if(address_line_one == "")
-              {
-                $("#address_line_one").next().text("Address Field is Required..!");
-              }if(city == "")
-              {
-                $("#city").next().text("City Field is Required..!");
-              }if(country == "" )
-              {
-                $("#country").next().text("Country Field is Required..!");
-              }
-              
-               if(state == "")
-              {
-                $("#state").next().text("State Field is Required..!");
-              }
-              if(guest_email == "")
-              {
-                $("#guest_email").next().text("Email Field is Required..!");
-              }else if(guest_email_check == 'exist' ){
-                $("#guest_email").next().text("Email already register, please try with new one");
-              }else if(valid_emai == 'No' ){
-                $("#guest_email").next().text("Pleae enter correct email id");
-              }
-              if(phone_number.length != 10)
-              {
-                $("#phone_number").next().text("Mobile Number Must Be 10 Digits.");
-              }   
-          }
-      } 
-    }else{
+	               if(phone_number.length != 10)
+	                {
+	                  $("#phone_numbers").next().text("Mobile Number Must Be 10 Digits.");
+	                }else{
+	                    var options = {
+	                      key: "{{ env('RAZORPAY_KEY') }}",
+	                      amount: Math.floor($(".final_price_payment").val())*100,
+	                      name: 'POBOX',
+	                      description: 'Purchase Product',
+	                      image: 'https://i.imgur.com/n5tjHFD.png',
+	                      handler: demoSuccessHandler
 
-			var first_name = $("#first_name").val();
-			var last_name = $("#last_name").val();
-			var company_name = $("#company_name").val();
-			var phone_number = $("#phone_number").val();
-			var pincode = $("#pincode").val();
-			var address_line_one = $("#address_line_one").val();
-			var address_line_two = $("#address_line_two").val();
-			var city = $("#city").val();
-			var country = $("#country").val();
-			var state = $("#state").val();
-      /*alert(state);*/
-			var state_textbox = $(".state_textbox").val();
-			//alert(state_textbox);
-			var email = $("#email").val();
-			var guest_email = $("#guest_email").val();
-      var valid_emai = '';
-      if( !validateEmail(guest_email)) { 
-        var valid_emai = 'No';
-      }else{
-        var valid_emai = 'Yes';
-      }
+	                  }
+	                  window.r = new Razorpay(options);
+	                    r.open()
+	                }
+	            }else{
+	                if( first_name == "" ){
+	                  $("#first_name").next().text("First Name Field is Required..!");
+	                }
+	                if( last_name == "" ){
+	                  $("#last_name").next().text("Last Name Field is Required..!");
+	                }
+	                if(phone_number == "")
+	                {
+	                  $("#phone_numbers").next().text("Mobile Field is Required..!");
+	                }
+	                if($("#email").val)
+	                {
+	                  if(email == "")
+	                  {
+	                    $("#email").next().text("Email Field is Required..!");
+	                  }else if(!validateEmail(email))
+	                  {
+	                    $("#email").next().text("Enter Valid Email..!");
+	                  }
+	                }       
+	                
+	                if(pincode == "")
+	                {
+	                  $("#pincode").next().text("Pincode Field is Required..!");
+	                }if(address_line_one == "")
+	                {
+	                  $("#address_line_one").next().text("Address Field is Required..!");
+	                }if(city == "")
+	                {
+	                  $("#city").next().text("City Field is Required..!");
+	                }if(country == "" )
+	                {
+	                  $("#country").next().text("Country Field is Required..!");
+	                }
+	                
+	                 if(state == "")
+	                {
+	                  $("#state").next().text("State Field is Required..!");
+	                }
+	                if(guest_email == "")
+	                {
+	                  $("#guest_email").next().text("Email Field is Required..!");
+	                }else if(guest_email_check == 'exist' ){
+	                  $("#guest_email").next().text("Email already register, please try with new one");
+	                }else if(valid_emai == 'No' ){
+	                  $("#guest_email").next().text("Pleae enter correct email id");
+	                }
+	                if(phone_number.length != 10)
+	                {
+	                  $("#phone_numbers").next().text("Mobile Number Must Be 10 Digits.");
+	                }   
+	            }
+	        } 
+      	}else{
+	        var first_name = $("#first_name").val();
+	        var last_name = $("#last_name").val();
+	        var company_name = $("#company_name").val();
+	        var phone_number = $("#phone_numbers").val();
+	        var pincode = $("#pincode").val();
+	        var address_line_one = $("#address_line_one").val();
+	        var address_line_two = $("#address_line_two").val();
+	        var city = $("#city").val();
+	        var country = $("#country").val();
+	        var state = $("#state").val();
+	        /*alert(state);*/
+	        var state_textbox = $(".state_textbox").val();
+	        //alert(state_textbox);
+	        var email = $("#email").val();
+	        var guest_email = $("#guest_email").val();
+	        var valid_emai = '';
+	        if( !validateEmail(guest_email)) { 
+	          var valid_emai = 'No';
+	        }else{
+	          var valid_emai = 'Yes';
+	        }
 
-      var numbers = /^[0-9]+$/;
-      var guest_email_check = '';
-			
-			$("#first_name").next().text("");
-			$("#last_name").next().text("");
-			$("#company_name").next().text("");
-			$("#phone_number").next().text("");
-			$("#pincode").next().text("");
-			$("#address_line_one").next().text("");
-			$("#address_line_two").next().text("");
-			$("#city").next().text("");
-			$("#country").next().text("");
-			$("#state").next().text("");
-			//$(".state_textbox").next().text("");
-			
-			$("#email").next().text("");
-			$("#guest_email").next().text("");
-      $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+	        var numbers = /^[0-9]+$/;
+	        var guest_email_check = '';
+	        
+	        $("#first_name").next().text("");
+	        $("#last_name").next().text("");
+	        $("#company_name").next().text("");
+	        $("#phone_numbers").next().text("");
+
+	        $("#pincode").next().text("");
+	        $("#address_line_one").next().text("");
+	        $("#address_line_two").next().text("");
+	        $("#city").next().text("");
+	        $("#country").next().text("");
+	        $("#state").next().text("");
+	        //$(".state_textbox").next().text("");
+	        
+	        $("#email").next().text("");
+	        $("#guest_email").next().text("");
+	        $.ajaxSetup({
+	              headers: {
+	                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+	              }
+	          });
+	          $.ajax({
+	            data: { 
+	                  'email' : guest_email,
+	                "_token": "{{ csrf_token() }}",
+	                },
+	            url : '{{url('/checkUserEmail')}}',
+	            type: "POST",
+	            async:false,
+	            dataType: 'json',
+	            success: function (data) {
+	              //console.log('iiiii');
+	              if(data == 2){
+	                guest_email_check = 'exist';
+	              }
+	            },
+	            error: function (data) {
+	              
+	            }
+	        });
+
+	        if( first_name != "" && last_name != "" && phone_number != "" && pincode != "" && address_line_one != "" && city != "" && country != "" && state != ""   && guest_email != "" && guest_email_check != 'exist' && valid_emai == 'Yes'  ){
+	                //console.log('1111');
+	                if(phone_number.length != 10)
+	                {
+	                  $("#phone_numbers").next().text("Mobile Number Must Be 10 Digits.ss");
+	                }else{
+	                    var options = {
+	                      key: "{{ env('RAZORPAY_KEY') }}",
+	                      amount: Math.floor($(".final_price_payment").val())*100,
+	                      name: 'POBOX',
+	                      description: 'Purchase Product',
+	                      image: 'https://i.imgur.com/n5tjHFD.png',
+	                      handler: demoSuccessHandler
+
+	                  }
+	                  window.r = new Razorpay(options);
+	                    r.open()
+	                }
+	        }else{
+	                if( first_name == "" ){
+	                  $("#first_name").next().text("First Name Field is Required..!");
+	                }
+	                if( last_name == "" ){
+	                  $("#last_name").next().text("Last Name Field is Required..!");
+	                }
+	                if(phone_number == "")
+	                {
+	                  $("#phone_numbers").next().text("Mobile Field is Required..!");
+	                }
+	                if($("#email").val)
+	                {
+	                  if(email == "")
+	                  {
+	                    $("#email").next().text("Email Field is Required..!");
+	                  }else if(!validateEmail(email))
+	                  {
+	                    $("#email").next().text("Enter Valid Email..!");
+	                  }
+	                }       
+	                
+	                if(pincode == "")
+	                {
+	                  $("#pincode").next().text("Pincode Field is Required..!");
+	                }if(address_line_one == "")
+	                {
+	                  $("#address_line_one").next().text("Address Field is Required..!");
+	                }if(city == "")
+	                {
+	                  $("#city").next().text("City Field is Required..!");
+	                }if(country == "" )
+	                {
+	                  $("#country").next().text("Country Field is Required..!");
+	                }
+	                
+	                 if(state == "")
+	                {
+	                  $("#state").next().text("State Field is Required..!");
+	                }
+	                if(guest_email == "")
+	                {
+	                  $("#guest_email").next().text("Email Field is Required..!");
+	                }else if(guest_email_check == 'exist' ){
+	                  $("#guest_email").next().text("Email already register, please try with new one");
+	                }else if(valid_emai == 'No' ){
+	                  $("#guest_email").next().text("Pleae enter correct email id");
+	                }
+	        }
+      	}
+
+       	/*var options = {
+                key: "{{ env('RAZORPAY_KEY') }}",
+                amount: Math.floor($(".final_price_payment").val())*100,
+                name: 'POBOX',
+                description: 'Purchase Product',
+                image: 'https://i.imgur.com/n5tjHFD.png',
+                handler: demoSuccessHandler
+
             }
-        });
-        $.ajax({
-          data: { 
-                'email' : guest_email,
-              "_token": "{{ csrf_token() }}",
-              },
-          url : '{{url('/checkUserEmail')}}',
-          type: "POST",
-          async:false,
-          dataType: 'json',
-          success: function (data) {
-            console.log('iiiii');
-            if(data == 2){
-              guest_email_check = 'exist';
-            }
-          },
-          error: function (data) {
-            
-          }
-      });
-			
-			
-     if( first_name != "" && last_name != "" && phone_number != "" && email != "" && pincode != "" && address_line_one != "" && city != "" && country != "" && state != ""   && guest_email != "" && phone_number != "" && guest_email_check != 'exist' && valid_emai == 'Yes'  ){
-
-             if(phone_number.length != 10)
-              {
-                $("#phone_number").next().text("Mobile Number Must Be 10 Digits.");
-              }else{
-                  var options = {
-                    key: "{{ env('RAZORPAY_KEY') }}",
-                    amount: Math.floor($(".final_price_payment").val())*100,
-                    name: 'POBOX',
-                    description: 'Purchase Product',
-                    image: 'https://i.imgur.com/n5tjHFD.png',
-                    handler: demoSuccessHandler
-
-                }
-                window.r = new Razorpay(options);
-                  r.open()
-              }
-      }else{
-              if( first_name == "" ){
-                $("#first_name").next().text("First Name Field is Required..!");
-              }
-              if( last_name == "" ){
-                $("#last_name").next().text("Last Name Field is Required..!");
-              }
-              if(phone_number == "")
-              {
-                $("#phone_number").next().text("Mobile Field is Required..!");
-              }
-              if($("#email").val)
-              {
-                if(email == "")
-                {
-                  $("#email").next().text("Email Field is Required..!");
-                }else if(!validateEmail(email))
-                {
-                  $("#email").next().text("Enter Valid Email..!");
-                }
-              }       
-              
-              if(pincode == "")
-              {
-                $("#pincode").next().text("Pincode Field is Required..!");
-              }if(address_line_one == "")
-              {
-                $("#address_line_one").next().text("Address Field is Required..!");
-              }if(city == "")
-              {
-                $("#city").next().text("City Field is Required..!");
-              }if(country == "" )
-              {
-                $("#country").next().text("Country Field is Required..!");
-              }
-              
-               if(state == "")
-              {
-                $("#state").next().text("State Field is Required..!");
-              }
-              if(guest_email == "")
-              {
-                $("#guest_email").next().text("Email Field is Required..!");
-              }else if(guest_email_check == 'exist' ){
-                $("#guest_email").next().text("Email already register, please try with new one");
-              }else if(valid_emai == 'No' ){
-                $("#guest_email").next().text("Pleae enter correct email id");
-              }
-              if(phone_number.length != 10)
-              {
-                $("#phone_number").next().text("Mobile Number Must Be 10 Digits.");
-              }
-         
-      }
-			 
-		}
-    }
-	function validateEmail(email) {
-	  const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-	  return re.test(email);
+            window.r = new Razorpay(options);
+            r.open();*/
+    });
+  function validateEmail(email) {
+    const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
 }
 </script>
 <script>

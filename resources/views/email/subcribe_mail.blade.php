@@ -254,8 +254,8 @@
             <tr>
                 <td align="center" valign="top" style="font-family: Open Sans, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, Helvetica, Arial, sans-serif;">
                    
-                    <span class="preheader" style="font-size: 0; padding: 0; display: none; max-height: 0; mso-hide: all; line-height: 0; color: transparent; height: 0; max-width: 0; opacity: 0; overflow: hidden; visibility: hidden; width: 0;">Business mail</span>
-                    <table class="wrap" cellspacing="0" cellpadding="0" style="font-family: Open Sans, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, Helvetica, Arial, sans-serif; border-collapse: collapse; width: 100%; max-width: 640px; text-align: left;">
+                    <!-- <span class="preheader" style="font-size: 0; padding: 0; display: none; max-height: 0; mso-hide: all; line-height: 0; color: transparent; height: 0; max-width: 0; opacity: 0; overflow: hidden; visibility: hidden; width: 0;">Business mail</span> -->
+                    <table class="wrap" cellspacing="0" cellpadding="0" style="font-family: Open Sans, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, Helvetica, Arial, sans-serif; border-collapse: collapse; width: 100%; max-width: 845px; text-align: left;">
                         <tr>
                             <td class="p-sm" style="font-family: Open Sans, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, Helvetica, Arial, sans-serif; padding: 8px;">
                                 <table cellpadding="0" cellspacing="0" style="font-family: Open Sans, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, Helvetica, Arial, sans-serif; border-collapse: collapse; width: 100%;">
@@ -288,14 +288,21 @@
 <!-- 
                                                            <h1 style="font-weight: 300; font-size: 28px; line-height: 130%; margin: 0 0 .5em; text-align: center; color: black;">Subcribe mail</h1> -->
 
-                                                         <p style="margin: 0 0 1em; text-align: left; color: black;">Thank you for subscribing.
-                                                         </p>
-                                                         <p style="text-align: justify;">You have been added to our mailing list and will  now among the first to hear about New arrivals ,Big events, Special discounts  straight to your inbox. You can also check more to our website.</p>
-                                                         <p style="text-align: left;">Stay tuned .</p>
-                                                         <p style="text-align: left;">Thank you,<br>Team PO Box.</p>
+             <p style="margin: 0 0 1em; text-align: left; color: black;">Thank you for subscribing.
+             </p>
+             <p style="text-align: justify;">You have been added to our mailing list and will  now among the first to hear about New arrivals ,Big events, Special discounts  straight to your inbox. You can also check more to our website.</p>
+             <p style="text-align: left;">Stay tuned .</p>
+             <p style="text-align: left;">Thank you,<br>Team PO Box.</p>
 
                                                         
-
+<hr>                           
+                           <div style="width: 50%;float: left;">                       
+                                <p style="margin: 0 0 0em; text-align: left; color: black;"><label style="font-weight: 500;">Company website :-</label> https://poboxfashion.com/</p>
+                                <p style="margin: 0 0 0em; text-align: left; color: black;"><label style="font-weight: 500;">Email id :-</label> info@poboxfashion.com</p>
+                            </div>
+                             <div style="width: 50%;float: left;"> 
+                                <p style="margin:0 0 0em;text-align: left;color:black;"><label  style="font-weight: 500;">Address :-</label> <span style="text-align: left!important;width: 100%;float: left;">B-117, Ground Floor, Sumel Business Park-II, <br>Nr.Vanijya Bhavan, Kankaria Road,<br> Ahmedabad:-380002, Gujarat, INDIA.</span></p>
+                            </div>
                                                          
                                                         </td>
                                                     </tr>

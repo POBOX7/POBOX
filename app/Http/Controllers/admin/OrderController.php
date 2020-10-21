@@ -12,6 +12,8 @@ use App\Useraddresses;
 use App\ProductSize;
 use App\PaymentHistory;
 use App\User;
+use App\OrderShipment;
+use App\Orderbillingaddresses;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Helpers\Exporter;
 
@@ -37,64 +39,16 @@ class OrderController extends Controller
      */
     public function orderIndex()
     {
-         /* $apiKey = urlencode('8IQV4ZXumYQ-tOLYwsFk9H3PUHJW1BEaLI6tFMIjqM');
-  
-          // Message details
-          $numbers = array(919574250320, 916355664902);
-          $sender = urlencode('TXTLCL');
-          $message = rawurlencode('This is your message2');
-         
-          $numbers = implode(',', $numbers);
-         
-          // Prepare data for POST request
-          $data = array('apikey' => $apiKey, 'numbers' => $numbers, "sender" => $sender, "message" => $message);
-         
-          // Send the POST request with cURL
-          $ch = curl_init('https://api.textlocal.in/send/');
-          curl_setopt($ch, CURLOPT_POST, true);
-          curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-          curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-          $response = curl_exec($ch);
-          //dd($response);
-          curl_close($ch);
-          
-          // Process your response here
-          echo $response;
-
-
-          // Account details
-            $apiKey = urlencode('8IQV4ZXumYQ-tOLYwsFk9H3PUHJW1BEaLI6tFMIjqM');
-           
-            // Prepare data for POST request
-            $data = array('apikey' => $apiKey);
-           
-            // Send the POST request with cURL
-            $ch = curl_init('https://api.textlocal.in/balance/');
-            curl_setopt($ch, CURLOPT_POST, true);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            $response = curl_exec($ch);
-            curl_close($ch);
-            
-            // Process your response here
-            echo $response;
-            exit();*/
-
-
-
-
-
-
-
-
-
+       
         $oderData = Order::where('is_deleted','0')->orderByDesc('id')->get();
         foreach ($oderData as $keyOderData => $valueOderData) {
            $oderData[$keyOderData] = $valueOderData;
            $user_data = User::where('id',$valueOderData->user_id)->first();
            $oderData[$keyOderData]['user_data'] = $user_data;
 
+
            $paymentHistoryData = PaymentHistory::where('user_id',$user_data['id'])->first();
+           
            $oderData[$keyOderData]['PaymentHistoryData'] = $paymentHistoryData;
 
            $address_data = Useraddresses::where('id',$valueOderData->address_id)->first();
@@ -107,51 +61,36 @@ class OrderController extends Controller
             
               $OrderDetailData[$keyProductData]= OrderDetail::where('order_id',$valueOderData->id)->where('product_id',$valueProductData->id)->first();
              foreach ($OrderDetailData as $key => $value) {
+
                $proData[$key]['order_detail_data']= $value;
               
               }
            }
 
-        $oderData[$keyOderData]['product_data']= $proData;
+       $oderData[$keyOderData]['product_data']= $proData;
+
             
            
         }
-        /*echo "<pre>";
+       /* echo "<pre>";
         print_r($oderData);
-        die();
-       */
+        die();*/
+       
 
        
         return view('admin.order.order_index')->with('oderData', $oderData); 
     }
-      public function viewInvoice($id = null , Request $request)
-     {
+    public function viewInvoice($id = null , Request $request){
         $oderData = Order::where('is_deleted','0')->where('id',$request->id)->get();
-        foreach ($oderData as $keyOderData => $valueOderData) {
-           $oderData[$keyOderData] = $valueOderData;
-           $user_data = User::where('id',$valueOderData->user_id)->first();
-           $oderData[$keyOderData]['user_data'] = $user_data;
-
-           $address_data = Useraddresses::where('id',$valueOderData->address_id)->first();
-           $oderData[$keyOderData]['address_data'] = $address_data;
-
-           $order_detail_product_id = OrderDetail::where('order_id',$valueOderData->id)->pluck('product_id');
-           $productData = Product::whereIn('id',$order_detail_product_id)->get();
-           foreach ($productData as $keyProductData => $valueProductData) {
-            $proData[$keyProductData]= $valueProductData;
-            
-              $OrderDetailData[$keyProductData]= OrderDetail::where('order_id',$valueOderData->id)->where('product_id',$valueProductData->id)->first();
-             foreach ($OrderDetailData as $key => $value) {
-               $proData[$key]['order_detail_data']= $value;
-              
-              }
-           }
-
-        $oderData[$keyOderData]['product_data']= $proData;
+        $billAddress = array();
+        foreach ($oderData as $key => $value) {
+          if($value->bill_address == 'New'){
+            $billAddress = Orderbillingaddresses::where('order_id',$value->id)->first();
+          }
         }
-        $productDetail = OrderDetail::where('order_id',$id)->get();
         
-        $pdf = PDF::loadView('admin.order.download_invoice',compact('oderData','productDetail')); 
+        $productDetail = OrderDetail::where('order_id',$id)->get();
+        $pdf = PDF::loadView('admin.order.download_invoice',compact('oderData','productDetail','billAddress')); 
         return $pdf->stream('invoice.pdf');
         //return $pdf->download('invoice.pdf');
     }
@@ -170,11 +109,7 @@ class OrderController extends Controller
     }
     public function orderStatus(Request $request)
     {
-      /*$textlocal = new Textlocal('demo@txtlocal.com', 'apidemo123');
-
-    $numbers = array(918123456789);
-    $sender = 'Textlocal';
-    $message = 'This is a message';*/
+      
 
     
         extract($_POST);
@@ -184,7 +119,7 @@ class OrderController extends Controller
                             );  
         $update = Order::where('id',$request->id[1])
         ->update($update_data);
-        
+       
         $user_id = Order::where('id',$request->id[1])->first();
         $user_data = User::where('id',$user_id->user_id)->first();
         
@@ -218,43 +153,18 @@ class OrderController extends Controller
         }
         
         $productDetail = OrderDetail::where('order_id',$orderNumberGet->id)->get();
-
-
-
-
-
-       //text local sms send to mobile code  
+        //text local sms send to mobile code  
        $apiKey = urlencode('8IQV4ZXumYQ-tOLYwsFk9H3PUHJW1BEaLI6tFMIjqM');
   
-  
-        //confirm order mail send
-        if ($request->status == 0) {
-        // Message details
-          $mobileNo = "91".$user_data['phone_number'];
-          $numbers = array($mobileNo); /*array(919574250320, 916355664902);*/
-          $sender = urlencode('TXTLCL');
-          $message = rawurlencode('Your order is pendding');
-          $numbers = implode(',', $numbers);
-          // Prepare data for POST request
-          $data = array('apikey' => $apiKey, 'numbers' => $numbers, "sender" => $sender, "message" => $message);
-
-
-           //mail send
-             Mail::send(['html'=>'email.order_pendding_mail'],['user_data'=>$user_data],function($message) use ($user_data){
-                      $message->to($user_data->email)->subject('Pendding order');
-                      $message->from('info@poboxfashion.com','pobox');
-                  });
-        }
+     
+        //confirmed order
         if ($request->status == 1) {
-
-          
-    // dd($user_data['phone_number']);
          // Message details
           $mobileNo = "91".$user_data['phone_number'];
-          $numbers = array($mobileNo);  /*array(919574250320, 916355664902);*/
+          $numbers = array($mobileNo);  
           $sender = urlencode('TXTLCL');
           $productData = Product::whereIn('id',$order_detail_product_id)->first();
-          //$messageText = 'You ' .$orderNumberGet->ordernumber. ' for ' .$productData->name. ' with pobox is confirmed' ;  
+          
            $messageText = "Hi ".$user_data['name']. " your order number " .$orderNumberGet->ordernumber. " for " .$productData['name']. " with pobox is confirmed";
           
           $message = rawurlencode($messageText);
@@ -264,19 +174,8 @@ class OrderController extends Controller
           $data = array('apikey' => $apiKey, 'numbers' => $numbers, "sender" => $sender, "message" => $message);
 
           //mail send
-          /*$user_data['user_name'] =$user_data['name'];
-          $user_data['ordernumber'] =$orderNumberGet->ordernumber;
-          $user_data['product_name'] =$productData['name'];
-          Mail::send(['html'=>'email.order_confirm_mail'],['user_data'=>$user_data],function($message) use ($user_data){
-                      $message->to($user_data->email)->subject('Confirm order');
-                      $message->from('info@poboxfashion.com','pobox');
-                  });*/
-               //mail send
-          
-
-  $pdf = PDF::loadView('email.order_confirm_mail', ['oderData' => $oderData , 'productDetail' => $productDetail]);
+          $pdf = PDF::loadView('email.order_confirm_mail', ['oderData' => $oderData , 'productDetail' => $productDetail]);
       
-          
           Mail::send(['html'=>'email.order_confirm_mail'],['oderData' => $oderData , 'productDetail' => $productDetail] ,function($message) use ($user_data,$pdf){
                       $message->to($user_data['email'])->subject('Your order has been confirmed-po box')
                       ->attachData($pdf->output(), "invoice.pdf");
@@ -284,76 +183,54 @@ class OrderController extends Controller
 
                   });
 
-
-
-
-
-
         }
+        //dispatch order
         if ($request->status == 2) {
-         // Message details
-          $mobileNo = "91".$user_data['phone_number'];
-          $numbers = array($mobileNo);  /*array(919574250320, 916355664902);*/
-          $sender = urlencode('TXTLCL');
-          $productData = Product::whereIn('id',$order_detail_product_id)->first();
-          //$messageText = 'You ' .$orderNumberGet->ordernumber. ' for ' .$productData->name. ' with pobox is dispatch' ; 
-           $messageText = "Hi ".$user_data['name']. " your order number " .$orderNumberGet->ordernumber. " for " .$productData['name']. " with pobox is dispatch"; 
-          
-          $message = rawurlencode($messageText);
-          $numbers = implode(',', $numbers);
-          // Prepare data for POST request
-          $data = array('apikey' => $apiKey, 'numbers' => $numbers, "sender" => $sender, "message" => $message);
-          
-          //mail send
-         /*  $user_data['user_name'] =$user_data['name'];
-          $user_data['ordernumber'] =$orderNumberGet->ordernumber;
-          $user_data['product_name'] =$productData['name'];
+             // Message details
+              $mobileNo = "91".$user_data['phone_number'];
+              $numbers = array($mobileNo);  
+              $sender = urlencode('TXTLCL');
+              $productData = Product::whereIn('id',$order_detail_product_id)->first();
+               $messageText = "Hi ".$user_data['name']. " your order number " .$orderNumberGet->ordernumber. " for " .$productData['name']. " with pobox is dispatch"; 
+              
+              $message = rawurlencode($messageText);
+              $numbers = implode(',', $numbers);
+              // Prepare data for POST request
+              $data = array('apikey' => $apiKey, 'numbers' => $numbers, "sender" => $sender, "message" => $message);
+              
+              Mail::send(['html'=>'email.order_dispatch_mail'],['oderData' => $oderData , 'productDetail' => $productDetail] ,function($message) use ($user_data){
+                          $message->to($user_data['email'])->subject('Dispatch order');
+                          $message->from('info@poboxfashion.com','pobox');
 
-             Mail::send(['html'=>'email.order_dispatch_mail'],['user_data'=>$user_data],function($message) use ($user_data){
-                      $message->to($user_data->email)->subject('Dispatch order');
-                      $message->from('info@poboxfashion.com','pobox');
-                  });*/
-
-                 //  $pdf = PDF::loadView('email.order_dispatch_mail', ['oderData' => $oderData , 'productDetail' => $productDetail]);
-      
-          
-          Mail::send(['html'=>'email.order_dispatch_mail'],['oderData' => $oderData , 'productDetail' => $productDetail] ,function($message) use ($user_data){
-                      $message->to($user_data['email'])->subject('Dispatch order');
-                      $message->from('info@poboxfashion.com','pobox');
-
-                  });
+                      });
         }
-        if ($request->status == 3) {
-          // Message details
-          $mobileNo = "91".$user_data['phone_number'];
-          $numbers = array($mobileNo);
-          $sender = urlencode('TXTLCL');
-           $productData = Product::whereIn('id',$order_detail_product_id)->first();
-          //$messageText = 'You ' .$orderNumberGet->ordernumber. ' for ' .$productData->name. ' with pobox is delivered' ;
-          $messageText = "Hi ".$user_data['name']. " your order number " .$orderNumberGet->ordernumber. " for " .$productData['name']. " with pobox is delivered";  
-          
-          $message = rawurlencode($messageText);
-          $numbers = implode(',', $numbers);
-          // Prepare data for POST request
-          $data = array('apikey' => $apiKey, 'numbers' => $numbers, "sender" => $sender, "message" => $message);
-          
-          //mail send
-          /*$user_data['user_name'] =$user_data['name'];
-          $user_data['ordernumber'] =$orderNumberGet->ordernumber;
-          $user_data['product_name'] =$productData['name'];
-             Mail::send(['html'=>'email.order_delivered_mail'],['user_data'=>$user_data],function($message) use ($user_data){
-                      $message->to($user_data->email)->subject('Delivered  order');
-                      $message->from('info@poboxfashion.com','pobox');
-                  });*/
-                   $pdf = PDF::loadView('email.order_delivered_mail', ['oderData' => $oderData , 'productDetail' => $productDetail]);
-      
-          
-          Mail::send(['html'=>'email.order_delivered_mail'],['oderData' => $oderData , 'productDetail' => $productDetail] ,function($message) use ($user_data,$pdf){
-                      $message->to($user_data['email'])->subject('Delivered  order')
-                      ->attachData($pdf->output(), "invoice.pdf");
-                      $message->from('info@poboxfashion.com','pobox');
 
-                  });
+        //Delivered order
+        if ($request->status == 3) {
+
+              // Message details
+              $mobileNo = "91".$user_data['phone_number'];
+              $numbers = array($mobileNo);
+              $sender = urlencode('TXTLCL');
+              $productData = Product::whereIn('id',$order_detail_product_id)->first();
+
+              $messageText = "Hi ".$user_data['name']. " your order number " .$orderNumberGet->ordernumber. " for " .$productData['name']. " with pobox is delivered";  
+              
+              $message = rawurlencode($messageText);
+              $numbers = implode(',', $numbers);
+              // Prepare data for POST request
+              $data = array('apikey' => $apiKey, 'numbers' => $numbers, "sender" => $sender, "message" => $message);
+              
+              //mail send
+              $pdf = PDF::loadView('email.order_delivered_mail', ['oderData' => $oderData , 'productDetail' => $productDetail]);
+               //dd("fffffffff");
+              Mail::send(['html'=>'email.order_delivered_mail'],['oderData' => $oderData , 'productDetail' => $productDetail] ,function($message) use ($user_data,$pdf){
+                          $message->to($user_data['email'])->subject('Delivered  order')
+                          ->attachData($pdf->output(), "invoice.pdf");
+                          $message->from('info@poboxfashion.com','pobox');
+
+                      });
+
         } 
 
          // Send the POST request with cURL
@@ -364,15 +241,14 @@ class OrderController extends Controller
           $response = curl_exec($ch);
           //dd($response);
           curl_close($ch);
-          
           // Process your response here
           echo $response;
-
-        
 
         echo '1';
 
     }
+
+
     public function editOrder(Request $request,$id){
       $oderData = Order::where('id',$id)->where('is_deleted','0')->orderByDesc('id')->get();
         foreach ($oderData as $keyOderData => $valueOderData) {
@@ -407,7 +283,7 @@ class OrderController extends Controller
     }
     public function viewOrder(Request $request,$id){
 
-      $oderData = Order::where('id',$id)->where('is_deleted','0')->orderByDesc('id')->get();
+        $oderData = Order::where('id',$id)->where('is_deleted','0')->orderByDesc('id')->get();
         foreach ($oderData as $keyOderData => $valueOderData) {
            $oderData[$keyOderData] = $valueOderData;
            $user_data = User::where('id',$valueOderData->user_id)->first();
@@ -434,13 +310,11 @@ class OrderController extends Controller
            $productDetail = OrderDetail::where('order_id',$id)->get();
 
 
-        $oderData[$keyOderData]['product_data']= $proData;
-
-
-            
-           
+          $oderData[$keyOderData]['product_data']= $proData;
         }
-         return view('admin.order.order_view',compact('oderData','id','productDetail'));
+
+        $oderShipmentData = OrderShipment::where('order_id',$id)->orderByDesc('id')->get();
+         return view('admin.order.order_view',compact('oderData','id','productDetail','oderShipmentData'));
     }
 
     public function export( Request $request ) 
@@ -530,5 +404,93 @@ class OrderController extends Controller
     public function refundOrder(Request $request , $id)
     {
         dd($id);
+    }
+
+    public function addShipmentDetail(Request $request)
+    {
+      
+        $add_data = array('order_id'=>$request->order_id , 'description' => $request->description);
+        OrderShipment::insert($add_data);
+
+             //sms send to mobile
+             $orderNumberGet = Order::where('id',$request->order_id)->first();
+             $ordernumber = $orderNumberGet['ordernumber'];
+             $user_id = $orderNumberGet['user_id'];
+             $order_detail_product_id = OrderDetail::where('order_id',$orderNumberGet->id)->pluck('product_id');
+
+                  $user_data = User::where('id',$user_id)->first();
+                 /* $apiKey = urlencode('8IQV4ZXumYQ-tOLYwsFk9H3PUHJW1BEaLI6tFMIjqM');
+                 // Message details
+                    $numbers = array($user_data['phone_number']);
+                    $sender = urlencode('TXTLCL');
+                    $productData = Product::whereIn('id',$order_detail_product_id)->first();
+      
+                    $messageText = "Hi ".$user_data['name']. " your order number " .$ordernumber. " for " .$productData['name']. " with pobox is shipping";
+
+                    $message = rawurlencode($messageText);
+
+                    $numbers = implode(',', $numbers);
+                   
+                    // Prepare data for POST request
+                    $data = array('apikey' => $apiKey, 'numbers' => $numbers, "sender" => $sender, "message" => $message);
+                    // Send the POST request with cURL
+                    $ch = curl_init('https://api.textlocal.in/send/');
+                    curl_setopt($ch, CURLOPT_POST, true);
+                    curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    $response = curl_exec($ch);
+                    //dd($response);
+                    curl_close($ch);
+                    
+                    // Process your response here
+                    //echo $response;
+
+                  //sms send code end*/
+                   
+
+        //mail data
+      $oderData = Order::where('is_deleted','0')->where('id',$request->order_id)->get();
+        foreach ($oderData as $keyOderData => $valueOderData) {
+           $oderData[$keyOderData] = $valueOderData;
+           $user_data = User::where('id',$valueOderData->user_id)->first();
+           $oderData[$keyOderData]['user_data'] = $user_data;
+
+           $address_data = Useraddresses::where('id',$valueOderData->address_id)->first();
+           $oderData[$keyOderData]['address_data'] = $address_data;
+
+           $order_detail_product_id = OrderDetail::where('order_id',$valueOderData->id)->pluck('product_id');
+           $productData = Product::whereIn('id',$order_detail_product_id)->get();
+           foreach ($productData as $keyProductData => $valueProductData) {
+            $proData[$keyProductData]= $valueProductData;
+            
+              $OrderDetailData[$keyProductData]= OrderDetail::where('order_id',$valueOderData->id)->where('product_id',$valueProductData->id)->first();
+             foreach ($OrderDetailData as $key => $value) {
+               $proData[$key]['order_detail_data']= $value;
+              
+              }
+           }
+
+        $oderData[$keyOderData]['product_data']= $proData;
+        }
+        
+        $productDetail = OrderDetail::where('order_id',$request->order_id)->get();
+
+                 //Email send start
+                  $shipping_content = $request->description;
+                 Mail::send(['html'=>'email.shipping_mail'],['productDetail'=>$productDetail,'oderData'=>$oderData,'shipping_content' => $shipping_content,'user_data' => $user_data] ,function($message) use ($user_data){
+                  $message->to($user_data['email'])->subject('Your order has been shipping-po box');
+                  $message->from('info@poboxfashion.com','pobox');
+
+              });
+
+
+                 //Email send end   
+              
+               return 1;
+                // echo "shipment_add";
+                //return redirect()->route('admin.order')->with('success', 'Shipping successfully.');
+
+
+
     }
 }

@@ -1,9 +1,12 @@
 @extends('new_resources.layouts.new_app') 
 @section('content')
 <!--Hero Section-->
+ @if(!is_null($bannerSlider)) 
 <div class="hero-section hero-background style-02" style="background-image: url('{{ asset('assets/upload_images/banner') }}/{{$bannerSlider['image']}}">
     <h1 class="page-title">Fashion Blogger</h1>
 </div>
+@endif
+
 <div class="main" style="padding-left: 70px;padding-right: 70px;">
   <nav aria-label="breadcrumb" class="breadcrumb-nav">
     <ol class="breadcrumb" style="background: transparent;padding-left: 0;">
@@ -13,6 +16,7 @@
   </nav>
   <!--articles block-->
   <ul class="posts-list main-post-list row">
+    @if(count($blogsData))
     @foreach ($blogsData as $keyBlogsData => $valueBlogsData)
      <li class="post-elem col-lg-4 col-md-4 col-sm-6 col-xs-12">
       <div class="post-item effect-04 style-bottom-info">
@@ -38,6 +42,10 @@
       </div>
     </li>
     @endforeach
+    @else
+   <h3 style="text-align: center;width: 100%;margin-bottom: 100px;">NO BLOG AVAILABLE</h3>
+
+    @endif
   </ul>
   {{$blogsData->links()}}
 </div>

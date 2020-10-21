@@ -32,6 +32,11 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
+    public function adminErrors()
+    {
+      //dd("hhh");
+     return view('errors.404_admin'); 
+    }
     public function index()
     {
         $dailySalesCount = Order::whereDate('created_at', Carbon::today())->count();
@@ -78,7 +83,7 @@ class HomeController extends Controller
 
         if(!empty($month)){
           foreach ($month as $key => $value){
-            $appordersgraph = Order::where('created_at','>=',$value.'-01')->where('created_at','<=',$value.'-31')->count();
+            $appordersgraph = Order::where('created_at','>=',$value.'-01')->where('created_at','<=',$value.'-29')->count();
             $orderGraphData[$key]['month'] = $monthname[$key];
             $orderGraphData[$key]['apporder'] = $appordersgraph;
           }
@@ -106,7 +111,7 @@ class HomeController extends Controller
 
         if(!empty($month)){
           foreach ($month as $key => $value){
-            $appordersgraph = Purchases::where('created_at','>=',$value.'-01')->where('created_at','<=',$value.'-31')->count();
+            $appordersgraph = Purchases::where('created_at','>=',$value.'-01')->where('created_at','<=',$value.'-29')->count();
             $purchaseGraphData[$key]['month'] = $monthname[$key];
             $purchaseGraphData[$key]['apporder'] = $appordersgraph;
           }
@@ -133,7 +138,7 @@ class HomeController extends Controller
 
         if(!empty($month)){
           foreach ($month as $key => $value){
-            $appordersgraph = Order::where('created_at','>=',$value.'-01')->where('created_at','<=',$value.'-31')->sum('totalamount');
+            $appordersgraph = Order::where('created_at','>=',$value.'-01')->where('created_at','<=',$value.'-29')->sum('totalamount');
             $revenueGraphData[$key]['month'] = $monthname[$key];
             $revenueGraphData[$key]['apporder'] = $appordersgraph;
           }

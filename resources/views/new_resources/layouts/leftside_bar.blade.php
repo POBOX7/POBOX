@@ -255,9 +255,10 @@
                         <div class="price-box">
                           @if($valueFeaturedProduct['discount'] != 0 )
                            <span class="product-price">₹{{$valueFeaturedProduct['mrp']}}</span>
-                           <span class="product-prices" style="color: red">₹{{$valueFeaturedProduct['price']}}</span>
+                           <span class="product-prices">₹{{$valueFeaturedProduct['price']}}</span>
                           @else
-                          <span class="product-price">₹{{$valueFeaturedProduct['price']}}</span> 
+                           
+                           <span class="product-prices" style="color: red">₹{{$valueFeaturedProduct['mrp']}}</span>
                           @endif 
                         </div>
                         <!-- End .price-box -->

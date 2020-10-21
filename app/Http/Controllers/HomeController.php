@@ -26,10 +26,16 @@ class HomeController extends Controller
   {
    return view('errors.404'); 
   }
- 
+  
   public function index () 
   {
-
+    //CHECK IF THE REQUEST COMES FROM ADMIN SUBDOMAIN
+      $url = (explode('.', $_SERVER['HTTP_HOST']));
+      if(isset($url[0]) && $url[0]=='admin'){
+      return view('auth.admin-login');
+          return redirect()->route('login')->with('status','Thank you for contacting us,we will get back to you soon');
+     }
+    //CHECK IF THE REQUEST COMES FROM ADMIN SUBDOMAIN
     //is_trending
     $trendingData = Product::where('is_trending',1)->where('status','1')->where('is_deleted','0')->limit(4)->get(); 
 
@@ -40,13 +46,13 @@ class HomeController extends Controller
     foreach ($category as $key => $value) {
       $category[$key] = $value; 
       if($value->id == 1){
-        $link = "http://3.7.41.47/pobox_new/pobox/public/kurties";
+        $link = "https://poboxfashion.com/kurties";
       }
       if($value->id == 2){
-        $link = "http://3.7.41.47/pobox_new/pobox/public/kurta-sets";
+        $link = "https://poboxfashion.com/kurta-sets";
       }
       if($value->id == 3){
-        $link = "http://3.7.41.47/pobox_new/pobox/public/dresses";
+        $link = "https://poboxfashion.com/dresses";
       }
       $category[$key]['link'] =  $link;
     } 
@@ -156,13 +162,19 @@ class HomeController extends Controller
     return view('pages.term_and_condition',compact('pagesData'));
   }
   public function sizeInformation(){
-    
+     $bannerSlider = Banners::where('page_id',10)->first(); 
      //SizeInformation 
-      $sizeInformation = SizeInformation::all();
+     /* $sizeInformation = SizeInformation::all();
+
       foreach ($sizeInformation as $keySizeInformation => $valueSizeInformation) {
           $sizeInformation[$keySizeInformation]['size_name'] = Sizes::where('id',$valueSizeInformation->id)->where('status',1)->where('is_deleted',0)->get()->toArray();
-      }
-    return view('pages.size_guide',compact('sizeInformation'));
+      }*/
+      $sizeInformations = SizeInformation::select('size_information.id','size_id','chest','waist','hips','length','shoulder','sizes.name AS size_name')
+                                            ->join('sizes', 'sizes.id', '=', 'size_information.size_id')
+                                            ->orderByDesc('size_information.id')->get();
+                                            //dd($sizeInformation);
+     
+    return view('pages.size_guide',compact('sizeInformations','bannerSlider'));
   }
   public function shippingInfo(){
      $pagesData = Pages::where('id','9')->where('is_delete','0')->where('active','1')->first();

@@ -56,16 +56,22 @@ class AboutusController extends Controller
             $update_data['heading_image'] = $filename;
         }
 
-        $image = $request->image;
+        /*$image = $request->image;
         if(!empty($image)){
             $destinationPath = 'assets/upload_images/about';
             $extension= $image->getClientOriginalExtension();
             $filename = time().'_2.'.$extension;
             $image->move($destinationPath, $filename); 
             $update_data['image'] = $filename;
-        }
-
-        $update = AboutUs::where('id',$id)->update($update_data);
+        }*/
+        $checkAboutsData = AboutUs::where('id',$id)->first();
+         if (is_null($checkAboutsData)) {
+           AboutUs::insert($update_data);
+       }
+       if (!is_null($checkAboutsData)) {
+          $update = AboutUs::where('id',$id)->update($update_data);
+       }
+        
         return redirect()->route('edit.aboutus')->with('success', 'Details updated successfully.');
     }
 

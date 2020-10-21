@@ -38,17 +38,11 @@
    } 
 </style>
 <main class="main new-arrival">
-   @if($bannerSlider['url'] != null)
-     <a href="{{$bannerSlider['url']}}">
-         <div class="banner banner-cat" style="background-image: url('{{ asset('assets/upload_images/banner') }}/{{$bannerSlider['image']}}');background-position: 100% 0px;">
-         </div><!-- End .banner -->
-     </a>
-     @else
-     <a href="#"  onClick="javascript:return false;"   style="pointer-events: none;cursor: context-menu;">
-         <div class="banner banner-cat"  onClick="javascript:return false;" style="background-image: url('{{ asset('assets/upload_images/banner') }}/{{$bannerSlider['image']}}');background-position: 100% 0px;">
-         </div><!-- End .banner -->
-     </a>
-     @endif
+    @if(!is_null($bannerSlider)) 
+<div class="hero-section hero-background style-02" style="background-image: url('{{ asset('assets/upload_images/banner') }}/{{$bannerSlider['image']}}">
+   <!--  <h1 class="page-title">Kurties</h1> -->
+</div>
+@endif
    <nav aria-label="breadcrumb" class="breadcrumb-nav">
       <div class="container">
          <ol class="breadcrumb mt-0">
@@ -98,7 +92,7 @@
                               </div>
                               @endif
                               <a href="{{route('productDetail',$valueNewArrivalProductData['id'])}}">
-                              <img style="height: -webkit-fill-available;width: auto!important;" src="{{ asset('assets/upload_images/product') }}/{{$valueNewArrivalProductData['image']}}">
+                              <img style="height: -webkit-fill-available; width: auto!important;" src="{{ asset('assets/upload_images/product') }}/{{$valueNewArrivalProductData['image']}}">
                               </a>
                               <a  data-toggle="modal" data-target="#product-{{$valueNewArrivalProductData['id']}}" class="btn-quickviewss" title="Quick View">Quick View</a> 
                            </figure>
@@ -254,7 +248,7 @@
                <div class="product-default">
                   <figure style="height: 400px;">
                      <a href="">
-                     <img src="{{ asset('assets/upload_images/product') }}/{{$valueFeaturedProduct['image']}}width: auto!important;" style="height: -webkit-fill-available;">
+                     <img src="{{ asset('assets/upload_images/product') }}/{{$valueFeaturedProduct['image']}}" style="height: -webkit-fill-available;width: auto!important;">
                      </a>
                   </figure>
                   <div class="product-details">

@@ -35,6 +35,8 @@ setTimeout(function() { $("#myElem").hide(); }, 12000);
                 <td>Color</td>
                 <td>Qty</td>
                 <td>SKU</td>
+                <td>HSN No</td>
+                <td>GST</td>
                 <td>Price</td>
                 <!-- <td>Refund</td> -->
               </tr>
@@ -51,6 +53,18 @@ setTimeout(function() { $("#myElem").hide(); }, 12000);
                     <td style="padding-left: 24px;"><p style="color:white;background:{{$product_data['hex_code'] }}!important;border: 1px solid #000;height: 15px;width: 15px;"></p></td>
                     <td>{{$product_data['qty'] }}</td>
                     <td>{{$product_data->getProduct['sku'] }}</td>
+                    <td>{{$product_data->hsn_no }}</td>
+                    <td>
+                      {{$product_data->gst_amount }}
+                      <br>
+                      @if($oderData[$keyOderData]['address_data']['state'] == 'Gujarat')
+                      CGST : {{$product_data->gst_amount /2 }} 
+                      <br>
+                      SGST : {{$product_data->gst_amount /2 }}
+                      @else
+                      IGST : {{$product_data->gst_amount }}
+                      @endif
+                    </td>
                     <td>₹{{$product_data['price'] * $product_data['qty'] }}</td>
                       <!-- <td>
                         <a href="{{route('refund.order',$OderDatas['id'])}}"> 
@@ -99,12 +113,12 @@ setTimeout(function() { $("#myElem").hide(); }, 12000);
                                               @endif
                                               
                                             </tr> 
-                                            <tr>
+                                            {{-- <tr>
                                               <td><b>You Saved</b></td>
                                               <td>₹{{$OderDatas['saveAmount']}}</td>
-                                            </tr>
+                                            </tr> --}}
                                             <tr>
-                                              <td><b>Applicable GST(5%)</b></td>
+                                              <td><b>Applicable GST</b></td>
                                               <td>₹{{$OderDatas['gstAmount']}}</td>
                                             </tr>
                                             <tr>
@@ -118,7 +132,12 @@ setTimeout(function() { $("#myElem").hide(); }, 12000);
                                             </tr> 
                                             <tr>
                                               <td><b>Txn ID</b></td>
-                                              <td>{{$oderData[$keyOderData]['PaymentHistoryData']['payment_id']}}</td>
+                                               <td>
+                                 @if(isset($oderData[$keyOderData]['PaymentHistoryData']['payment_id']))
+                                  {{$oderData[$keyOderData]['PaymentHistoryData']['payment_id']}}
+                                  
+                                  @endif
+                                            </td>
                                             </tr> 
 
                                           </tbody>
@@ -177,8 +196,31 @@ setTimeout(function() { $("#myElem").hide(); }, 12000);
                                             </tr> 
                                            
                                              
-                                          </tbody></table>
+                                          </tbody>
+                                        </table>
+                                        <br>
+                                        <br>
+                                         <table width="45%" style="float:left;">
+                                          <label style="width: 100%;">Shipping Details</label>
+                                          <th>
+                                            Desctiption
+                                          </th>
+                                          <th>
+                                            Date
+                                          </th>
+                                             @foreach($oderShipmentData as $oderShipment_key => $shipment_data)
+                                            <tr>
+                                              <td>
+                                                {{$shipment_data->description}}
+                                              </td>
+                                              <td>
+                                                {{$shipment_data->created_at}}
+                                              </td>
+                                            </tr>
+                                            @endforeach 
+                                         </table>
                                         </form>
+
                                           </div>
                                           
                                         </div>

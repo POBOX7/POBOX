@@ -40,13 +40,16 @@ class AdminController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function storeAdmin( Request $request ) {    
+    public function storeAdmin( Request $request ) {
+        /*print_r('<pre>');
+        print_r($request->all());
+        exit;*/
         $validatedData = $request->validate([
             'name'=> 'required', 
-            'email' => 'required|unique:users,email', 
+            'email' => 'required|unique:users,email,2,role_id', 
             'password' => 'required|confirmed|min:6'       
         ]); 
-        $user = User::where('email','=',$request->email)->where('is_deleted','=',0)->first();
+        $user = User::where('email','=',$request->email)->where('is_deleted','=',0)->where('role_id','=',1)->first();
         
         if(empty($user)){
             $admin = new User(); 
@@ -75,7 +78,8 @@ class AdminController extends Controller
 
     public function updateAdmin(Request $request ,$id){
         $request->validate([
-                'email' => 'required|unique:users,email,'.$id,
+                //'email' => 'required|unique:users,email,'.$id,
+                'email' => 'required|unique:users,email,'.$id.',',
                 'name'  => 'required',
                 'password'=>'confirmed'
         ]);

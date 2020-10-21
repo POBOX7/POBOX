@@ -254,8 +254,8 @@
             <tr>
                 <td align="center" valign="top" style="font-family: Open Sans, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, Helvetica, Arial, sans-serif;">
                    
-                    <span class="preheader" style="font-size: 0; padding: 0; display: none; max-height: 0; mso-hide: all; line-height: 0; color: transparent; height: 0; max-width: 0; opacity: 0; overflow: hidden; visibility: hidden; width: 0;">Business mail</span>
-                    <table class="wrap" cellspacing="0" cellpadding="0" style="font-family: Open Sans, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, Helvetica, Arial, sans-serif; border-collapse: collapse; width: 100%; max-width: 640px; text-align: left;">
+                  <!--   <span class="preheader" style="font-size: 0; padding: 0; display: none; max-height: 0; mso-hide: all; line-height: 0; color: transparent; height: 0; max-width: 0; opacity: 0; overflow: hidden; visibility: hidden; width: 0;">Business mail</span> -->
+                    <table class="wrap" cellspacing="0" cellpadding="0" style="font-family: Open Sans, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, Helvetica, Arial, sans-serif; border-collapse: collapse; width: 100%; max-width: 845px; text-align: left;">
                         <tr>
                             <td class="p-sm" style="font-family: Open Sans, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, Helvetica, Arial, sans-serif; padding: 8px;">
                                 <table cellpadding="0" cellspacing="0" style="font-family: Open Sans, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, Helvetica, Arial, sans-serif; border-collapse: collapse; width: 100%;">
@@ -263,8 +263,8 @@
                                         <td class="py-lg" style="font-family: Open Sans, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, Helvetica, Arial, sans-serif; padding-top: 24px; padding-bottom: 24px;">
                                             <table cellspacing="0" cellpadding="0" style="font-family: Open Sans, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, Helvetica, Arial, sans-serif; border-collapse: collapse; width: 100%;">
                                                 <tr>
-                                                    <td style="font-family: Open Sans, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, Helvetica, Arial, sans-serif;">
-                                                        <a href="{{url('/')}}" style="color: #467fcf; text-decoration: none;"><img src="{{url('/images/logo.png')}}" width="116" height="34" alt="" style="line-height: 100%; outline: none; text-decoration: none; vertical-align: baseline; font-size: 0; border: 0 none;text-align: center;" /></a>
+                                                    <td style="font-family: Open Sans, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, Helvetica, Arial, sans-serif;text-align: center;">
+                                                        <a href="{{url('/')}}" style="color: #467fcf; text-decoration: none;"><img src="http://admin.poboxfashion.com/assets/upload_images/favicon.png" width="116" height="34" alt="" style="line-height: 100%; outline: none; text-decoration: none; vertical-align: baseline; font-size: 0; border: 0 none; " /></a>
                                                     </td>
                                                     <td class="text-right" style="font-family: Open Sans, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, Helvetica, Arial, sans-serif;" align="right">
                                                       
@@ -280,11 +280,9 @@
                                             <td style="font-family: Open Sans, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, Helvetica, Arial, sans-serif;">
                                                 <table cellpadding="0" cellspacing="0" style="font-family: Open Sans, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, Helvetica, Arial, sans-serif; border-collapse: collapse; width: 100%;">
                                                     <tr>
-                                                        @php $image = url('/adminlayout/images/mail6.png'); @endphp
+                                                      
                                                         <td class="content text-center" style="font-family: Open Sans, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, Helvetica, Arial, sans-serif; padding: 40px 48px;" align="center">
-                                                            <div class="mb-md" style="margin-bottom: 16px;">
-                                                                <img src="{{$image}}" alt="" height="160" class="img-illustration" style="line-height: 100%; border: 0 none; outline: none; text-decoration: none; vertical-align: baseline; font-size: 0; max-width: 240px; max-height: 160px; width: auto; height: auto;" />
-                                                            </div>
+                                                         
 
                                                            <h1 style="font-weight: 300; font-size: 28px; line-height: 130%; margin: 0 0 .5em; text-align: center; color: black;">Forgot Password</h1>
 
@@ -299,8 +297,14 @@
                                                           <p style="margin: 0 0 1em; text-align: left; color: black;">
                                                             We recommend that you keep your password secure and not share it with anyone.
                                                          </p>
-                                                          
-                                                         
+                            <hr>                           
+                           <div style="width: 50%;float: left;">                       
+                                <p style="margin: 0 0 0em; text-align: left; color: black;"><label style="font-weight: 500;">Company website :-</label> https://poboxfashion.com/</p>
+                                <p style="margin: 0 0 0em; text-align: left; color: black;"><label style="font-weight: 500;">Email id :-</label> info@poboxfashion.com</p>
+                            </div>
+                             <div style="width: 50%;float: left;"> 
+                                <p style="margin:0 0 0em;text-align: left;color:black;"><label  style="font-weight: 500;">Address :-</label> <span style="text-align: left!important;width: 100%;float: left;">B-117, Ground Floor, Sumel Business Park-II, <br>Nr.Vanijya Bhavan, Kankaria Road,<br> Ahmedabad:-380002, Gujarat, INDIA.</span></p>
+                            </div>
                                                         </td>
                                                     </tr>
                                                     <tr>

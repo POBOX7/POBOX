@@ -42,8 +42,10 @@ class BrandController extends Controller
      */
     public function storeBrand( Request $request ) {    
         $validatedData = $request->validate([
-            'name'=> 'required|max:15'
+            'name'=> 'required|max:15',
+             //'image' => 'required|image|mimes:jpeg,png,jpg|max:5120'
         ]); 
+
 
         $add_data = array(
                             'name'      => $request->name,
@@ -66,7 +68,8 @@ class BrandController extends Controller
     public function updateBrand(Request $request ,$id)
     {
         $request->validate([
-                'name' => 'required|max:15'  
+                'name' => 'required|max:15' ,
+                // 'image' => 'required|image|mimes:jpeg,png,jpg|max:5120' 
         ]);
 
         $update_data = array(

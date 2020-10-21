@@ -14,6 +14,7 @@ use App\Wishlist;
 use App\Colors;
 use App\Order;
 use App\OrderDetail;
+use App\Orderbillingaddresses;
 use App\Banners;
 use App\SizeInformation;
 use Illuminate\Support\Facades\DB;
@@ -22,9 +23,11 @@ use Auth;
 use App\User;
 use App\Useraddresses;
 use PDF;
+use App\OrderShipment;
 class OrderController extends Controller {
 
   public function order(Request $request){
+   
     
 	if(Auth::check())
 	{
@@ -37,7 +40,8 @@ class OrderController extends Controller {
   
     $order = Order::find($id);
     $orderDetails = OrderDetail::where('order_id',$order->id)->get();
-    return view('order.order.order_detail',compact('orderDetails','order'));
+    $oderShipmentData = OrderShipment::where('order_id',$id)->orderByDesc('id')->get();
+    return view('order.order.order_detail',compact('orderDetails','order','oderShipmentData'));
   }
    public function orderSummary(Request $request){ 
     return view('order.order_summary');
@@ -64,30 +68,15 @@ class OrderController extends Controller {
   public function viewInvoice($id , Request $request)
      {
         $oderData = Order::where('is_deleted','0')->where('id',$request->id)->get();
-        foreach ($oderData as $keyOderData => $valueOderData) {
-           $oderData[$keyOderData] = $valueOderData;
-           $user_data = User::where('id',$valueOderData->user_id)->first();
-           $oderData[$keyOderData]['user_data'] = $user_data;
-
-           $address_data = Useraddresses::where('id',$valueOderData->address_id)->first();
-           $oderData[$keyOderData]['address_data'] = $address_data;
-
-           $order_detail_product_id = OrderDetail::where('order_id',$valueOderData->id)->pluck('product_id');
-           $productData = Product::whereIn('id',$order_detail_product_id)->get();
-           foreach ($productData as $keyProductData => $valueProductData) {
-            $proData[$keyProductData]= $valueProductData;
-            
-              $OrderDetailData[$keyProductData]= OrderDetail::where('order_id',$valueOderData->id)->where('product_id',$valueProductData->id)->first();
-             foreach ($OrderDetailData as $key => $value) {
-               $proData[$key]['order_detail_data']= $value;
-              
-              }
-           }
-
-        $oderData[$keyOderData]['product_data']= $proData;
+        $billAddress = array();
+        foreach ($oderData as $key => $value) {
+          if($value->bill_address == 'New'){
+            $billAddress = Orderbillingaddresses::where('order_id',$value->id)->first();
+          }
         }
+        
         $productDetail = OrderDetail::where('order_id',$id)->get();
-        $pdf = PDF::loadView('admin.order.download_invoice',compact('oderData','productDetail')); 
+        $pdf = PDF::loadView('admin.order.download_invoice',compact('oderData','productDetail','billAddress')); 
         return $pdf->stream('invoice.pdf');
         //return $pdf->download('invoice.pdf');
     }

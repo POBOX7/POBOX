@@ -43,23 +43,21 @@ class LoginController extends Controller
     }
     public function login(Request $request)
     {
-       $email = $request->email;
+        $email = $request->email;
         $password = $request->password;
-       $user = User::where('email',$email)->where('role_id','!=','0')->where('role_id','!=','2')->first(); 
-
-        if ($user['role_id'] == 1) {
-            if (Auth::attempt(array('email' => $email, 'password' => $password))){
-                $user = User::where('email',$email)->first();
-                 return redirect()->route('home');
-            }
-            return redirect()->route('login')->with('error','Email address or password is incorrect.');
-        }
+        $user = User::where('email',$email)->where('role_id','!=','0')->where('role_id','!=','2')->first(); 
 
         if(is_null($user)){ 
            return redirect()->route('login')->with('error', 'Email address is not registered.');
         }
-           
-           
+
+        if ($user['role_id'] == 1) {
+            if (Auth::attempt(array('email' => $email, 'password' => $password, 'role_id' => 1))){
+                $user = User::where('email',$email)->first();
+                return redirect()->route('home');
+            }
+            return redirect()->route('login')->with('error','Email address or password is incorrect.');
+        }           
     }
     public function logout () 
     {

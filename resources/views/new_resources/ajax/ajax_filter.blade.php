@@ -1,12 +1,10 @@
 <div class="row row-sm">
-
    @if(count($newArrivalProductDatas) == 0)
         <div class="dropdown-cart-total align-middle cartEmpty" style="margin:Auto;">
             <div class="col-md-12">
                 <img src="{{ asset('assets/images/empty-product.png')}}" width="200px">
             </div>
              <div class="col-md-12">
-             <!--{{URL::current()}}--->
                <span>No products are available.</span>
             </div>   
        </div>
@@ -27,8 +25,6 @@
                 <a href="{{route('productDetail',$valueNewArrivalProductData['id'])}}">
                     <img src="{{ asset('assets/upload_images/product/thumb/') }}/{{$valueNewArrivalProductData['image']}}" style="height: -webkit-fill-available;width: auto!important;">
                 </a>
-                <!--<a  data-toggle="modal" id="product_{{$valueNewArrivalProductData['id']}}" data-target="#addCartModal2" class="btn-quickviewss aaaaa view-details" title="Quick View">Quick View</a>-->
-               <!--  <button class="btn-icon btn-add-cart view-details" id="product_{{$valueNewArrivalProductData['id']}}" data-toggle="modal" data-target="#addCartModal2"><i class="icon-bag"></i>ADD TO CART</button> -->
             </figure>
             <div class="product-details">
                 <h2 class="product-title">
@@ -67,11 +63,6 @@
                     @endif                      
                      <input type="hidden" name="user_id" name="user_id" id="user_id" value="{{$user_id}}">
                     
-
-                    <!-- <a href="ajax/product-quick-view.html" class="btn-quickview" title="Quick View"><i class="fas fa-external-link-alt"></i></a> -->
-                    <!--   <a  data-toggle="modal" data-target="#product-{{$valueNewArrivalProductData['id']}}" class="btn-quickviewss" title="Quick View"><i class="fas fa-external-link-alt"></i></a> -->
-                    <!-- Modal -->
-                    
                 </div>
             </div>
             <!-- End .product-details -->
@@ -89,16 +80,12 @@ color: #000!important;" >
 <a   name="load_more" id="load_more" class="btn btn" style="border: 1px solid #ddd!important;margin-top: 30px;">Load More</a>
 </div>
 @endif
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
  <style>
 a#load_more:hover {
-    background: #1b65a9!important;
-    color: #fff !important;
-    border: 1px solid #ddd;
+background: #1b65a9!important;color: #fff !important;border: 1px solid #ddd;
 }
- 
-  .col-6.col-md-4.loadMore.list-group{ display:none; }
+.col-6.col-md-4.loadMore.list-group{ display:none; }
 </style>
   <script>
   $(document).ready(function(e) {
@@ -115,31 +102,13 @@ a#load_more:hover {
     
             }
      });
-     //var lenght_name =  $(".loadMore li").length;
+     
   });
  </script>   
 
 <style>
-
-  .toast{
-
-    top: 18%;
-    right: 1%;
-    z-index: 999999;
-    margin-top: 0px;
-    width: 346px;
-    position: fixed;
-   }
-   .hidden{
-    display: none;
-   }
-}
-a.paction.add-cart.cart span:hover  ,.add-cart::before:hover {
-    color: #ffff!important;
-    font-weight: 500!important;
-}
+.toast{top:18%;right:1%;z-index:999999;margin-top:0;width:346px;position:fixed}.hidden{display:none}.add-cart::before:hover{color:#ffff!important;font-weight:500!important}
 </style>
 <div class="alert alert-success postition-fixed toast hidden wishlist-success"></div>   
-
 </div>
  

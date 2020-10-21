@@ -18,7 +18,8 @@ class Order extends Model
 				'gstAmount',
 				'coupon_id',
 				'coupon_code',
-				'coupon_amount'
+				'coupon_amount',
+				'bill_address'
 	 ];
 	 
 	 public function getUser()

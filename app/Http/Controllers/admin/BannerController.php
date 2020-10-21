@@ -33,7 +33,18 @@ class BannerController extends Controller
     }
 
     public function addBanner( Request $request ) {
-        return view('admin.banner.banner_add');
+        $bannerPageNewArrival = Banners::where('page_id',2)->first();
+        $bannerPageTrending = Banners::where('page_id',3)->first();
+        $bannerPageKurties = Banners::where('page_id',4)->first();
+        $bannerPageKurtaSet = Banners::where('page_id',5)->first();
+        $bannerPageDress = Banners::where('page_id',6)->first();
+        $bannerPageMyAccount = Banners::where('page_id',7)->first();
+        $bannerPageBlog = Banners::where('page_id','=',8)->first();
+        $bannerPageContactUs = Banners::where('page_id',9)->first();
+        $bannerPageSizeGuide = Banners::where('page_id',10)->first();
+
+   
+        return view('admin.banner.banner_add',compact('bannerPageNewArrival','bannerPageTrending','bannerPageKurties','bannerPageKurtaSet','bannerPageDress','bannerPageMyAccount','bannerPageBlog','bannerPageContactUs','bannerPageSizeGuide'));
     }
 
     /**
@@ -42,10 +53,17 @@ class BannerController extends Controller
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function storeBanner( Request $request ) {    
-        $validatedData = $request->validate([
-            'image' => 'required'
-        ]); 
-
+        /*$validatedData = $request->validate([
+            
+           
+        ]);*/ 
+         if (isset($request->image)) {
+                  $maxFileSize = 5242880;
+                    $fileSize = $request->image->getSize();
+                    if($fileSize >= $maxFileSize){
+                        return redirect()->back()->with('error', 'Image too large. Image must be less than 5MB.');
+                  }
+              }
         $image = $request->image;
 
         $destinationPath = 'assets/upload_images/banner';
@@ -121,7 +139,18 @@ class BannerController extends Controller
     }
 
     public function updateBanner(Request $request ,$id){
+        /*$validatedData = $request->validate([
+            
+           
+        ]);*/
 
+        if (isset($request->image)) {
+          $maxFileSize = 5242880;
+            $fileSize = $request->image->getSize();
+            if($fileSize >= $maxFileSize){
+                return redirect()->back()->with('error', 'Image too large. Image must be less than 5MB.');
+          }
+      }
         $update_data = array(
                                 'page_id'       => $request->page_id,
                                 'url'           => $request->url,
@@ -209,12 +238,21 @@ class BannerController extends Controller
     }
 
     public function updateDiscountBanner(Request $request ,$id){
+
+        if (isset($request->image)) {
+          $maxFileSize = 5242880;
+            $fileSize = $request->image->getSize();
+            if($fileSize >= $maxFileSize){
+                return redirect()->back()->with('error', 'Image too large. Image must be less than 5MB.');
+          }
+      }
         $update_data = array(
                                 'url'           => $request->url,
                                 'updated_at'    => date('Y-m-d H:i:s')
                             );
 
         $image = $request->image;
+
         if(!empty($image)){
             $destinationPath = 'assets/upload_images/banner';
             $extension= $image->getClientOriginalExtension();
@@ -224,11 +262,24 @@ class BannerController extends Controller
             $image_resize->resize(200, 100);
             $image_resize->save(public_path('assets/upload_images/banner/thumb/' .$filenametostore));
 
-            //Compress Image Code Here
+
+
+            if($request->input('w')!=''){
+
+                $image_crop = Image::make($request->file('image')->getRealPath());              
+                $image_crop->crop($request->input('w'), $request->input('h'), $request->input('x1'), $request->input('y1'));
+                $image_crop->save(public_path('assets/upload_images/banner/' .$filenametostore));
+            }else{
+                $image->move($destinationPath, $filenametostore);
+            }
+
+             //Compress Image Code Here
             $filenametostore = $filenametostore;
+
             $filepath = public_path('assets/upload_images/banner/' .$filenametostore);
 
             $mime = mime_content_type($filepath);
+            
 
             $output = new \CURLFile($filepath, $mime, $filenametostore);
             $data = ["files" => $output];
@@ -246,7 +297,7 @@ class BannerController extends Controller
             curl_close ($ch);
              
             $arr_result = json_decode($result);
-             
+            // alert("Uploaded file must be below 5MB");
             // store the optimized version of the image
             $ch = curl_init($arr_result->dest);
             $fp = fopen($filepath, 'wb');
@@ -255,23 +306,20 @@ class BannerController extends Controller
             curl_exec($ch);
             curl_close($ch);
             fclose($fp);
-
-
-            if($request->input('w')!=''){
-
-                $image_crop = Image::make($request->file('image')->getRealPath());              
-                $image_crop->crop($request->input('w'), $request->input('h'), $request->input('x1'), $request->input('y1'));
-                $image_crop->save(public_path('assets/upload_images/banner/' .$filenametostore));
-            }else{
-                $image->move($destinationPath, $filenametostore);
-            }
-
             // $filename = $image->getClientOriginalName(); 
             // $image->move($destinationPath, $filename); 
             $update_data['image'] = $filenametostore;
         }
-
-        $update = DiscountBanners::where('id',$id)->update($update_data);
+       
+       $checkId = DiscountBanners::where('id',$id)->first();
+       //dd($checkId);
+       if (is_null($checkId)) {
+           DiscountBanners::insert($update_data);
+       }
+       if (!is_null($checkId)) {
+          $update = DiscountBanners::where('id',$id)->update($update_data);
+       }
+        
         return redirect()->route('edit.discountbanner')->with('success', 'Discount Banner updated successfully.');
     }
 } 

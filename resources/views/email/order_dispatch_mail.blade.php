@@ -97,7 +97,7 @@
 <table class="maintable" style="border: 0px !important;width: 100%;">
     <tr style="text-align: center!important;">
         <td style="width: 100%;" style="text-align: center;">
-            <img style="text-align: center;" src="http://pobox.rethinksoft.com/admin/images/favicon.png" style="width: 200px;">
+            <img style="text-align: center;" src="http://admin.poboxfashion.com/assets/upload_images/favicon.png" style="width: 200px;">
         </td>
     </tr>
         <td style="width: 55%;">
@@ -199,10 +199,10 @@
                                               </tr>
                                                
                                                @foreach($productDetail as $keyProduct_data => $product_data)
-                                             <!--  http://pobox.rethinksoft.com/assets/upload_images/product/{{$product_data['image']}} -->
+                                             <!--  https://poboxfashion.com/assets/upload_images/product/{{$product_data['image']}} -->
                                                         <tr>
                                                     <td>{{$keyProduct_data + 1 }}</td>
-                                                    <td><img src="http://pobox.rethinksoft.com/assets/upload_images/product/{{$product_data->getProduct['image']}}"  style="width: 50px!important;height: 50px!important;"></td>
+                                                    <td><img src="https://poboxfashion.com/assets/upload_images/product/{{$product_data->getProduct['image']}}"  style="width: 50px!important;height: 50px!important;"></td>
                                                     <td>{{$product_data->getProduct['name'] }}</td>
                                                     
                                                        <td>{{$product_data['size_name'] }}</td>
@@ -281,6 +281,20 @@
                     </td>
                 </tr>
                 <tr><td colspan="2"><hr  /></td></tr>
+                <tr>
+                   <td class="part1" style="text-transform: uppercase;width: 50%;">     
+                        <b>Company Name :-</b> V B FABRIC EXPORTS PVT LTD<br>
+                        <b>ADDRESS :-</b> B-117 , GROUND FLOOR SUMEL BUSINESS PARK-2, NEAR VANIJYA BHAVAN, KANKARIA ROAD,<br>
+                        AHMEDABAD-380001,<br>
+                          GUJARAT, INDIA<br>
+                    </td>
+                    <td class="part2" style="text-transform: uppercase;width: 50%;float: right;">
+                              <b>GSTIN:-</b> 24AAECV5166F1ZC<br>
+                              <b>GSTIN/UIN:-</b>24AAECV5166F1ZC<br>
+                              <b>STATE NAME:-</b> GUJARAT, CODE 24<br>
+                              <b>MOBILE NO:-</b>9879899004<br>
+                    </td>    
+                </tr>
                 <tr>
                     <td colspan="2" class="" style="font-weight: bold;text-align: center;">                        
                         <br />THIS IS A COMPUTER GENERATED INVOICE AND DOES NOT REQUIRE SIGNATURE<br />

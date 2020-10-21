@@ -1,20 +1,15 @@
-@extends('layouts.app')
-@section('content')
-
-	<div class="hero-section hero-background style-02" style="background: url('../public/assets/images/hero_bg.jpg');">
-	    <h1 class="page-title">Size Guide</h1>
-	</div>
-	<div class="static-pages"> 
-	<div class="main" style="padding-left: 70px;padding-right: 70px;">
-   <nav aria-label="breadcrumb" class="breadcrumb-nav">
-      <ol class="breadcrumb" style="background: transparent;padding-left: 0;">
-          <li class="breadcrumb-item"><a href="{{route('home_1')}}">Home</a></li>
-          <li class="breadcrumb-item active" aria-current="page">Size Guide</li>
-      </ol>
-  </nav>
+@extends('new_resources.layouts.new_app') 
+@section('content') 
+@if(!is_null($bannerSlider)) 
+<div class="hero-section hero-background style-02" style="background-image: url('{{ asset('assets/upload_images/banner') }}/{{$bannerSlider['image']}}">
+    <h1 class="page-title">Size Guide</h1>
+</div>
+@endif
+<div class="main" style="padding-left: 70px;padding-right: 70px;margin-top: 40px;">
 	   <table class="ks-table desktop-view-size-info" border="1" style="width: 100%;">
                            <tbody style="border: 1px solid;">
                               <tr class="ks-table-row">
+                                 <th class="ks-table-cell ks-table-header-cell">Sr. No</th>
                                  <th class="ks-table-cell ks-table-header-cell">SIZE</th>
                                  <th class="ks-table-cell ks-table-header-cell">CHEST (IN.)</th>
                                  <th class="ks-table-cell ks-table-header-cell">WAIST (IN.)</th>
@@ -22,75 +17,82 @@
                                  <th class="ks-table-cell ks-table-header-cell">LENGTH (IN.)</th>
                                  <th class="ks-table-cell ks-table-header-cell">SHOULDER (IN.)</th>
                               </tr>
-                              @foreach ($sizeInformation as $keySizeInformationData => $valueSizeInformationData)
-                              <tr class="ks-table-row">
-                                 @foreach ($valueSizeInformationData['size_name'] as $key => $value)
-                                 <td class="ks-table-cell ks-table-header-cell">
-                                 	
-                                    {{$value['name']}}
-                                 </td>
-                                 <td class="ks-table-cell">{{$valueSizeInformationData['chest']}}
-                                 </td>
-                                 <td class="ks-table-cell">{{$valueSizeInformationData['waist']}}
-                                 </td>
-                                 <td class="ks-table-cell">
-                                    {{$valueSizeInformationData['hips']}}
-                                 </td>
-                                 <td class="ks-table-cell">{{$valueSizeInformationData['length']}}
-                                 </td>
-                                 <td class="ks-table-cell">{{$valueSizeInformationData['shoulder']}}
-                                 </td>
-                              </tr>
-                              @endforeach 
-                              @endforeach
+                          @if(count($sizeInformations))
+                          @foreach($sizeInformations as $key => $sizeInformation)
+                            <tr>
+                                <td>{{$key + 1}}</td>
+                                <td>{{$sizeInformation->size_name}}  </td>
+                                <td>{{$sizeInformation->chest}}  </td>
+                                <td>{{$sizeInformation->waist}}  </td>
+                                <td>{{$sizeInformation->hips}}  </td>
+                                <td>{{$sizeInformation->length}}  </td>
+                                <td>{{$sizeInformation->shoulder}}  </td>
+                               
+                            </tr>
+                          @endforeach
+                        @else 
+                          <tr><td colspan="5"><center>No Data Found</center></td></tr>
+                        @endif
                            </tbody>
                         </table>
 
 
-
-                         @foreach ($sizeInformation as $keySizeInformationData => $valueSizeInformationData)
-                         @foreach ($valueSizeInformationData['size_name'] as $key => $value)
+                         @if(count($sizeInformations))
+                        @foreach($sizeInformations as $key => $value)
                         <table class="ks-table mobile-view-size-info" border="1" style="width: 100%;">
 
                            <tbody style="border: 1px solid;">
 
                               <tr class="ks-table-row">
+                                 <th class="ks-table-cell ks-table-header-cell">Sr. No</th>
+                                 <td class="ks-table-cell ks-table-header-cell">
+                                    {{$key + 1}}
+                                 </td>
+                              </tr>
+                              <tr class="ks-table-row">
                                  <th class="ks-table-cell ks-table-header-cell">SIZE</th>
                                  <td class="ks-table-cell ks-table-header-cell">
-                                    {{$value['name']}}
+                                    {{$value['size_name']}}
                                  </td>
                               </tr>
                               <tr class="ks-table-row">
                                  <th class="ks-table-cell ks-table-header-cell">CHEST (IN.)</th>
-                                 <td class="ks-table-cell">{{$valueSizeInformationData['chest']}}
+                                 <td class="ks-table-cell">{{$value['chest']}}
                                  </td>
                               </tr>
                               <tr class="ks-table-row">
                                  <th class="ks-table-cell ks-table-header-cell">WAIST (IN.)</th>
-                                 <td class="ks-table-cell">{{$valueSizeInformationData['waist']}}
+                                 <td class="ks-table-cell">{{$value['waist']}}
                                  </td>
                               </tr>
                               <tr class="ks-table-row">
                                  <th class="ks-table-cell ks-table-header-cell">HIPS (IN.)</th>
                                  <td class="ks-table-cell">
-                                    {{$valueSizeInformationData['hips']}}
+                                    {{$value['hips']}}
                                  </td>
                               </tr>
                               <tr class="ks-table-row">
                                  <th class="ks-table-cell ks-table-header-cell">LENGTH (IN.)</th>
-                                 <td class="ks-table-cell">{{$valueSizeInformationData['length']}}
+                                 <td class="ks-table-cell">{{$value['length']}}
                                  </td>
                               </tr>
                               <tr class="ks-table-row">
                                  <th class="ks-table-cell ks-table-header-cell">SHOULDER (IN.)</th>
-                                 <td class="ks-table-cell">{{$valueSizeInformationData['shoulder']}}
+                                 <td class="ks-table-cell">{{$value['shoulder']}}
                                  </td>
                               </tr>
                             
                            </tbody>
                         </table>
                         @endforeach 
-                        @endforeach
+                         @else 
+                          <tr><td colspan="5"><center>No Data Found</center></td></tr>
+                        @endif
+                       
+
+
+
+                        
 	</div>
 </div>
 <style type="text/css">

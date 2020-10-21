@@ -10,18 +10,7 @@
   $("#myElemp").show();
 setTimeout(function() { $("#myElemp").hide(); }, 12000);
 </script>
-<!--  <div class="hero-section hero-background style-02" style="background-image: url('{{ asset('assets/upload_images/banner') }}/{{$bannerSlider['image']}}">
-      <h1 class="page-title">Update Profile</h1>
-</div>    -->
 
-<!--  <div class="main" style="padding-left: 70px;padding-right: 70px;">
-  <nav aria-label="breadcrumb" class="breadcrumb-nav">
-      <ol class="breadcrumb" style="background: transparent;padding-left: 0;">
-          <li class="breadcrumb-item"><a href="{{route('home_1')}}">Home</a></li>
-          <li class="breadcrumb-item active" aria-current="page">Update Profile</a></li>
-      </ol>
-  </nav>
-</div>   -->
 <div class="my_account_bg">
 <div class="container">
      @include('new_resources.layouts.leftside_my_account')  

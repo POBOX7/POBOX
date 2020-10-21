@@ -79,9 +79,6 @@ class PurchaseController extends Controller
             'bill_no' => 'required|unique:purchase,bill_no',   
         ]); 
        
-
-
-
         $add_data = array(
                             'supplier_id'       => isset($request->supplier_id)?$request->supplier_id:0,
                             'bill_no'           => $request->bill_no,
@@ -110,6 +107,7 @@ class PurchaseController extends Controller
                             'size_id'       => $value,
                             'qty'           => $request->qty[$key],
                             'type'          => 1,
+                            'order_id'      => $id,
                             'description'   => 'Purchase (Bill No.'.$request->bill_no.')',
                             'created_at'    => date('Y-m-d H:i:s'),
                             'updated_at'    => date('Y-m-d H:i:s')
@@ -297,7 +295,7 @@ class PurchaseController extends Controller
                             'updated_at'    => date('Y-m-d H:i:s')
                         );
 
-                    DB::table('product_stock_history')->insert($add_data);
+        DB::table('product_stock_history')->insert($add_data);
 
         PurchaseProduct::where('id',$id)->delete();
         echo '1';
@@ -316,13 +314,18 @@ class PurchaseController extends Controller
 
     public function purchaseDetail($purchase_id)
     {
+
         $purchase_id = base64_decode($purchase_id);
+      
+       
         $purchaseDetail = DB::table('purchase')
                             ->join('suppliers', 'suppliers.id', '=', 'purchase.supplier_id')
                             ->select('purchase.id','purchase.bill_no','purchase.bill_date','purchase.payment_type','suppliers.name AS supplier_name')
                             ->where('purchase.id',$purchase_id)
                             ->get()
                             ->first();
+                           
+
         $productList = DB::table('purchase_product')
                                             ->join('products', 'products.id', '=', 'purchase_product.product_id')
                                             ->join('colors', 'colors.id', '=', 'products.color_id')

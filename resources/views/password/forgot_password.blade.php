@@ -29,14 +29,14 @@ setTimeout(function() { $("#myElemp").hide(); }, 12000);
                 {{ csrf_field() }} 
      <div class="col-sm-12">           
 	    <label for="NewPassword" ><b>New Password</b></label>
-	    <input id="new_password" pattern=".{8,}"   class="form-control" type="password" name="new_password" placeholder="minimum 8 character" required>
+	    <input onChange="onChange()" id="new_password" pattern=".{8,}"   class="form-control" type="password" name="new_password" placeholder="minimum 8 character" minlength="8" required>
 	  <span class="focus-input100">
    </div>
 
      <div class="col-sm-12">           
 	    <input id="new_password" type="hidden" value="{{ collect(request()->segments())->last() }}" name="id">
-        	<label for="psw"><b>Conform Password</b></label>
-			<input  pattern=".{8,}" placeholder="minimum 8 character"  class="form-control" type="password" name="confrom_password" required>
+        	<label for="psw"><b>Confirm Password</b></label>
+			<input onChange="onChange()"  pattern=".{8,}" placeholder="minimum 8 character"  class="form-control" type="password" name="confrom_password" minlength="8" required>
 			<span class="focus-input100"></span>
       </div>
 
@@ -51,6 +51,17 @@ setTimeout(function() { $("#myElemp").hide(); }, 12000);
 
   </div>  
 </div>
+<script type="text/javascript">
+  function onChange() {
+  const password = document.querySelector('input[name=new_password]');
+  const confirm = document.querySelector('input[name=confrom_password]');
+  if (confirm.value === password.value) {
+    confirm.setCustomValidity('');
+  } else {
+    confirm.setCustomValidity('Passwords do not match');
+  }
+}
+</script>
 <script type="text/javascript">
  function isNumberKey(e){var h=e.which?e.which:e.keyCode;return!(46!=h&&h>31&&(h<48||h>57))}function ValidateAlpha(e){var h=e.which?e.which:e.keyCode;return!(h<65||h>90)||!(h<97||h>123)||32==h}
 </script> 

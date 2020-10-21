@@ -1,6 +1,8 @@
 @extends('admin.layouts.admin', ['pageTitle' => 'Add vendor'])
 
 @section('content')
+
+<center><div id="result"></div></center>
 <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
 <div class="row">
@@ -169,7 +171,7 @@
                 </div> -->
               </div>
 
-              <div class="form-group row">
+             {{--  <div class="form-group row">
                 <label class="col-sm-1 col-form-label">GST %</label>
                 <div class="col-sm-2">
                   <div class="input-group">
@@ -183,38 +185,38 @@
                   @endif
                 </div>
 
+                @php($Amount = $productDetail->mrp  - $productDetail->price)
+                @php($saveAmount = $Amount)
+                @php($TotalAmount = $productDetail->mrp - $Amount)
+                @php($GstAmount = $TotalAmount * 5 / 100)
+                @php($finalAmountAfterGst = $TotalAmount + $GstAmount)
+
                 <label class="col-sm-2 col-form-label">GST Amount</label>
                 <div class="col-sm-2">
                   <div class="input-group">
                       <div class="input-group-prepend">
                         <span class="input-group-text">₹</span>
                       </div>
-                      <input type="number" class="form-control" id="gst" name="gst" placeholder="GST Amount" required min="0" value="{{$productDetail->gst}}" readonly>
+                      <input type="number" class="form-control" id="gst" name="gst" placeholder="GST Amount" required min="0" value="{{$GstAmount}}" readonly>
                   </div>
                   @if ($errors->has('gst'))
                     <span style="color: red">{{ $errors->first('gst') }}</span>
                   @endif
                 </div>
-                @php($Amount = $productDetail->mrp  - $productDetail->price)
-@php($saveAmount = $Amount)
-@php($TotalAmount = $productDetail->mrp - $Amount)
-@php($GstAmount = $TotalAmount * 5 / 100)
-@php($finalAmountAfterGst = $TotalAmount + $GstAmount)
+                
                 <label for="exampleInputPassword2" class="col-sm-2 col-form-label">Final amount after GST</label>
                 <div class="col-sm-2">
                    <div class="input-group">
                   <div class="input-group-prepend">
                         <span class="input-group-text">₹</span>
                       </div>
-                  <input type="number" class="form-control" id="gst" name="gst" placeholder="GST Amount" required min="0" value="{{$finalAmountAfterGst}}" readonly>
+                  <input type="number" class="form-control" id="AfterPriceGst" name="AfterPriceGst" placeholder="GST Amount" required min="0" value="{{$finalAmountAfterGst}}" readonly>
                 </div>
                   @if ($errors->has('gst'))
                     <span style="color: red">{{ $errors->first('gst') }}</span>
                   @endif
                 </div>
-              
-
-              </div>
+              </div> --}}
 
               <div class="form-group row">
                 <label for="exampleInputPassword2" class="col-sm-2 col-form-label">SKU</label>
@@ -227,7 +229,7 @@
  
                 <label class="col-sm-1 col-form-label">Barcode</label>
                 <div class="col-sm-3">
-                  <input type="number" class="form-control" min="1" id="barcode" name="barcode" placeholder="barcode" value="{{$productDetail->barcode}}" required>
+                  <input type="number" class="form-control" min="1" id="barcode" name="barcode" placeholder="barcode" value="{{$productDetail->barcode}}">
                   @if ($errors->has('barcode'))
                     <span style="color: red">{{ $errors->first('barcode') }}</span>
                   @endif
@@ -265,17 +267,26 @@
               </div>
 
               <div class="form-group row">
-                <label for="image" class="col-sm-3 col-form-label">Default Image</label>
+                <label for="image" class="col-sm-2 col-form-label">Default Image</label>
                 <div class="col-sm-4">
-                  <input type="file" class="form-control" id="type" name="image" accept="image/*">
+                  <input type="file" class="form-control image-file-default" id="type" name="image" accept="image/*">
+                  <div class="product-image-file-default-img"></div>
                   <p>(Size : 374x400)</p>
                   @if ($errors->has('image'))
                     <span style="color: red">{{ $errors->first('image') }}</span>
                   @endif
                 </div>
 
-                <div class="col-sm-4">
+                <div class="col-sm-2">
                   <img src="{{url('assets/upload_images/product')}}/thumb/{{$productDetail->image}}"  style="width:100px;height: 100px;"> 
+                </div>
+
+                <label for="exampleInputPassword2" class="col-sm-2 col-form-label">HSN No</label>
+                <div class="col-sm-2">
+                  <input type="text" class="form-control" id="hsn_no" name="hsn_no" placeholder="HSN No" value="{{$productDetail->hsn_no}}">
+                  @if ($errors->has('hsn_no'))
+                    <span style="color: red">{{ $errors->first('hsn_no') }}</span>
+                  @endif
                 </div>
               </div>
 
@@ -287,7 +298,8 @@
                   <div class="form-group row" >
                     <label for="image" class="col-sm-3 col-form-label">Other Image</label>
                     <div class="col-sm-4">
-                      <input type="file" class="form-control" name="product_image[]" accept="image/*">
+                      <input type="file" class="form-control image-file-other" name="product_image[]" accept="image/*">
+                      <div class="product-image-file-other-img"></div>
                     </div>
 
                     <div class="col-sm-3">
@@ -304,7 +316,8 @@
                 <div class="form-group row" >
                   <label for="image" class="col-sm-3 col-form-label">Other Image</label>
                   <div class="col-sm-4">
-                    <input type="file" class="form-control" name="product_image[]" accept="image/*">
+                    <input type="file" class="form-control image-file-other" name="product_image[]" accept="image/*">
+                    <div class="product-image-file-other-img"></div>
                   </div>
 
                   <div class="col-sm-2">
@@ -374,7 +387,7 @@
                 </div>
               </div>
 
-              <button type="submit" class="btn btn-success mr-2">Submit</button>
+              <button type="submit" id="submit" class="btn btn-success mr-2">Submit</button>
               <a href="{{route('product')}}"   class="btn btn-light">Cancel</a>
             </form>
           </div>
@@ -489,17 +502,20 @@
  $("body").on("focusout","#mrp", function(){
     var mrp = $('#mrp').val();
     var price = $('#price').val();
-    if(price > 0){
+    /*if(price > 0){
       var gst =  price * 5 / 100;
       var per  = price * 100 / mrp;
       $('#discount').val((100 - per).toFixed(2));
     }else{
-      var gst =  mrp * 5 / 100;
-      var per  = 0;
-       $('#discount').val(0);
-        $('#price').val(mrp);
-    }
+      
+    }*/
+    var gst =  mrp * 5 / 100;
+    var per  = 0;
+    $('#discount').val(0);
+    $('#price').val(mrp);
+    var AmountPriceAfterGst =  parseFloat(mrp) + parseFloat(gst) ;
     
+    $('#AfterPriceGst').val(AmountPriceAfterGst);
 
     $('#gst').val(gst.toFixed(2));
 
@@ -508,17 +524,27 @@
   $("body").on("focusout","#discount", function(){
     var mrp = $('#mrp').val();
     var discount = $('#discount').val(); 
+
+    var save_amount  = mrp * discount /100 ;
+    var oriinal_amount = mrp - save_amount;
+    var gst = oriinal_amount * 5 / 100;
+    var AmountPriceAfterGst =  oriinal_amount + gst;
+
+    $('#AfterPriceGst').val(AmountPriceAfterGst);
+
+
     var per  = discount * mrp /100; 
     if(per > 0){
       $('#price').val((mrp - per).toFixed(2));
       price = (mrp - per).toFixed(2); 
       var gst =  price * 5 / 100;
+
     }else{
       $('#price').val(0);
       var gst =  mrp * 5 / 100;
       $('#price').val(mrp);
     }
-    
+
     $('#gst').val(gst.toFixed(2));
 
   });
@@ -589,4 +615,5 @@
 
 
 </script>
+
 @endsection

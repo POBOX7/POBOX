@@ -1,6 +1,7 @@
 @extends('admin.layouts.admin', ['pageTitle' => 'Add Category'])
 
 @section('content')
+<center><div id="result"></div></center>
 <link rel="stylesheet" href="{{ asset('assets/imagecrop/imgareaselect.css') }}">
 <div class="row">
   <div class="col-md-12 d-flex align-items-stretch grid-margin">
@@ -19,15 +20,20 @@
               <div class="form-group row">
                 <label for="image" class="col-sm-3 col-form-label">Discount Banner</label>
                 <div class="col-sm-4">
-                  <input type="file" class="form-control" id="image" name="image" accept="image/*">
-                  <p>(Size : 1232x432)</p>
+                  <input type="file" class="form-control image-file" id="image" name="image" accept="image/*">
+                  <div class="result"></div>
+                  <p>(Size : 1232x402)</p>
                   @if ($errors->has('image'))
                     <span style="color: red">{{ $errors->first('image') }}</span>
                   @endif
                 </div>
                 <div class="col-sm-4">
-                 {{--  <img src="{{url('assets/upload_images/banner')}}/{{$bannerDetail->image}}"  style="width:200px;height: 100px;">  --}}
-                 <a class="fancybox" href="{{url('assets/upload_images/banner')}}/{{$bannerDetail->image}}" data-fancybox-group="gallery"><img src="{{url('assets/upload_images/banner/thumb')}}/{{$bannerDetail->image}}"  style="width:200px;height: 100px;"> </a>
+                @if(isset($bannerDetail['image']))
+                 <a class="fancybox" href="{{url('assets/upload_images/banner')}}/{{$bannerDetail['image']}}" data-fancybox-group="gallery"><img src="{{url('assets/upload_images/banner/thumb')}}/{{$bannerDetail['image']}}"  style="width:200px;height: 100px;"> </a>
+                 @endif
+                 @if(!isset($bannerDetail['image']))
+                 <a class="fancybox" href="" data-fancybox-group="gallery"><img src=""  style="width:200px;height: 100px;"> </a>
+                 @endif
                 </div>
               </div>
 
@@ -45,7 +51,12 @@
               <div class="form-group row">
                 <label for="url" class="col-sm-3 col-form-label">URL</label>
                 <div class="col-sm-4">
-                  <input type="text" class="form-control" id="url" name="url" value="{{$bannerDetail->url}}">
+                  @if(isset($bannerDetail['image']))
+                  <input type="text" class="form-control" id="url" name="url" value="{{$bannerDetail['url']}}">
+                  @endif
+                  @if(!isset($bannerDetail['image']))
+                  <input type="text" class="form-control" id="url" name="url" value="">
+                  @endif
                   @if ($errors->has('url'))
                     <span style="color: red">{{ $errors->first('url') }}</span>
                   @endif
@@ -53,7 +64,7 @@
               </div>
 
               
-              <button type="submit" class="btn btn-success mr-2">Submit</button>
+              <button type="submit" id="submit" class="btn btn-success mr-2">Submit</button>
               <a href="{{route('banner')}}"   class="btn btn-light">Cancel</a>
             </form>
           </div>
@@ -87,7 +98,7 @@
         });
 
     var p = $("#previewimage");
-    $("body").on("change", "#image", function(){
+    /*$("body").on("change", "#image", function(){
         var imageReader = new FileReader();
         imageReader.readAsDataURL(document.querySelector("#image").files[0]);
 
@@ -103,7 +114,8 @@
             $('input[name="w"]').val(selection.width);
             $('input[name="h"]').val(selection.height);            
         }
-    });
+    });*/
   });
 </script>
+
 @endsection

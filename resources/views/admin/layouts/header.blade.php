@@ -1,6 +1,6 @@
 <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="text-center navbar-brand-wrapper d-flex align-items-top justify-content-center">
-        <a class="navbar-brand brand-logo" href="#"><img src="{{ asset('admin/images/favicon.png') }}" style="height: 50px;" alt="logo"/></a>
+        <a class="navbar-brand brand-logo" href="{{route('home')}}"><img src="{{ asset('admin/images/favicon.png') }}" style="height: 50px;" alt="logo"/></a>
         {{-- <a class="navbar-brand brand-logo" href="#" style="color: #16bec4;">Po Box</a> --}}
         <a class="navbar-brand brand-logo-mini" href="{{ asset('admin/index.html') }}"><img src="{{ asset('admin/images/logo-mini.png') }}" alt="logo"/></a>
       </div>

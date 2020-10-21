@@ -18,6 +18,7 @@ class BlogController extends Controller
   }
   public function blogDetail(Request $request , $slug){
     $blogId = Blogs::where('slug',$slug)->first();
+   
     $id = $blogId['id'];
     $blogDetailData = Blogs::where('id',$id)->where('status','1')->where('is_deleted','0')->get();
     

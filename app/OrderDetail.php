@@ -14,7 +14,11 @@ class OrderDetail extends Model
 				'price',
 				'mrp',
 				'hex_code',
-				'discount'
+				'discount',
+				'gst_amount',
+				'gst_per',
+				'hsn_no',
+				'discount_price',
 	 ];
 	 
 	 public function getProduct()

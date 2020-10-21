@@ -122,9 +122,11 @@ div#order {
             <thead>
                 <tr>
                     <th class="product-col">Product</th>
-                    <th class="price-col">Price</th>
                     <th class="qty-col">Qty</th>
-                    <th>Subtotal</th>
+                    <th class="price-col">Price</th>
+                    <th class="price-col">Coupon Discount</th>
+                    <th class="price-col">Tax</th>
+                    <th class="price-col">Sub Total</th>
                 </tr>
             </thead>
             <tbody>
@@ -150,19 +152,48 @@ div#order {
                         <li style="background:{{$orderDetail->hex_code}}"></li>
                       </ul>
                     </div>
+                    <span style="margin-top: 5px;"><label style="font-weight: 600;color: #7a7d82;font-size: 12px;">HSN:</label><span style="color: #7a7d82;font-size: 14px;font-weight: 400;">{{$orderDetail->hsn_no}}</span></span>
                   </h2>
                 </td>
-                <td><strike>₹{{$orderDetail->getProduct->mrp}}</strike>&nbsp;<span class="product-price">₹{{$orderDetail->price}}</span></td>
+                
                 <td>
                   <div class="quantity-container">
                     <span>{{$orderDetail->qty}}</span>
                   </div>
                 </td>
-                <td id="product_total_price_33_1">{{$orderDetail->price * $orderDetail->qty}}</td>
+                <td>
+                  <div class="price-box">
+                    ₹{{$orderDetail->price}}
+                  </div>
+                </td>
+                <td>
+                  <div class="price-box">
+                    @if($orderDetail->discount_price > 0)
+                      ₹{{$orderDetail->discount_price}}
+                    @else
+                      -
+                    @endif
+                  </div>
+                </td>
+                <td>
+                  <span>₹{{$orderDetail->gst_amount}}</span>
+                  <br>
+                  @if($order->getAddress->state == 'Gujarat')
+                    <span>
+                          <label style="font-weight: 600;color: #7a7d82;font-size: 12px;">CGST : </label> ₹{{$orderDetail->gst_amount/2}} <br>
+                          <label style="font-weight: 600;color: #7a7d82;font-size: 12px;">SGST :</label>₹{{$orderDetail->gst_amount/2}} <br>
+                      </span>
+                  @else
+                      <span>
+                          <label style="font-weight: 600;color: #7a7d82;font-size: 12px;">IGST : </label> ₹{{$orderDetail->gst_amount}} <br>
+                      </span>
+                  @endif
+                </td>
+                <td>
+                  <span>₹{{($orderDetail->price * $orderDetail->qty) + $orderDetail->gst_amount}}</span>
+                </td>
               </tr>
-			  @php($Subtotal += ($orderDetail->qty * $orderDetail->mrp))
-		     
-			  @php($discount = $discount + ($orderDetail->mrp - $orderDetail->price))
+			  
       			@endforeach
               </tbody>
               </table>
@@ -180,10 +211,8 @@ div#order {
             </div>
             <div class="order-total-div">
                
-               <label>Total Bag</label> <span>₹{{$Subtotal}}.00</span><br>
-               <label>You Saved</label> <span>
-               @php ($original_total= $Subtotal - $discount)
-               ₹{{$order['saveAmount']}}</span><br>
+               <label>Bag Total</label> <span>₹{{$order->bag_total}}</span><br>
+              
                <label>Promo Code Discount</label> <span> 
                @php($coupon_amount = $order->coupon_amount)
                 @if($order->coupon_amount)
@@ -193,10 +222,9 @@ div#order {
                @endif
              </span><br>
                <label>Applicable GST</label> <span> 
-                @php ($GST = $original_total * 5 / 100)
-                                            ₹{{$order['gstAmount']}}
+                                            ₹{{$order->gstAmount}}
                                           </span><br>
-               <div style="border-top: 1px solid #dee2e6;"><label>Order Total</label><span>₹{{$order['totalamount']}}.00</span><br></div>
+               <div style="border-top: 1px solid #dee2e6;"><label>Order Total</label><span>₹{{$order['totalamount']}}</span><br></div>
             </div>
             <div class="delivery-to">
               <label>Delivery to</label>
@@ -207,6 +235,37 @@ div#order {
               <p>{{$order->getAddress->city}},{{$order->getAddress->state}}</p>
               <p>India - {{$order->getAddress->pincode}}</p>
               <p>Mobile - {{$order->getAddress->phone_number}}</p>
+            </div>
+
+            <div style="float: left;background: white;padding: 0 15px;">
+              <label style="font-weight: 800;font-size: 16px;color: #6e7075;">Shipping Details</label>
+               
+              
+                <table width="45%" style="float:left;background: white;">
+                       <tbody>
+                        <tr>
+                          <th>
+                            Desctiption
+                          </th>
+                        <th>
+                          Date
+                        </th>
+                      </tr>
+                      @if(isset($oderShipmentData))
+               @foreach ($oderShipmentData as $oderShipmentDataKey => $oderShipmentDataValue)
+                      <tr>
+                          <td>
+                            {{$oderShipmentDataValue['description']}}
+                          </td>
+                          <td>
+                            {{$oderShipmentDataValue['created_at']}}
+                          </td>
+                        </tr>
+                        @endforeach
+               @endif
+                                             
+                                         </tbody></table>
+               
             </div>
         </div>
 

@@ -9,7 +9,7 @@
     opacity: 0.5!important;
 }
 </style>
-<div class="wishlist-page" style="margin-top: 30px;">
+<div class="wishlist-page" style="margin-top: 30px;margin-bottom: 100px;">
     <div class="container">
 	
         <center class="empty-wishlist">

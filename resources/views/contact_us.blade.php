@@ -10,10 +10,7 @@
   $("#myElem").show();
 setTimeout(function() { $("#myElem").hide(); }, 12000);
 </script>
- <!-- <div class="hero-section hero-background style-02" style="background: url('../assets/images/hero_bg.jpg');">
-      <h1 class="page-title">Contact Us</h1>
-  </div>   
- -->
+ 
  <div class="main" style="margin-top: 30px;">
        <div class="container">
                <!--  <div id="map"></div> --><!-- End #map -->
@@ -23,7 +20,9 @@ setTimeout(function() { $("#myElem").hide(); }, 12000);
                         <div class="col-md-8">
                             <h2 class="light-title">Write <strong>Us</strong></h2>
 
-                            {!! Form::open(['route' => 'contactUsStore' , 'enctype' => 'multipart/form-data']) !!}
+                            <!-- {!! Form::open(['route' => 'contactUsStore' , 'enctype' => 'multipart/form-data']) !!} -->
+                            <form class="forms-sample"  action="{{ route('contactUsStore') }}" method="POST" enctype="multipart/form-data"  runat="server" onsubmit="return get_action();">
+                                       {{ csrf_field() }}
                                 <div class="form-group required-field">
                                     <label for="contact-name">Name</label>
                                     <input type="text" class="form-control" id="contact-name" name="name" required  onKeyPress = "return ValidateAlpha(event);">
@@ -36,14 +35,36 @@ setTimeout(function() { $("#myElem").hide(); }, 12000);
 
                                 <div class="form-group">
                                     <label for="contact-phone">Phone Number</label>
-                                    <input type="tel" class="form-control" id="contact-phone" name="phone_number" maxlength="10" onKeyPress = "return isNumberKey(event);" required>
+                                    <input type="tel" class="form-control" id="contact-phone" name="phone_number" maxlength="14"  required>
                                 </div><!-- End .form-group -->
+                               <!--  onKeyPress = "return isNumberKey(event);" -->
 
                                 <div class="form-group required-field">
                                     <label for="contact-message">What’s on your mind?</label>
                                     <textarea cols="30" rows="1" id="contact-message" class="form-control" name="contact_message" required></textarea>
                                 </div><!-- End .form-group -->
+                               <script src='https://www.google.com/recaptcha/api.js'></script>
+                                <script type="text/javascript">
+                                    function get_action() {
+                                        var v = grecaptcha.getResponse();
+                                        console.log("Resp" + v);
+                                        if (v == '') {
+                                            document.getElementById('captcha').innerHTML = "You can't leave Captcha Code empty";
+                                            return false;
+                                        }
+                                        else {
+                                            document.getElementById('captcha').innerHTML = "Captcha completed";
+                                            return true;
+                                        }
+                                    }
+                                </script>
 
+                                
+                                <div>
+                                <div class="g-recaptcha" data-sitekey="6LdDm88ZAAAAAHm5sn99zTeRh2w0JT2NXZKWcXMZ"></div>
+                                </div>
+
+                                <div id="captcha"></div>
                                 <div class="form-footer">
                                     <button type="submit" class="btn btn-primary">Submit</button>
                                 </div><!-- End .form-footer -->
@@ -61,16 +82,16 @@ setTimeout(function() { $("#myElem").hide(); }, 12000);
                                 </div> -->
                                 <div>
                                     <i class="icon-mobile"></i>
-                                    <p><a href="tel:">{{$ContactUsDetail['phone_number']}}</a></p>
+                                    <p><a href="">{{$ContactUsDetail['phone_number']}}</a></p>
                                    
                                 </div>
                                 <div>
                                     <i class="icon-mail-alt"></i>
-                                    <p><a href="mailto:#">{{$ContactUsDetail['email']}}</a></p>
+                                    <p><a href="">{{$ContactUsDetail['email']}}</a></p>
                                 </div>
                                  <div>
                                     <i class="fa fa-address-card-o"></i>
-                                    <p><a href="tel:">{{$ContactUsDetail['address']}}</a></p>
+                                    <p><a href="https://www.google.com/maps/place/Sumel+Business+Park+2/@23.0126619,72.6020635,15z/data=!4m5!3m4!1s0x0:0xe840717a1b442845!8m2!3d23.0126619!4d72.6020635">{{$ContactUsDetail['address']}}</a></p>
                                    
                                 </div>
                                 <div class="footer-right">

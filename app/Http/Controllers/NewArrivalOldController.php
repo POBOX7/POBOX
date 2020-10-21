@@ -22,6 +22,7 @@ class NewArrivalOldController extends Controller {
    
 	 
     $bannerSlider = Banners::where('page_id',2)->first(); 
+   
     //$newArrivalProductData = Product::where('is_new_arrival',1)->where('status',1)->where('is_deleted',0)->paginate(9);
     //dd($newArrivalProductData);
     $newArrivalProductDatas = Product::where('is_new_arrival',1)->where('status',1)->where('is_deleted',0)->paginate(9);

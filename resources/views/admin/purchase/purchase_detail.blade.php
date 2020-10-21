@@ -21,15 +21,20 @@
 
               <div class="row form-group">
                   <label class="col-form-label col-md-2">Supplier Name :</label>
-                  <input type="text" class="form-control col-md-2" value="{{$purchaseDetail->supplier_name}}" readonly>
+                  <input type="text" class="form-control col-md-2" value="@if(isset($purchaseDetail->supplier_name)){{$purchaseDetail->supplier_name}}@endif" readonly>
 
                   <label class="col-form-label col-md-1" style="text-align: right;">Bill No :</label>
-                  <input type="text" class="form-control col-md-1" value="{{$purchaseDetail->bill_no}}" readonly>
-
+                  <input type="text" class="form-control col-md-1" value="@if(isset($purchaseDetail->bill_no)){{$purchaseDetail->bill_no}}@endif" readonly>
                   <label class="col-form-label col-md-1" style="text-align: right;">Bill Date:</label>
-                  <input type="text" class="form-control col-md-1" value="{{$purchaseDetail->bill_date}}" readonly>
+                  <input type="text" class="form-control col-md-1" value="@if(isset($purchaseDetail->bill_date)){{$purchaseDetail->bill_date}}@endif
+" readonly>
                   <label class="col-form-label col-md-2" style="text-align: right;">Payment type:</label>
-                  <input type="text" class="form-control col-md-1" value="{{$purchaseDetail->payment_type == 1 ? 'Cash' : 'Credit'}}" readonly>
+              @if(isset($purchaseDetail->payment_type))
+                <input type="text" class="form-control col-md-1" value="{{$purchaseDetail->payment_type == 1 ? 'Cash' : 'Credit'}}" readonly>
+              @else
+                <input type="text" class="form-control col-md-1" value="" readonly>
+              @endif
+                 
               </div>
 
                 

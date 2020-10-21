@@ -18,8 +18,8 @@
                           @foreach ($blogDetailData as $key => $value)
                             <article class="entry single">
                                 <div class="entry-media">
-                                    <div class=" " style="height: auto;">
-                                        <img  style="height: auto!important;" src="{{asset('assets/upload_images/blog')}}/{{$value->blog_image}}" alt="Post">
+                                    <div  style="height: 390px!important;" >
+                                        <img style="height: -webkit-fill-available!important;"    src="{{asset('assets/upload_images/blog')}}/{{$value->blog_image}}" alt="Post">
                                         
                                     </div><!-- End .entry-slider -->
                                 </div><!-- End .entry-media -->
@@ -108,11 +108,9 @@
 
     
     <div>
-    <div class="g-recaptcha" data-sitekey="6Le-38AZAAAAADGLrQlWLqWHgOBvIcAEF_Y3kpDN"></div>
+    <div class="g-recaptcha" data-sitekey="6LdDm88ZAAAAAHm5sn99zTeRh2w0JT2NXZKWcXMZ"></div>
     </div>
-  <!--   <input type="submit" value="Button" />
-   <asp:Button ID="Button1" runat="server"
-       Text="Button" /> -->
+
     <div id="captcha"></div>
    
     

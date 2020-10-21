@@ -46,7 +46,13 @@ class TestimonialController extends Controller
             'description'=>'required|max:120',
             'name'=>'required|max:15'
         ]); 
-
+        if (isset($request->image)) {
+                  $maxFileSize = 5242880;
+                    $fileSize = $request->image->getSize();
+                    if($fileSize >= $maxFileSize){
+                        return redirect()->back()->with('error', 'Image too large. Image must be less than 5MB.');
+                  }
+              }
         $image = $request->image;
         $destinationPath = 'assets/upload_images/testimonial';
         $extension= $image->getClientOriginalExtension();
@@ -57,6 +63,39 @@ class TestimonialController extends Controller
         $image_resize->save(public_path('assets/upload_images/testimonial/thumb/' .$filename));
         $image->move($destinationPath, $filename); 
 
+
+         //Compress Image Code Here
+            $filenametostore = $filename;
+            $filepath = public_path('assets/upload_images/testimonial/' .$filenametostore);
+
+            $mime = mime_content_type($filepath);
+
+            $output = new \CURLFile($filepath, $mime, $filenametostore);
+            $data = ["files" => $output];
+
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, 'http://api.resmush.it/?qlty=80');
+            curl_setopt($ch, CURLOPT_POST,1);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+            $result = curl_exec($ch);
+            if (curl_errno($ch)) {
+                $result = curl_error($ch);
+            }
+            curl_close ($ch);
+             
+            $arr_result = json_decode($result);
+             
+            // store the optimized version of the image
+            $ch = curl_init($arr_result->dest);
+            $fp = fopen($filepath, 'wb');
+            curl_setopt($ch, CURLOPT_FILE, $fp);
+            curl_setopt($ch, CURLOPT_HEADER, 0);
+            curl_exec($ch);
+            curl_close($ch);
+            fclose($fp);
+            
         $add_data = array(
                             'description'   => $request->description,
                             'name'          => $request->name,
@@ -80,14 +119,26 @@ class TestimonialController extends Controller
             'description'=>'required|max:120',
             'name'=>'required|max:15'
         ]); 
+         if (isset($request->image)) {
+                  $maxFileSize = 5242880;
+                    $fileSize = $request->image->getSize();
+                    if($fileSize >= $maxFileSize){
+                        return redirect()->back()->with('error', 'Image too large. Image must be less than 5MB.');
+                  }
+              }
+
         $update_data = array(
                                 'description'       => $request->description,
                                 'name'           => $request->name,
                                 'updated_at'    => date('Y-m-d H:i:s')
                             );
-
+         
         $image = $request->image;
-        if(!empty($image)){
+       // dd($image);
+
+     if(!empty($image)){
+       
+           
             $destinationPath = 'assets/upload_images/testimonial';
             $filename = $image->getClientOriginalName(); 
             $extension= $image->getClientOriginalExtension();
@@ -99,7 +150,40 @@ class TestimonialController extends Controller
             
             $image->move($destinationPath, $filename); 
             $update_data['image'] = $filename;
-        }
+        
+        //Compress Image Code Here
+
+            $filenametostore = $filename;
+            $filepath = public_path('assets/upload_images/testimonial/' .$filenametostore);
+
+            $mime = mime_content_type($filepath);
+
+            $output = new \CURLFile($filepath, $mime, $filenametostore);
+            $data = ["files" => $output];
+
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, 'http://api.resmush.it/?qlty=80');
+            curl_setopt($ch, CURLOPT_POST,1);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+            $result = curl_exec($ch);
+            if (curl_errno($ch)) {
+                $result = curl_error($ch);
+            }
+            curl_close ($ch);
+             
+            $arr_result = json_decode($result);
+             
+            // store the optimized version of the image
+            $ch = curl_init($arr_result->dest);
+            $fp = fopen($filepath, 'wb');
+            curl_setopt($ch, CURLOPT_FILE, $fp);
+            curl_setopt($ch, CURLOPT_HEADER, 0);
+            curl_exec($ch);
+            curl_close($ch);
+            fclose($fp);
+            }
 
         $update = Testinomials::where('id',$id)->update($update_data);
         return redirect()->route('testimonial')->with('success', 'Testimonial updated successfully.');

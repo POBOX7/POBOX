@@ -40,20 +40,30 @@ class ColorController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function storeColor( Request $request ) {    
-        $validatedData = $request->validate([
-            'name'=> 'required|unique:colors,name',
-            'hex_code'=> 'required'
-        ]); 
+    public function storeColor( Request $request ) {  
+        $check_color = Colors::where('name',$request->name)->where('is_deleted',1)->first();
+        if(!is_null($check_color)) {
+              $update_color = Colors::where('name',$request->name)->where('is_deleted',1)->update([
+                        'is_deleted'=> 0
+                        ]);
+        }else{
+            $validatedData = $request->validate([
+                'name'=> 'required|unique:colors,name',
+                'hex_code'=> 'required'
+            ]); 
 
-        $add_data = array(
-                            'name'      => $request->name,
-                            'hex_code'  => $request->hex_code,
-                            'created_at'=> date('Y-m-d H:i:s'),
-                            'updated_at'=> date('Y-m-d H:i:s')
-                        );
 
-        Colors::insert($add_data);
+
+            $add_data = array(
+                                'name'      => $request->name,
+                                'hex_code'  => $request->hex_code,
+                                'created_at'=> date('Y-m-d H:i:s'),
+                                'updated_at'=> date('Y-m-d H:i:s')
+                            );
+
+            Colors::insert($add_data); 
+        }
+        
         return redirect()->route('color')->with('success', 'Color added successfully.');
         
     }
@@ -67,18 +77,26 @@ class ColorController extends Controller
 
     public function updateColor(Request $request ,$id)
     {
-        $request->validate([
-                'name' => 'required|unique:colors,name,'.$id,
-                'hex_code'=> 'required' 
-        ]);
 
-        $update_data = array(
-                                'name' => $request->name,
-                                'hex_code'  => $request->hex_code,
-                                'updated_at'    => date('Y-m-d H:i:s')
-                            );
+        $check_color = Colors::where('name',$request->name)->where('is_deleted',1)->first();
+        if(!is_null($check_color)) {
+              $update_color = Colors::where('name',$request->name)->where('is_deleted',1)->update([
+                        'is_deleted'=> 0
+                        ]);
+        }else{
+            $request->validate([
+                    'name' => 'required|unique:colors,name,'.$id,
+                    'hex_code'=> 'required' 
+            ]);
 
-        $update = Colors::where('id',$id)->update($update_data);
+            $update_data = array(
+                                    'name' => $request->name,
+                                    'hex_code'  => $request->hex_code,
+                                    'updated_at'    => date('Y-m-d H:i:s')
+                                );
+            $update = Colors::where('id',$id)->update($update_data);
+        }
+        
         return redirect()->route('color')->with('success', 'Color updated successfully.');
     }
 
@@ -88,13 +106,13 @@ class ColorController extends Controller
         if(!empty($productColor)){
             return redirect()->route('color')->with('error', 'Color is used in product, Please remove first');
         }else{
-           /* $update_data = array(
+            $update_data = array(
                                 'is_deleted' => 1,
                                 'updated_at'    => date('Y-m-d H:i:s')
-                            );*/
+                            );
 
-            //$update = Colors::where('id',$id)->update($update_data);
-            $update = Colors::where('id',$id)->delete();
+            $update = Colors::where('id',$id)->update($update_data);
+            //$update = Colors::where('id',$id)->delete();
             return redirect()->route('color')->with('success', 'Color removed successfully.');
         }
         

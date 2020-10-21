@@ -75,10 +75,11 @@ class NewCartController extends Controller {
                             // ->join('product_size', 'product_size.size_id', '=', 'cart.size')
                             ->join('sizes', 'cart.size', '=', 'sizes.id')
                             ->join('colors', 'colors.id', '=', 'products.color_id')
-                            ->select('products.id as product_id','products.name','products.image','cart.id AS cart_id','cart.size as size_id','cart.qty','cart.cart_total_price','cart.cart_total_mrp_price','sizes.name as size_name','products.price','products.mrp','hex_code','discount','gst','gstper')
+                            ->select('products.id as product_id','products.name','products.image','cart.id AS cart_id','cart.size as size_id','cart.qty','cart.cart_total_price','cart.cart_total_mrp_price','sizes.name as size_name','products.price','products.mrp','hex_code','discount','gst','gstper','hsn_no')
                             ->where('cart.user_id',$user_id)->get();
+                           // dd($productDetail);
     if(!empty($productDetail)){
-         
+        // dd($productDetail);
         foreach ($productDetail as $key => $value) {
                 $product_size_data = ProductSize::where('product_id',$value->product_id)
                                         ->where('size_id',$value->size_id)
@@ -90,7 +91,7 @@ class NewCartController extends Controller {
             }
 		
      }
-
+//dd($productDetail);
      
     return view('cart.cart',compact('productDetail'));
   }
@@ -460,15 +461,15 @@ public function cartPageQtyUpdate(Request $request)
         $size  = $request['size'];
 
         $user_id  = Session::getId();
-
+        
         $quantity_update = Cart::where('user_id',(string)$user_id)
                        ->where('product_id',$product_id)
                        ->where('size',$size)
                        ->update([
-                       'qty'=>$current_qty,
-                       'cart_total_price'=>$total_price,
-                       'cart_total_mrp_price'=>$total_mrp_price,
-                       ]);
+                              'qty'                 =>$current_qty,
+                              'cart_total_price'    =>$total_price,
+                              'cart_total_mrp_price'=>$total_mrp_price,
+                          ]);
          
     }
     
@@ -631,18 +632,17 @@ public function cartPageQtyUpdate(Request $request)
 	
 	public function checkoutPlaceOrder(Request $request)
 	{
+	    $coupon_discount_datas = Session::get('coupon_discount_data');
+	    $coupon_id_datas = Session::get('coupon_id_data');
+	    $coupon_code_datas = Session::get('coupon_code_data');
+	    $address_id = Session::get('address_id');
+	    $coupon_discount_per = Session::get('coupon_discount_per');
   
-   
-    $coupon_discount_datas = Session::get('coupon_discount_data');
-    $coupon_id_datas = Session::get('coupon_id_data');
-    $coupon_code_datas = Session::get('coupon_code_data');
-  
-    $newaddress = null;
+    	$newaddress = null;
 		$productDetail = [];
 		
 	    $ordernumber =  mt_rand(100000, 999999);
 		
-//dd($request['first_name']);
 		if(Auth::id() > 0){
         $user_id = Auth::id();
         $productDetail =  DB::table('cart')
@@ -650,62 +650,33 @@ public function cartPageQtyUpdate(Request $request)
                             // ->join('product_size', 'product_size.size_id', '=', 'cart.size')
                             ->join('sizes', 'cart.size', '=', 'sizes.id')
                             ->join('colors', 'colors.id', '=', 'products.color_id')
-                            ->select('products.id as product_id','products.name','products.image','cart.id AS cart_id','cart.size as size_id','cart.qty','sizes.name as size_name','products.price','products.mrp','hex_code','discount','gst','gstper')
+                            ->select('products.id as product_id','products.name','products.image','cart.id AS cart_id','cart.size as size_id','cart.qty','sizes.name as size_name','products.price','products.mrp','hex_code','discount','gst','gstper','hsn_no')
                             ->where('cart.user_id',$user_id)->get();
-
-        if($request['address_selection'] == "new"){
-
-          if (!is_null($request->state)) {  
-            $state = $request->state;
-          }
-          if (!is_null($request->state_textbox)) {
-             $state = $request->state_textbox;
-          }
-
-          $arry_address = array(
-              'user_id'=>Auth::check()?auth()->user()->id:1,
-              'name'=>$request['first_name'],
-              'last_name'=>$request['last_name'],
-              'company_name'=>$request['company_name'],
-              'email'=>Auth::check()?null:$request['email'],
-              'phone_number'=>$request['phone_number'],
-              'pincode'=>$request['pincode'],
-              'address_line_one'=>$request['address_line_one'],
-              'address_line_two'=>$request['address_line_two'],
-              'address_line_three'=>$request['address_line_three'],
-              'city'=>$request['city'],
-              'country'=>$request['country'],
-              'isGuest'=>Auth::check()?0:1,
-              'state'=>$state,
-              'address_type'=>3,
-              'is_permanent'=>0);
-               
-              $newaddress = Useraddresses::create($arry_address);
-        }
     } else{
-        //if(!empty(Session::get('shoppingCart'))){
-          
-           // $request->validate([
-           //  'email' => 'required|unique:users,guest_email',   
-           // ]); 
-
           $userData =  DB::table('users')
                             ->select('id')
-                            ->where('email',$request['guest_email'])
+                            ->where('email',Session::get('guest_email'))
                             ->where('status',1)
                             ->where('is_deleted',0)
                             ->first();
-          if(empty($userData)){
-            $arry_address = array(
-                          'role_id'     =>3,
-                          'name'        =>$request['first_name'].' '.$request['last_name'],
-                          'phone_number'=>$request['phone_number'],
-                          'email'       =>$request['guest_email'],
-                        );
-                           
-            $userData = User::create($arry_address);
-          }
-            if (!is_null($request->state)) {  
+          	if(empty($userData)){
+	            $arry_address = array(
+	                          'role_id'     =>3,
+	                          'name'        =>Session::get('first_name').' '.Session::get('last_name'),
+	                          'phone_number'=>Session::get('phone_number'),
+	                          'email'       =>Session::get('guest_email'),
+	                        );
+	                           
+	            $userData = User::create($arry_address);
+          	}
+
+          	$session_id  = Session::getId();
+          	Useraddresses::where('user_id',$session_id)
+	                                ->update([
+	                                  'user_id' => $userData->id,
+	                                  
+	                                ]); 
+            /*if (!is_null($request->state)) {  
               $state = $request->state;
                
             }
@@ -730,255 +701,231 @@ public function cartPageQtyUpdate(Request $request)
               'address_type'=>3,
               'is_permanent'=>0);
                
-            $newaddress = Useraddresses::create($arry_address);
+            $newaddress = Useraddresses::create($arry_address);*/
 
-            //$allData = Session::get('shoppingCart');
-            //$allData = array_filter($allData);
-
-            /*foreach($allData as $productKey => $productVal){
-              $productData =  DB::table('products')
-                    ->join('product_size', 'product_size.product_id', '=', 'products.id')
-                    ->join('sizes', 'sizes.id', '=', 'product_size.size_id')
-                    ->join('colors', 'colors.id', '=', 'products.color_id')
-                    ->select('products.id as product_id','product_size.product_id','product_size.size_id as size_id','products.name','products.image','sizes.name as size_name','products.price','products.mrp','hex_code','discount','gst','gstper')
-                    ->where('products.id',$productVal['user_product_id'])
-                    ->where('product_size.size_id',$productVal['user_size'])->first();
-
-              if(!empty($productData)){
-                  $productData->cart_id = $productVal['cart_id'];
-                  $productData->qty = $productVal['user_qty'];
-                  $productDetail[] = $productData;
-              }
-            }*/
-            $session_id  = Session::getId();
             $productDetail =  DB::table('cart')
                             ->join('products', 'products.id', '=', 'cart.product_id')
                             // ->join('product_size', 'product_size.size_id', '=', 'cart.size')
                             ->join('sizes', 'cart.size', '=', 'sizes.id')
                             ->join('colors', 'colors.id', '=', 'products.color_id')
-                            ->select('products.id as product_id','products.name','products.image','cart.id AS cart_id','cart.size as size_id','cart.qty','sizes.name as size_name','products.price','products.mrp','hex_code','discount','gst','gstper')
+                            ->select('products.id as product_id','products.name','products.image','cart.id AS cart_id','cart.size as size_id','cart.qty','sizes.name as size_name','products.price','products.mrp','hex_code','discount','gst','gstper','hsn_no')
                             ->where('cart.user_id',$session_id)->get();
             
-       //}
             $user_id = $userData->id;
 		}
 
-  //   if(!empty($productDetail))
-		// {
-         
-		// 	foreach ($productDetail as $key => $value) {
-  //               $product_size_data = ProductSize::where('product_id',$value->product_id)
-  //                                       ->where('size_id',$value->size_id)
-  //                                       ->first();
+		if(count($productDetail) != 0){
+		    $gst_amount_totals = $request->gst_amount_total;
+		      //$you_save_amounts = Session::get('you_save_amount');
+		    $you_save_amounts = 0;
+		    $bag_totals = $request->bag_total;
+		    $afterDiscountTotalPrice = $bag_totals + $gst_amount_totals;
 
-
-  //               $productDetail[$key]->max_qty = $product_size_data->qty;
-
-  //           }
-		// }
-     
-		if(count($productDetail) != 0)
-		{
-      $gst_amount_totals = Session::get('gst_amount_total');
-      $you_save_amounts = Session::get('you_save_amount');
-      $bag_totals = Session::get('bag_total');
-     // dd($you_save_amounts);
-      $afterDiscountTotalPrice = $request['totalamount'];
-    
 			$order = Order::create([
-			   'user_id'       =>Auth::check()?auth()->user()->id:$userData->id,
-			   'address_id'    =>$newaddress == null?$request['address']:$newaddress->id,
-			   'ordernumber'   =>$ordernumber,
-			   'isGuest'       =>Auth::check()?0:1,
-			   'payment_status'=>1,
-			   'totalamount'   =>$afterDiscountTotalPrice,
-         'bag_total'   =>$bag_totals,
-         'saveAmount'  =>$you_save_amounts,
-         'gstAmount' =>round($gst_amount_totals),
-         'coupon_id'    =>$coupon_id_datas,
-         'coupon_code'  =>$coupon_code_datas,
-         'coupon_amount'=>$coupon_discount_datas
-			]);
+								   'user_id'         =>Auth::check()?auth()->user()->id:$userData->id,
+								   'address_id'      =>$address_id,
+								   'ordernumber'     =>$ordernumber,
+								   'isGuest'         =>Auth::check()?0:1,
+								   'payment_status'  =>1,
+								   'totalamount'     =>$afterDiscountTotalPrice,
+							        'bag_total'      =>$bag_totals,
+							        'saveAmount'     =>$you_save_amounts,
+							        'gstAmount'      =>$gst_amount_totals,
+							        'coupon_id'      =>$coupon_id_datas,
+							        'coupon_code'    =>$coupon_code_datas,
+							        'coupon_amount'  =>$coupon_discount_datas,
+							        'bill_address'   =>Session::get('bill'),
+								]);
 
        //Coupon update 
-      $coupon_code = $coupon_code_datas;
-          if($coupon_code != ''){
-            $couponDetail = Coupon::where('code',$coupon_code)->where('status',1)->where('is_deleted',0)->first();
-            if($couponDetail->usage != '' || $couponDetail->usage != 0){
-              $updateCoupon = Coupon::where('id',$couponDetail->id)
-                                    ->update([
-                                      'usage' => $couponDetail->usage - 1,
-                                      'total_used' => $couponDetail->total_used + 1,
-                                    ]);    
-              $user_id = Auth::user()->id;   
-              $addUserCoupons = new UserCoupons;
-              $addUserCoupons->order_id = $order->id;
-              $addUserCoupons->user_id = $user_id;
-              $addUserCoupons->coupon_id = $couponDetail->id;
-              $addUserCoupons->usage = "1";
-              $addUserCoupons->user_id = $user_id;
-              $addUserCoupons->save();
-            }
-          }  
+      	$coupon_code = $coupon_code_datas;
+	    if($coupon_code != ''){
+	        $couponDetail = Coupon::where('code',$coupon_code)->where('status',1)->where('is_deleted',0)->first();
+	        if($couponDetail->usage != '' || $couponDetail->usage != 0){
+	          	$updateCoupon = Coupon::where('id',$couponDetail->id)
+	                                ->update([
+	                                  'usage' => $couponDetail->usage - 1,
+	                                  'total_used' => $couponDetail->total_used + 1,
+	                                ]);    
+	          	$user_id = Auth::user()->id;   
+	          	$addUserCoupons = new UserCoupons;
+	          	$addUserCoupons->order_id = $order->id;
+	          	$addUserCoupons->user_id = $user_id;
+	          	$addUserCoupons->coupon_id = $couponDetail->id;
+	          	$addUserCoupons->usage = "1";
+	          	$addUserCoupons->user_id = $user_id;
+	          	$addUserCoupons->save();
+	        }
+	    }  
      // end Coupon update
 
-      if($request['billing_address'] == "New"){
+      	if(Session::get('bill') == "New"){
         
-        $billing_address = array(
-            'order_id'          =>$order->id,
-            'name'              =>$request['billing_first_name'],
-            'last_name'         =>$request['billing_last_name'],
-            'company_name'      =>$request['billing_company_name'],
-            'phone_number'      =>$request['billing_phone_number'],
-            'pincode'           =>$request['billing_pincode'],
-            'address_line_one'  =>$request['billing_address_line_one'],
-            'address_line_two'  =>$request['billing_address_line_two'],
-            'city'              =>$request['billing_city'],
-            'country'           =>$request['billing_country'],
-            'state'             =>$request['billing_state']
-          );
-           
-          $billingaddress = Orderbillingaddresses::create($billing_address);
-      }
+        	$billing_address = array(
+	            'order_id'          =>$order->id,
+	            'name'              =>Session::get('billing_first_name'),
+	            'last_name'         =>Session::get('billing_last_name'),
+	            'company_name'      =>Session::get('billing_company_name'),
+	            'phone_number'      =>Session::get('billing_phone_number'),
+	            'pincode'           =>Session::get('billing_pincode'),
+	            'address_line_one'  =>Session::get('billing_address_line_one'),
+	            'address_line_two'  =>Session::get('billing_address_line_two'),
+	            'city'              =>Session::get('billing_city'),
+	            'country'           =>Session::get('billing_country'),
+	            'state'             =>Session::get('billing_state')
+	        );
+          	$billingaddress = Orderbillingaddresses::create($billing_address);
+      	}
 			
 		
-			if($order != null)
-			{
-				
+		if($order != null){
 				PaymentHistory::create([
-				   'user_id'=>Auth::check()?auth()->user()->id:$userData->id,
-				   'payment_id' =>$request['paymentid'],
-				   'order_id'=>$order->id,
-				   'isGuest'=>Auth::check()?0:1,
-				   'status'=>$request['paymentid'] != null ?1:0,
-				   'totalamount'=>$request['totalamount']
+				   'user_id'            =>Auth::check()?auth()->user()->id:$userData->id,
+				   'payment_id'         =>$request['paymentid'],
+				   'order_id'           =>$order->id,
+				   'isGuest'            =>Auth::check()?0:1,
+				   'status'             =>$request['paymentid'] != null ?1:0,
+				   'totalamount'        =>$request['totalamount']
 				]);
 			
 				foreach($productDetail as $value){
-			        OrderDetail::create([
-                    						'order_id'=>$order->id,	
-                    						'product_id'=>$value->product_id,	
-                    						'qty'=>$value->qty,	
-                    						'size_name'=>$value->size_name,	
-                    						'price'=>$value->price,	
-                    						'mrp'=>$value->mrp,	
-                    						'hex_code'=>$value->hex_code,	
-                    						'discount'=>$value->discount,	
-                    				]);
-              $product_size_data = ProductSize::where('product_id',$value->product_id)
-                                        ->where('size_id',$value->size_id)
-                                        ->first();
-              $old_stock = $product_size_data->qty;
 
-              $updated_stock = $old_stock - $value->qty;
+		            if($coupon_discount_per > 0){
+		              $discount_price = $value->price * $coupon_discount_per / 100;
+		              $product_price = $value->price - $discount_price;
+		            }else{
+		              $product_price = $value->price;
+		              $discount_price = 0;
+		            }
 
-              ProductSize::where('product_id',$value->product_id)
-                     ->where('size_id',$value->size_id)
-                     ->update([
-                      'qty'=>$updated_stock,
-                     ]);
+		            if($product_price > 1000){
+		              $gst_amount = ($product_price * 12 / 100) * $value->qty;
+		              $gst_per = 12;
+		            }else{
+		              $gst_per = 5;
+		              $gst_amount = ($product_price * 5 / 100) * $value->qty;
+		            }
+		            
+				    OrderDetail::create([
+		                  						'order_id'      =>$order->id,	
+		                  						'product_id'    =>$value->product_id,	
+		                  						'qty'           =>$value->qty,	
+		                  						'size_name'     =>$value->size_name,	
+		                  						'price'         =>$product_price,
+		                  						'mrp'           =>$value->mrp,	
+		                  						'hex_code'      =>$value->hex_code,	
+					                            'gst_amount'    =>$gst_amount,
+					                            'gst_per'       =>$gst_per,
+					                            'discount_price'=>$discount_price,
+					                            'hsn_no'		=>$value->hsn_no,
+		                  						'discount'      =>$value->discount,	
+		                  				]);
+		            $product_size_data = ProductSize::where('product_id',$value->product_id)
+		                                        ->where('size_id',$value->size_id)
+		                                        ->first();
+		            $old_stock = $product_size_data->qty;
 
+		            $updated_stock = $old_stock - $value->qty;
 
-              $add_data = array(
-                            'product_id'    => $value->product_id,
-                            'size_id'       => $value->size_id,
-                            'qty'           => $value->qty,
-                            'type'          => 4,
-                            'description'   => 'Order',
-                            'order_id'      => $order->id,
-                            'created_at'    => date('Y-m-d H:i:s'),
-                            'updated_at'    => date('Y-m-d H:i:s')
-                        );
+		            ProductSize::where('product_id',$value->product_id)
+		                     ->where('size_id',$value->size_id)
+		                     ->update([
+		                      'qty'=>$updated_stock,
+		                     ]);
 
-              DB::table('product_stock_history')->insert($add_data);
-			  }
+		            $add_data = array(
+		                            'product_id'    => $value->product_id,
+		                            'size_id'       => $value->size_id,
+		                            'qty'           => $value->qty,
+		                            'type'          => 4,
+		                            'description'   => 'Order ( Order# '.$ordernumber.')',
+		                            'order_id'      => $order->id,
+		                            'created_at'    => date('Y-m-d H:i:s'),
+		                            'updated_at'    => date('Y-m-d H:i:s')
+		                        );
 
-        //sms send to mobile
-             $orderNumberGet = Order::where('id',$order->id)->first();
+		            DB::table('product_stock_history')->insert($add_data);
+				}
 
-             $order_detail_product_id = OrderDetail::where('order_id',$orderNumberGet->id)->pluck('product_id');
-                  $user_data = User::where('id',$user_id)->first();
-                  $apiKey = urlencode('8IQV4ZXumYQ-tOLYwsFk9H3PUHJW1BEaLI6tFMIjqM');
+            //sms send to mobile
+            $orderNumberGet = Order::where('id',$order->id)->first();
+
+            $order_detail_product_id = OrderDetail::where('order_id',$orderNumberGet->id)->pluck('product_id');
+            $user_data = User::where('id',$user_id)->first();
+            $apiKey = urlencode('8IQV4ZXumYQ-tOLYwsFk9H3PUHJW1BEaLI6tFMIjqM');
                  // Message details
-                    $numbers = array($user_data['phone_number']);  /*array(919574250320, 916355664902);*/
-                    $sender = urlencode('TXTLCL');
-                    $productData = Product::whereIn('id',$order_detail_product_id)->first();
+            $mobileNo = "91".$user_data['phone_number'];
+            $numbers = array($mobileNo);  /*array(919574250320, 916355664902);*/
+            $sender = urlencode('TXTLCL');
+            $productData = Product::whereIn('id',$order_detail_product_id)->first();
                     //$messageText = 'You ' .$ordernumber. ' for ' .$productData->name. ' with pobox is confirmed' ;  
-                    $messageText = "Hi ".$user_data['name']. " your order number " .$ordernumber. " for " .$productData['name']. " with pobox is confirmed";
+            $messageText = "Hi ".$user_data['name']. " your order number " .$ordernumber. " for " .$productData['name']. " with pobox is confirmed";
 
-
-
-
-
-                    $message = rawurlencode($messageText);
-
-                    $numbers = implode(',', $numbers);
-                    // Prepare data for POST request
-                    $data = array('apikey' => $apiKey, 'numbers' => $numbers, "sender" => $sender, "message" => $message);
-                  // Send the POST request with cURL
-                  $ch = curl_init('https://api.textlocal.in/send/');
-                  curl_setopt($ch, CURLOPT_POST, true);
-                  curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-                  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                  $response = curl_exec($ch);
-                  //dd($response);
-                  curl_close($ch);
-                  
-                  // Process your response here
-                  //echo $response;
-
+            $message = rawurlencode($messageText);
+            $numbers = implode(',', $numbers);
+            // Prepare data for POST request
+            $data = array('apikey' => $apiKey, 'numbers' => $numbers, "sender" => $sender, "message" => $message);
+            // Send the POST request with cURL
+            $ch = curl_init('https://api.textlocal.in/send/');
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            $response = curl_exec($ch);
+            //dd($response);
+            curl_close($ch);
             //sms send code end
+            //mail send
+            $oderData = Order::where('is_deleted','0')->where('id',$orderNumberGet->id)->get();
+	        foreach ($oderData as $keyOderData => $valueOderData) {
+	           $oderData[$keyOderData] = $valueOderData;
+	           $user_data = User::where('id',$valueOderData->user_id)->first();
+	           $oderData[$keyOderData]['user_data'] = $user_data;
 
-          //mail send
-           $oderData = Order::where('is_deleted','0')->where('id',$orderNumberGet->id)->get();
-        foreach ($oderData as $keyOderData => $valueOderData) {
-           $oderData[$keyOderData] = $valueOderData;
-           $user_data = User::where('id',$valueOderData->user_id)->first();
-           $oderData[$keyOderData]['user_data'] = $user_data;
+	           $address_data = Useraddresses::where('id',$valueOderData->address_id)->first();
+	           $oderData[$keyOderData]['address_data'] = $address_data;
 
-           $address_data = Useraddresses::where('id',$valueOderData->address_id)->first();
-           $oderData[$keyOderData]['address_data'] = $address_data;
+	           $order_detail_product_id = OrderDetail::where('order_id',$valueOderData->id)->pluck('product_id');
+	           $productData = Product::whereIn('id',$order_detail_product_id)->get();
+	           foreach ($productData as $keyProductData => $valueProductData) {
+	            $proData[$keyProductData]= $valueProductData;
+	            
+	              $OrderDetailData[$keyProductData]= OrderDetail::where('order_id',$valueOderData->id)->where('product_id',$valueProductData->id)->first();
+	             foreach ($OrderDetailData as $key => $value) {
+	               $proData[$key]['order_detail_data']= $value;
+	              
+	              }
+	           }
 
-           $order_detail_product_id = OrderDetail::where('order_id',$valueOderData->id)->pluck('product_id');
-           $productData = Product::whereIn('id',$order_detail_product_id)->get();
-           foreach ($productData as $keyProductData => $valueProductData) {
-            $proData[$keyProductData]= $valueProductData;
-            
-              $OrderDetailData[$keyProductData]= OrderDetail::where('order_id',$valueOderData->id)->where('product_id',$valueProductData->id)->first();
-             foreach ($OrderDetailData as $key => $value) {
-               $proData[$key]['order_detail_data']= $value;
-              
-              }
-           }
-
-        $oderData[$keyOderData]['product_data']= $proData;
-        }
+	          $oderData[$keyOderData]['product_data']= $proData;
+	        }
         
-        $productDetail = OrderDetail::where('order_id',$orderNumberGet->id)->get();
-       
-       $pdf = PDF::loadView('email.order_confirm_mail', ['oderData' => $oderData , 'productDetail' => $productDetail]);
- 
-          
-             Mail::send(['html'=>'email.order_confirm_mail'],['oderData' => $oderData , 'productDetail' => $productDetail] ,function($message) use ($user_data,$pdf){
-                      $message->to($user_data['email'])->subject('Your order has been confirmed-po box')
-                      ->attachData($pdf->output(), "invoice.pdf");
-                      $message->from('info@poboxfashion.com','pobox');
+        	$productDetail = OrderDetail::where('order_id',$orderNumberGet->id)->get();
+        	//Customer send mail
+        	$pdf = PDF::loadView('email.order_confirm_mail', ['oderData' => $oderData , 'productDetail' => $productDetail]);
 
-                  });
+	       Mail::send(['html'=>'email.order_confirm_mail'],['oderData' => $oderData , 'productDetail' => $productDetail] ,function($message) use ($user_data,$pdf){
+	                      $message->to($user_data['email'])->subject('Your order has been confirmed-po box')
+	                      ->attachData($pdf->output(), "invoice.pdf");
+	                      $message->from('info@poboxfashion.com','pobox');
 
+	                  });
 
+	        //Admin send mail
+	        $adminData = User::where('role_id','1')->where('status',1)->where('is_deleted',0)->get();
+	        $pdf = PDF::loadView('email.admin_new_order_received_mail', ['oderData' => $oderData , 'productDetail' => $productDetail]);
 
-                  return response()->json(array('success' => true, 'order_id'=>$order->id));
-          
+	        Mail::send(['html'=>'email.admin_new_order_received_mail'],['oderData' => $oderData , 'productDetail' => $productDetail] ,function($message) use ($pdf){
+	              $message->to('info@poboxfashion.com')->subject('New order received')
+	              ->attachData($pdf->output(), "invoice.pdf");
+	              $message->from('info@poboxfashion.com','pobox');
 
+	          });
+      		return response()->json(array('success' => true, 'order_id'=>$order->id));
 			  //return redirect()->route('orderSummary',$order->id);
 			}
-		}
-		else
-		{
+		}else{
 			  return redirect()->back()->with('status','Order Not Place..!');
 		}		
-		
 	}
 	
 
@@ -992,11 +939,37 @@ public function cartPageQtyUpdate(Request $request)
       session()->forget('shoppingCart');
       session()->flush();
     }
-		$ordersummry = Order::find($id);
-	  $productDetail = OrderDetail::where('order_id',$ordersummry->id)->get();
-   
+	$ordersummry = Order::find($id);
+	$productDetail = OrderDetail::where('order_id',$ordersummry->id)->get();
+    
+    /*print_r('<pre>');
+    print_r($ordersummry->getAddress->name);
+    exit;*/
 	  return view('order.order_summary',compact('productDetail','ordersummry'));
 	}
+
+
+  public function orderConfirm( ){
+    
+    if (!Auth::user()){
+          $user_id  = Session::getId();
+      }else{
+          $user_id = Auth::id(); 
+      }
+      $productDetail =  DB::table('cart')
+                            ->join('products', 'products.id', '=', 'cart.product_id')
+                            //->join('product_size', 'product_size.size_id', '=', 'cart.size')
+                            ->join('sizes', 'cart.size', '=', 'sizes.id')
+                            ->join('colors', 'colors.id', '=', 'products.color_id')
+                            ->select('products.id as product_id','products.name','products.image','cart.id as cart_id','cart.qty','cart.cart_total_price','cart.cart_total_mrp_price','sizes.name as size_name','products.price','products.mrp','hex_code','discount','gst','gstper','hsn_no')
+                            ->where('cart.user_id',$user_id)->get();
+    
+    $address_id = Session::get('address_id');
+    $coupon_discount_per = Session::get('coupon_discount_per');
+    $addresses = Useraddresses::where('id',$address_id)->first();
+
+    return view('order.order_confirm',compact('productDetail','addresses','coupon_discount_per'));
+  }
 
   public function checkCoupon(Request $request){
     //User one time use coupon
@@ -1065,9 +1038,6 @@ public function cartPageQtyUpdate(Request $request)
     ->whereDate('valid_to', '>=', $now)
     ->first();
 
-    
-
-
     $coupon_discount_db =$couponData['total'];
     $coupon_code  = $couponData['code'];
     $coupon_id = $couponData['id'];
@@ -1078,15 +1048,16 @@ public function cartPageQtyUpdate(Request $request)
     $discount =  round($main_price * $coupon_discount_db / 100);
 
    // dd($userCouponsUseOneTime);
-     if ($userCouponsUseOneTime == 0) {
+      if ($userCouponsUseOneTime == 0) {
         if ($expired_coupon == 1) {
-           if($discount !== 0){
+            if($discount !== 0){
               Session::put('coupon_discount_data',$discount);
               Session::put('coupon_id_data',$coupon_id);
               Session::put('coupon_code_data',$coupon_code);
+              Session::put('coupon_discount_per',$coupon_discount_db);
             }
-          }
         }
+      }
 
     $afterdiscount =round($total_price - $discount);
 
@@ -1119,6 +1090,7 @@ public function cartPageQtyUpdate(Request $request)
       session()->forget('coupon_discount_data');
       session()->forget('coupon_code_data');
       session()->forget('coupon_id_data');
+      session()->forget('coupon_discount_per');
      
       $original_tax_price = $request['original_tax_price'];
       $original_sub_total_price = $request['original_sub_total_price'];
@@ -1136,5 +1108,114 @@ public function cartPageQtyUpdate(Request $request)
       
       return $data;
     }
+
+  public function checkoutOrder(Request $request)
+  {
+    if($request['couponCode']==''){
+      session()->forget('coupon_discount_per');
+    }
+  	if(Auth::check()){
+      	if($request['address_selection'] == "new"){
+          
+          	if (!is_null($request->state)) {  
+            	$state = $request->state;
+          	}
+          	if (!is_null($request->state_textbox)) {
+             	$state = $request->state_textbox;
+          	}
+
+          	$arry_address = array(
+                          'user_id'           =>auth()->user()->id,
+                          'name'              =>$request['first_name'],
+                          'last_name'         =>$request['last_name'],
+                          'company_name'      =>$request['company_name'],
+                          'email'             =>null,
+                          'phone_number'      =>$request['phone_number'],
+                          'pincode'           =>$request['pincode'],
+                          'address_line_one'  =>$request['address_line_one'],
+                          'address_line_two'  =>$request['address_line_two'],
+                          'address_line_three'=>$request['address_line_three'],
+                          'city'              =>$request['city'],
+                          'country'           =>$request['country'],
+                          'isGuest'           =>0,
+                          'state'             =>$state,
+                          'address_type'      =>3,
+                          'is_permanent'      =>0
+            );
+            
+            $newaddress = Useraddresses::create($arry_address);
+            $arry_address['state'] = $request->state;
+            Session::put('new_address',$arry_address);
+            Session::put('new_address_flag',"True");
+            Session::put('address_id',$newaddress->id);
+        }else{
+          Session::put('address_id',$request->address);
+        }
+
+        if($request['answer'] !='no'){
+        	Session::put('bill','New');
+        	Session::put('billing_first_name',$request->billing_first_name);
+        	Session::put('billing_last_name',$request->billing_last_name);
+        	Session::put('billing_company_name',$request->billing_company_name);
+        	Session::put('billing_pincode',$request->billing_pincode);
+        	Session::put('billing_address_line_one',$request->billing_address_line_one);
+        	Session::put('billing_address_line_two',$request->billing_address_line_two);
+        	Session::put('billing_city',$request->billing_city);
+        	Session::put('billing_country',$request->billing_country);
+        	Session::put('billing_state',$request->billing_state);
+        	Session::put('billing_phone_number',$request->billing_phone_number);
+        }else{
+        	Session::put('bill','Same');
+        }
+    }else{
+
+    	$arry_address = array(
+                          'user_id'           =>Session::getId(),
+                          'name'              =>$request['first_name'],
+                          'last_name'         =>$request['last_name'],
+                          'company_name'      =>$request['company_name'],
+                          'email'             =>$request['email'],
+                          'phone_number'      =>$request['phone_number'],
+                          'pincode'           =>$request['pincode'],
+                          'address_line_one'  =>$request['address_line_one'],
+                          'address_line_two'  =>$request['address_line_two'],
+                          'address_line_three'=>$request['address_line_three'],
+                          'city'              =>$request['city'],
+                          'country'           =>$request['country'],
+                          'isGuest'           =>1,
+                          'state'             =>$request['state'],
+                          'address_type'      =>3,
+                          'is_permanent'      =>0
+            );
+            
+            $newaddress = Useraddresses::create($arry_address);
+
+            Session::put('address_id',$newaddress->id);
+
+            Session::put('guest_email',$request->email);
+            Session::put('first_name',$request->first_name);
+            Session::put('last_name',$request->last_name);
+            Session::put('phone_number',$request->phone_number);
+    	
+    	if($request['answer'] !='no'){
+        	Session::put('bill','New');
+        	Session::put('billing_first_name',$request->billing_first_name);
+        	Session::put('billing_last_name',$request->billing_last_name);
+        	Session::put('billing_company_name',$request->billing_company_name);
+        	Session::put('billing_pincode',$request->billing_pincode);
+        	Session::put('billing_address_line_one',$request->billing_address_line_one);
+        	Session::put('billing_address_line_two',$request->billing_address_line_two);
+        	Session::put('billing_city',$request->billing_city);
+        	Session::put('billing_country',$request->billing_country);
+        	Session::put('billing_state',$request->billing_state);
+        	Session::put('billing_phone_number',$request->billing_phone_number);
+        }else{
+        	Session::put('bill','Same');
+        }
+    }
+    
+    return redirect()->route('orderConfirm'); 
+    
+  }
 
 }

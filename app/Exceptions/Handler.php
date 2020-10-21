@@ -4,7 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-
+use Auth;
 class Handler extends ExceptionHandler
 {
     /**
@@ -47,38 +47,33 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-                /*if($this->isHttpException($exception)){
 
-            switch ($exception->getStatusCode()) {
-
-                case 404:
-
-                    return redirect()->route('404');
-
-                    break;
-
-                case 405:
-
-                    return redirect()->route('404');
-
-                    break;
-
-                default:
-
-                    return redirect()->route('404');
-                    break;     
-
-            }
-
+          $url = (explode('.', $_SERVER['HTTP_HOST']));
+        
+          if(isset($url[0]) && $url[0]=='admin'){
+              //return view('errors.404_admin'); 
+              return redirect()->route('404_page');
+          }else{
+              return redirect()->route('404');
+          }
+        //dd(auth()->user()->role_id);
+       // return parent::render($request, $exception);
+        //return redirect()->route('404');
+         if (auth()->user()->role_id == 1) {
+             return view('errors.404_admin'); 
         }
-       */
-       // return redirect()->route('404');
-        //return parent::render($request, $exception);
-          if (isset($request)) {
+       
+        if (auth()->user()->role_id !== null) {
+            return view('errors.404');   
+        }
+
+       /* if (isset($request)) {
            return parent::render($request, $exception);
         }
         if (!isset($request)) {
         return redirect()->route('404');
-    }
+       }*/
+      // return parent::render($request, $exception);
+       
     }
 }

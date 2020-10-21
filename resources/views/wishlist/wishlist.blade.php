@@ -21,9 +21,9 @@
     display: none;
    }
 </style>
-<div class="hero-section hero-background style-02" style="margin-top: 0;background: url('../assets/images/hero_bg.jpg');">
+<!-- <div class="hero-section hero-background style-02" style="margin-top: 0;background: url('../assets/images/hero_bg.jpg');">
       <h1 class="page-title">Wishlist</h1>
-</div>
+</div> -->
 <div class="wishlist-page" style="margin-top: 30px;margin-bottom: 30px;">
   
     <div class="container">

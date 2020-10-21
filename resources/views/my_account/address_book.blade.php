@@ -83,7 +83,7 @@
         </div>
         <div class="form-group">
             <div class="input-group"> 
-                <input type="text" name="company_name" value="{{$address->company_name}}" class="col-md-12 col-xs-12 form-control" placeholder="Company Name" maxlength="30" onkeypress="return ValidateAlpha(event);" required>
+                <input type="text" name="company_name" value="{{$address->company_name}}" class="col-md-12 col-xs-12 form-control" placeholder="Company Name" maxlength="30" onkeypress="return ValidateAlpha(event);" >
                  @if ($errors->has('company_name'))
                  <span class="help-block">
                  <strong>{{ $errors->first('company_name') }}</strong>
@@ -96,7 +96,12 @@
         <div class="form-group">
             <div class="input-group">
                 <!-- {!! Form::text('phone_number', null, ['class' => 'col-md-12 col-xs-12 form-control','placeholder' => 'Phone No','maxlength' => '10','required' => 'required','onKeyPress' => 'return isNumberKey(event)']) !!} -->
-                <input type="text" name="phone_number" value="{{$address->phone_number}}" class="col-md-12 col-xs-12 form-control" placeholder="Phone No"  maxlength="10" onkeypress="return isNumberKey(event);" required>
+               
+
+                 <input readonly  style="padding-left: 9px;width: 53px;border-radius: 19px;color:#9788a7;padding-right: 0;border-right: 0;border-bottom-right-radius: 0;border-top-right-radius: 0;border-right: 1px solid #e6e6e6;" type="text" placeholder="+91" name="code" value="+91" style="width: 15px;">
+                 <input type="text" style="border-left: 0;border-bottom-left-radius: 0;border-top-left-radius: 0;" name="phone_number" value="{{$address->phone_number}}" class="col-md-12 col-xs-12 form-control" placeholder="Phone No"  maxlength="14"  required>
+               
+               <!--  onkeypress="return isNumberKey(event);" -->
                  @if ($errors->has('phone_number'))
                  <span class="help-block">
                  <strong>{{ $errors->first('phone_number') }}</strong>
@@ -134,7 +139,7 @@
         <div class="form-group">
             <div class="input-group">
                 <!-- {!! Form::text('address_line_two', null, ['class' => 'col-md-12 col-xs-12 form-control','placeholder' => 'Flat number / Building Name','required' => 'required']) !!} -->
-                <input type="text" maxlength="30" name="address_line_two" value="{{$address->address_line_two}}" class="col-md-12 col-xs-12 form-control" placeholder="Apartment suite,etc.(optional)" maxlength="30" required>
+                <input type="text" maxlength="30" name="address_line_two" value="{{$address->address_line_two}}" class="col-md-12 col-xs-12 form-control" placeholder="Apartment suite,etc.(optional)" maxlength="30">
                  @if ($errors->has('address_line_two'))
                  <span class="help-block">
                  <strong>{{ $errors->first('address_line_two') }}</strong>
@@ -313,7 +318,7 @@
 
         <div class="form-group">
             <div class="input-group">
-                {!! Form::text('company_name', null, ['class' => 'col-md-12 col-xs-12 form-control','placeholder' => 'Company Name','maxlength' => '30','onKeyPress' => 'return ValidateAlpha(event);','required' => 'required','onKeyPress' => 'return ValidateAlpha(event);']) !!}
+                {!! Form::text('company_name', null, ['class' => 'col-md-12 col-xs-12 form-control','placeholder' => 'Company Name','maxlength' => '30','onKeyPress' => 'return ValidateAlpha(event);','onKeyPress' => 'return ValidateAlpha(event);']) !!}
                  @if ($errors->has('company_name'))
                  <span class="help-block">
                  <strong>{{ $errors->first('company_name') }}</strong>
@@ -325,7 +330,10 @@
 
         <div class="form-group">
             <div class="input-group">
-                {!! Form::text('phone_number', null, ['class' => 'col-md-12 col-xs-12 form-control','placeholder' => 'Phone No','maxlength' => '10','required' => 'required','onKeyPress' => 'return isNumberKey(event)']) !!}
+                <input readonly  style="padding-left: 9px;width: 53px;border-radius: 19px;color:#9788a7;padding-right: 0;border-right: 0;border-bottom-right-radius: 0;border-top-right-radius: 0;border-right: 1px solid #e6e6e6;" type="text" placeholder="+91" name="code" value="+91" style="width: 15px;">
+                {!! Form::text('phone_number', null, ['class' => 'col-md-12 col-xs-12 form-control','placeholder' => 'Phone No','maxlength' => '14','required' => 'required','style' => 'border-left: 0;border-bottom-left-radius: 0;border-top-left-radius: 0;']) !!}
+             
+               <!--  ,'onKeyPress' => 'return isNumberKey(event)' -->
                  @if ($errors->has('phone_number'))
                  <span class="help-block">
                  <strong>{{ $errors->first('phone_number') }}</strong>
@@ -359,7 +367,7 @@
         
         <div class="form-group">
             <div class="input-group">
-                {!! Form::text('address_line_two', null, ['class' => 'col-md-12 col-xs-12 form-control','placeholder' => 'Apartment suite,etc.(optional)','maxlength' => '30','required' => 'required']) !!}
+                {!! Form::text('address_line_two', null, ['class' => 'col-md-12 col-xs-12 form-control','placeholder' => 'Apartment suite,etc.(optional)','maxlength' => '30']) !!}
                  @if ($errors->has('address_line_two'))
                  <span class="help-block">
                  <strong>{{ $errors->first('address_line_two') }}</strong>
@@ -392,7 +400,7 @@
 
         <div class="form-group">
             <div class="input-group">
-                <select id="add_address_country" name="country"  class="col-md-12 col-xs-12 form-control">
+                <select id="add_address_country" name="country"  class="col-md-12 col-xs-12 form-control" required="required">
                       <option value="">Select Country</option>
                            @if(count($country) > 0)
                            @foreach($country as $key => $value)
@@ -409,7 +417,8 @@
         </div>
          <div class="form-group">
             <div class="input-group">
-             <select  id="state_address" name="state"class="col-md-12 col-xs-12 form-control">
+             <select  id="state_address" name="state"class="col-md-12 col-xs-12 form-control" required="required">
+              <option value="">Select State</option>
                       </select>
                  @if ($errors->has('state'))
                  <span class="help-block">
@@ -490,6 +499,10 @@
 
 <style>
 @media only screen and (max-width : 576px) {
+  input{
+    padding: 0!important;
+    padding-left: 15px !important;
+  }
 
     .addAddrBox {
         margin-bottom: 15px;

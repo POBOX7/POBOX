@@ -109,7 +109,12 @@ setTimeout(function() { $("#myElem").hide(); }, 12000);
                                             </tr> 
                                             <tr>
                                               <td><b>Txn ID</b></td>
-                                              <td>{{$oderData[$keyOderData]['PaymentHistoryData']['payment_id']}}</td>
+                                              <td>
+                                 @if(isset($oderData[$keyOderData]['PaymentHistoryData']['payment_id']))
+                                  {{$oderData[$keyOderData]['PaymentHistoryData']['payment_id']}}
+                                  
+                                  @endif
+                                            </td>
                                             </tr> 
 
                                           </tbody>

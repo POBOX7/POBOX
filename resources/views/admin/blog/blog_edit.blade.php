@@ -1,7 +1,7 @@
 @extends('admin.layouts.admin', ['pageTitle' => 'Add blog'])
 
 @section('content')
-
+<center><div id="result"></div></center>
 <div class="row">
   <div class="col-md-12 d-flex align-items-stretch grid-margin">
     <div class="row flex-grow">
@@ -65,7 +65,8 @@
               <div class="form-group row">
                 <label for="blog_image" class="col-sm-3 col-form-label">Image</label>
                 <div class="col-sm-4">
-                  <input type="file" class="form-control" id="blog_image" name="blog_image" accept="image/*">
+                  <input type="file" class="form-control image-file" id="blog_image" name="blog_image" accept="image/*">
+                  <div class="result"></div>
                   @if ($errors->has('blog_image'))
                     <span style="color: red">{{ $errors->first('blog_image') }}</span>
                   @endif
@@ -118,7 +119,7 @@
               </div>
 
               
-              <button type="submit" class="btn btn-success mr-2">Submit</button>
+              <button type="submit" id="submit" class="btn btn-success mr-2">Submit</button>
               <a href="{{route('admin.blog')}}"   class="btn btn-light">Cancel</a>
             </form>
           </div>
@@ -139,4 +140,5 @@
     filebrowserUploadUrl: '../../../upload.php'
 } );
 </script>
+
 @endsection

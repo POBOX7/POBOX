@@ -12,14 +12,14 @@ class BeforeMiddleware
 		 $response = $next($request);
 		 $exception = $response->exception;
 		
-		if(!empty($response->exception))
-		{
-			abort(404);
-		}
-		else
-		{
-			 return $next($request);
-		}
+		// if(!empty($response->exception))
+		// {
+		// 	abort(404);
+		// }
+		// else
+		// {
+		// 	 return $next($request);
+		// }
         
     }
 }

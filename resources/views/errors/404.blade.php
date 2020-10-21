@@ -1,3 +1,5 @@
+@extends('new_resources.layouts.new_app') 
+@section('content')
 <!DOCTYPE html>
 <html lang="en">
 
@@ -26,7 +28,7 @@
 
 <body>
 
-  <div id="notfound">
+  <div>  <!-- id="notfound" -->
     <div class="notfound">
       <div class="notfound-404">
         <h1>Oops!</h1>
@@ -55,10 +57,12 @@
 }
 
 .notfound {
-  max-width: 520px;
+  /*max-width: 520px;*/
   width: 100%;
   line-height: 1.4;
   text-align: center;
+  margin-bottom: 50px;
+    margin-top: 50px;
 }
 
 .notfound .notfound-404 {
@@ -142,3 +146,4 @@
 }
 
 </style>
+@endsection

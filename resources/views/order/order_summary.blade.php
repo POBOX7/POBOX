@@ -102,6 +102,9 @@ div#order {
                     <th class="product-col">Product</th>
                     <th class="qty-col">Qty</th>
                     <th class="price-col">Price</th>
+                    <th class="price-col">Coupon Discount</th>
+                    <th class="price-col">Tax</th>
+                    <th class="price-col">Sub Total</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -124,6 +127,7 @@ div#order {
                             <li style="background: {{$product->hex_code}}"></li>
                           </ul>
                         </div>
+                        <span style="margin-top: 5px;"><label style="font-weight: 600;color: #7a7d82;font-size: 12px;">HSN:</label><span style="color: #7a7d82;font-size: 14px;font-weight: 400;">{{$product->hsn_no}}</span></span>
                       </h2>
                     </td>
                     <td>
@@ -132,15 +136,37 @@ div#order {
                       </div>
                     </td>
                     <td>
-					@php($Subtotal += ($product->qty * $product->mrp))
-					@php($GST= $GST + $product->gst)
-					@php($discount = $discount + ($product->mrp - $product->price))
                       <div class="price-box">
-                        @if($product->discount != 0)
-                        {{$product->discount != 0 ? "(".$product->discount."%".")":''}} <span class="product-price ">₹{{$product->mrp}} </span>
-                        @endif                
-                        <span class="product-prices price">₹{{$product->discount != 0?$product->price:$product->mrp}}</span>
+                        ₹{{$product->price}}
                       </div>
+                    </td>
+                    <td>
+                      <div class="price-box">
+                        @if($product->discount_price > 0)
+                          ₹{{$product->discount_price}}
+                        @else
+                          -
+                        @endif
+                      </div>
+                    </td>
+                    <td>
+                        <span>₹{{$product->gst_amount}}</span>
+                        <br>
+                        @if($ordersummry->getAddress->state == 'Gujarat')
+                          <span>
+                                <label style="font-weight: 600;color: #7a7d82;font-size: 12px;">CGST : </label> ₹{{$product->gst_amount/2}} <br>
+                                <label style="font-weight: 600;color: #7a7d82;font-size: 12px;">SGST :</label>₹{{$product->gst_amount/2}} <br>
+                            </span>
+                        @else
+                            <span>
+                                <label style="font-weight: 600;color: #7a7d82;font-size: 12px;">IGST : </label> ₹{{$product->gst_amount}} <br>
+                            </span>
+                        @endif
+                        
+                    
+                    </td>
+                    <td>
+                      <span>₹{{($product->price * $product->qty) + $product->gst_amount}}</span>
                     </td>
                   </tr>
                   @endforeach
@@ -155,17 +181,15 @@ div#order {
             <div class="order-total-div">
                <div><label style="color: #151515!important;font-weight: 600!important;">Order Summary</label> <br></div>
                <label>Bag Total</label><span>₹{{$ordersummry->bag_total}}</span><br>
-               <label>You Saved</label> <span>
-               @php ($original_total= $Subtotal - $discount)
-              ₹{{$ordersummry->saveAmount}}</span><br>
+               {{-- <label>You Saved</label> <span> --}}
+               {{-- @php ($original_total= $Subtotal - $discount)
+              ₹{{$ordersummry->saveAmount}}</span><br> --}}
                 <label>Promo Code Discount</label>
                 <span>₹<?php if ($ordersummry->coupon_amount == "") {
                   echo 0 ;
                 } ?>{{$ordersummry->coupon_amount}}</span><br>
-               <label>Applicable GST(5%)</label> <span><!--₹ {{$GST}} -->
-                
-                @php ($GST = $original_total * 5 / 100)
-                                            ₹{{$ordersummry->gstAmount}}</span><br>
+               <label>Applicable GST</label> 
+               <span>₹{{$ordersummry->gstAmount}}</span><br>
                <!-- <label>Delivery</label> <span>₹ 149</span><br> -->
                <label style="color: #151515!important;font-weight: 600!important;">Order Total</label> <span style="color: #151515;font-weight: 600!important;">₹<!-- {{($Subtotal - $discount) + $GST}} -->
                {{$ordersummry->totalamount}}</span>

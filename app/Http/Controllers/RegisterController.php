@@ -19,7 +19,7 @@ class RegisterController extends Controller
     {
         $email = $req->email;
         if (!is_null($req->email)) {
-          $emailcheck = User::where('email',$email)->count();
+          $emailcheck = User::where('email',$email)->where('role_id','2')->count();
 
           if($emailcheck > 0)
           {
@@ -30,11 +30,13 @@ class RegisterController extends Controller
     }
     public function registerStore(Request $request)
     {
-         $request->validate([
+       $checkEmail = User::where('email',$request['email'])->first();
+       
+        /* $request->validate([
          
         'email' => 'required|email|unique:users'
       
-        ]);
+        ]);*/
 
         $addRegisterData = new User;   
         $addRegisterData->name = $request['full_name'];
@@ -42,10 +44,12 @@ class RegisterController extends Controller
         $addRegisterData->role_id = 2;
         $addRegisterData->phone_number = $request['phone_number'];
         //$addRegisterData->address = $request['address'];
-        $addRegisterData->password = bcrypt($request['password']);
+        $addRegisterData->password = bcrypt($request['confirm_password']);
         $addRegisterData->save(); 
 
-        $password = $request['password'];
+        $password = $request['confirm_password'];
+      
+
 
          //mail
         Mail::send(['html'=>'email.register_mail'],['addRegisterData'=>$addRegisterData ,'password'=> $password],function($message) use ($addRegisterData){
@@ -117,11 +121,11 @@ class RegisterController extends Controller
          $request->validate([  
         'first_name' => 'required',
         'last_name' => 'required',
-        'company_name' => 'required',
+        //'company_name' => 'required',
         'phone_number' => 'required',
         'pin_code' => 'required',
         'address_line_one' => 'required',
-        'address_line_two' => 'required',
+        //'address_line_two' => 'required',
         'city' => 'required',
         'country' => 'required',
         //'address_line_three' => 'required' 
@@ -162,11 +166,11 @@ class RegisterController extends Controller
          $request->validate([  
         'first_name' => 'required',
         'last_name' => 'required',
-        'company_name' => 'required',
+       // 'company_name' => 'required',
         'phone_number' => 'required',
         'pin_code' => 'required',
         'address_line_one' => 'required',
-        'address_line_two' => 'required',
+        //'address_line_two' => 'required',
         'city' => 'required',
         'country' => 'required',
         //'address_line_three' => 'required' 
@@ -270,13 +274,21 @@ class RegisterController extends Controller
                     $message->from('info@poboxfashion.com','pobox');
                 });
             }
-           return redirect()->route('home_1')->with('status','Mail has been sent successfully to your registered mail id');
+           return redirect()->back()->with('status','Mail has been sent successfully to your registered mail id');
 
      }
      public function forgotpassword($id)
     {
-		 $bannerSlider = Banners::where('page_id',7)->first();
-        return view('password.forgot_password',compact('bannerSlider'));
+       //$bannerSlider = Banners::where('page_id',7)->first();
+      $checkUser = User::where('id',$id)->first();
+      if ($checkUser->role_id == 1 ) {
+        return view('password.admin_forgot_password');
+      }
+      if ($checkUser->role_id == 2 ) {
+        return view('password.forgot_password');
+      }
+		
+       
     }
 	  public function updatepasswordview()
 		{
@@ -346,8 +358,14 @@ class RegisterController extends Controller
         {
            /*if ($request['role'] == "customer") {*/
             if (isset($request->confrom_password)) {
-              
-              User::where('id',$request->id)->update(['password'=>bcrypt($request->new_password)]);
+              if (is_null($request->id)) {
+                 $user_id =Auth::user()->id;
+              }
+              if (!is_null($request->id)) {
+                 $user_id =$request->id;
+              }
+            
+              User::where('id',$user_id)->update(['password'=>bcrypt($request->new_password)]);
            }
          
                

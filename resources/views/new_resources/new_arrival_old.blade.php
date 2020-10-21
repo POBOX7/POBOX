@@ -3,55 +3,22 @@
 <script src="assets/js/plugins.min.js"></script>
 <script src="assets/js/nouislider.min.js"></script>
 <!-- Main JS File -->
-
 @if (session('status'))
 <div class="alert alert-success" id="myElem">
     <strong>{{ session('status') }}</strong>
 </div>
 @endif
 <style type="text/css">
-    .product-price {
-        color: #465157;
-        font: 600 1.8rem/0.8 "Open Sans", sans-serif;
-        display: inline-block;
-        color: #a7a7a7;
-        font-size: 15px;
-        margin-right: .2143em;
-        /* vertical-align: baseline; */
-        text-decoration: line-through;
-    }
-    span.product-prices.price {
-        font-family: 'Oswald';
-        font-weight: 400;
-        color: #282d3b;
-        font-size: 18px;
-    }
-    .product-default a:hover {
-       /* color: #ffffff!important;*/
-        text-decoration: none;
-    }
-    button.close {
-        float: right;
-        margin-left: 96%;
-    }
-    button.btn.btn-outline.btn-up-icon.bootstrap-touchspin-up {
-        border-radius: 0px!important;
-    }
-
+   .product-price{color:#465157;font:600 1.8rem/.8 "Open Sans",sans-serif;display:inline-block;color:#a7a7a7;font-size:15px;margin-right:.2143em;text-decoration:line-through}span.product-prices.price{font-family:Oswald;font-weight:400;color:#282d3b;font-size:18px}.product-default a:hover{text-decoration:none}button.close{float:right;margin-left:96%}button.btn.btn-outline.btn-up-icon.bootstrap-touchspin-up{border-radius:0!important}
+   button.btn.btn-outline.btn-up-icon.bootstrap-touchspin-up{border-radius:0!important}.toolbox select.form-control:not([size]):not([multiple]){height:25px!important}.inner-quickview:hover .btn-quickviewss{visibility:visible;opacity:.9}.inner-quickview figure .btn-quickviewss{position:absolute;bottom:0;left:0;width:100%;font-size:1.3rem;font-weight:400;letter-spacing:.025em;font-family:Oswald,sans-serif;text-transform:uppercase;visibility:visible;opacity:0;height:unset;padding:1.4rem;background-color:#1d70ba;color:#fff!important;transform:none;margin:0;border:none;transition:all .3s ease-out;transform:none!important;transition:none!important}.product-default .btn-quickviewss{font-size:1.4rem;transform:translateX(-200%)}.product-default .btn-icon-wish,.product-default .btn-quickviewss{display:flex;border:1px solid #ddd;font-size:1.6rem;margin:0 2px;width:36px;height:36px;align-items:center;justify-content:center;opacity:0;transition:all .25s ease;transform:translateX(200%);transform:none!important;transition:none!important}.checked{left:9px;top:7px;width:7px;height:12px;border:solid #fff;border-top-width:medium;border-right-width:medium;border-bottom-width:medium;border-left-width:medium;border-width:0 3px 3px 0;-webkit-transform:rotate(45deg);-ms-transform:rotate(45deg);transform:rotate(40deg);background:0 0}.product-default:hover a.btn-quickviewss{position:absolute;bottom:0;left:0;width:100%;font-size:1.3rem;font-weight:400;letter-spacing:.025em;font-family:Oswald,sans-serif;text-transform:uppercase;visibility:visible;opacity:1;height:unset;padding:1.4rem;background-color:#1d70ba;color:#fff!important;transform:none;margin:0;border:none;transition:all .3s ease-out}
 </style>
 <main class="main new-arrival">
    
-    @if($bannerSlider['url'] != null)
-    <a href="{{$bannerSlider['url']}}">
-        <div class="banner banner-cat" style="background-image: url('{{ asset('assets/upload_images/banner') }}/{{$bannerSlider['image']}}');background-position: 100% 0px;">
-        </div><!-- End .banner -->
-    </a>
-    @else
-    <a href="#"  onClick="javascript:return false;"   style="pointer-events: none;cursor: context-menu;">
-        <div class="banner banner-cat"  onClick="javascript:return false;" style="background-image: url('{{ asset('assets/upload_images/banner') }}/{{$bannerSlider['image']}}');background-position: 100% 0px;">
-        </div><!-- End .banner -->
-    </a>
-    @endif
+   @if(!is_null($bannerSlider)) 
+<div class="hero-section hero-background style-02" style="background-image: url('{{ asset('assets/upload_images/banner') }}/{{$bannerSlider['image']}}">
+  <!--   <h1 class="page-title">New Arrival</h1> -->
+</div>
+@endif
     <nav aria-label="breadcrumb" class="breadcrumb-nav">
         <div class="container">
             <ol class="breadcrumb mt-0">
@@ -149,11 +116,7 @@
                         <!-- End .toolbox-item -->
 
                         <ul class="pagination" id="count_div">
-                            <!-- <li class="page-item" id="3"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item" id="4"><a class="page-link" href="#">4</a></li>  -->
-                            <!-- <li class="page-item">
-                               <a class="page-link page-link-btn" href="#"><i class="icon-angle-right"></i></a>
-                            </li> -->
+                        
                         </ul>
                     </nav>
                 </div>
@@ -209,48 +172,6 @@
     if(window.location.href.indexOf("new-arrival") > -1){
         var page_url = "new-arrival";
     } 
-    /*$('li.page-item a').on('click', function (e) {
-        e.preventDefault();
-        var page_id = $(this).parent().attr('id');
-//    $('li.popup-color a').removeClass('active'); 
-// if($(this).parent().hasClass( "active" )){
-//   $(this).parent().removeClass('active');
-// }else{
-// $(this).parent().addClass('active');
-
-// }
-        $('li.page-item a').parent().removeClass('active');
-        $(this).parent().addClass('active');
-        page.push(page_id);
-        if (page.length > 1) {
-            page.splice(0, 1);
-        }
-
-        $.ajax({
-            type: "get",
-            url: "{{ url('/common-filter') }}",
-            cache: !1,
-            data: {
-                page: page,
-                sorting_filter: sorting_filter,
-                clearall: clearall,
-                size: size,
-                categories: categories,
-                brand: brand,
-                color:color,
-                min_price: min_price,
-                max_price: max_price,
-                page_url:page_url,
-                _token: "{{ csrf_token() }}",
-            },
-            success: function(data) {
-                //console.log($data);
-                $('#filter_div').html(data);
-            }
-        });
-    });*/
-
-
 
     var sorting_filter = [];
     $("#sorting_filter").change(function(){
@@ -332,13 +253,7 @@
         var popup_color_product_id = $(this).parent().attr('productid');
         $('li.popup-color a').parent().removeClass('active');
         $(this).parent().addClass('active');
-        // if ( $.inArray(size_id, size) > -1 ) {
-        //      size = $.grep(size, function(value) {
-        //          return value != size_id;
-        //     });
-        // }else{
-        //    size.push(size_id);
-        // }
+       
         popup_color.push(popup_color_id);
         if (popup_color.length > 1) {
             popup_color.splice(0, 1);
@@ -364,102 +279,6 @@
         });
     });
 </script>
-<style type="text/css">
-    button.btn.btn-outline.btn-up-icon.bootstrap-touchspin-up {
-        border-radius: 0px!important;
-    }
 
-</style>
-<style type="text/css">
-    .toolbox select.form-control:not([size]):not([multiple]) {
-        height: 25px!important;
-    }
-    .inner-quickview:hover .btn-quickviewss {
-        visibility: visible;
-        opacity: 0.9;
-    }
-    .inner-quickview figure .btn-quickviewss {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        font-size: 1.3rem;
-        font-weight: 400;
-        letter-spacing: 0.025em;
-        font-family: "Oswald", sans-serif;
-        text-transform: uppercase;
-        visibility: visible;
-        opacity: 0;
-        height: unset;
-        padding: 1.4rem;
-        background-color: #1d70ba;
-        color: white!important;
-        transform: none;
-        margin: 0;
-        border: none;
-        transition: all .3s ease-out;
-        transform: none!important;
-        transition: none!important;
-    }
-    .product-default .btn-quickviewss {
-        font-size: 1.4rem;
-        transform: translateX(-200%);
-    }
-    .product-default .btn-icon-wish, .product-default .btn-quickviewss {
-        display: flex;
-        border: 1px solid #ddd;
-        font-size: 1.6rem;
-        margin: 0 2px;
-        width: 36px;
-        height: 36px;
-        align-items: center;
-        justify-content: center;
-        opacity: 0;
-        transition: all .25s ease;
-        transform: translateX(200%);
-        transform: none!important;
-        transition: none!important;
-    }
-
-    .checked{
-        left: 9px;
-        top: 7px;
-        width: 7px;
-        height: 12px;
-        border: solid white;
-        border-top-width: medium;
-        border-right-width: medium;
-        border-bottom-width: medium;
-        border-left-width: medium;
-        border-width: 0 3px 3px 0;
-        -webkit-transform: rotate(45deg);
-        -ms-transform: rotate(45deg);
-        transform: rotate(40deg);
-        background: transparent;
-    }
-
-    .product-default:hover a.btn-quickviewss {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        font-size: 1.3rem;
-        font-weight: 400;
-        letter-spacing: 0.025em;
-        font-family: "Oswald", sans-serif;
-        text-transform: uppercase;
-        visibility: visible;
-        opacity: 1;
-        height: unset;
-        padding: 1.4rem;
-        background-color: #1d70ba;
-        color: white!important;
-        transform: none;
-        margin: 0;
-        border: none;
-        transition: all .3s ease-out;
-    }
-
-</style>
 @endsection
 <script src="assets/js/main.js"></script>

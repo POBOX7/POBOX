@@ -10,6 +10,9 @@
 <script src="{{ asset('assets/js/product_detail_script.js') }}"></script>
 
 <style type="text/css">
+/*ul li {
+    margin: 0px;
+}*/
 li.popup-size.disabled a.size {
     background: #e1e1e1 url(../assets/images/icons/cross.png) no-repeat center top!important;
     background-size: 100% 100%;
@@ -718,7 +721,7 @@ for (i = 0; i < acc.length; i++) {
 </div><!-- End .container -->
 
         </main><!-- End .main -->
-        <style type="text/css">
+         <style type="text/css">
         .product-default .btn-add-cart:hover ,a.paction.add-cart:hover{
     background-color: #1d70ba;
     border-color: #1d70ba;

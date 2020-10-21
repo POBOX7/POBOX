@@ -344,6 +344,84 @@
       }
     });
 </script>
+<script type="text/javascript">
+   $('.image-file').bind('change', function() {
+           
+             var numb = $(this)[0].files[0].size/1024/1024;
+          numb = numb.toFixed(5);
+          if(numb > 5){
+          //alert('to big, maximum is 5MB. You file size is: ' + numb +' MB');
+             $("#result").html('<div class="alert alert-fill-danger" style="z-index: 99999;position: fixed;width:100%"><button type="button" class="close">×</button>Image too large. Image must be less than 5MB.Please upload new image.</div>');
+
+               $(".result").html('<div style="color:red;">Image too large. Image must be less than 5MB.Please upload new image.</div>');
+                 window.setTimeout(function() {
+                    $(".alert").fadeTo(500, 0).slideUp(500, function(){
+                        $(this).remove(); 
+                    });
+                 }, 5000);
+                 $('.alert .close').on("click", function(e){
+                    $(this).parent().fadeTo(500, 0).slideUp(500);
+                 });
+                 document.getElementById("submit").disabled = true;
+          } else {
+            $(".result").html('');
+            document.getElementById("submit").disabled = false;
+          //alert('it okey, your file has ' + numb + 'MB')
+          }
+
+        
+        });
+   //product-image-file  
+   $('.image-file-default').bind('change', function() {
+           
+             var numb = $(this)[0].files[0].size/1024/1024;
+          numb = numb.toFixed(5);
+          if(numb > 5){
+          //alert('to big, maximum is 5MB. You file size is: ' + numb +' MB');
+             $("#result").html('<div class="alert alert-fill-danger" style="z-index: 99999;position: fixed;width:100%"><button type="button" class="close">×</button>Image too large. Image must be less than 5MB.Please upload new image.</div>');
+
+               $(".product-image-file-default-img").html('<div style="color:red;">Image too large. Image must be less than 5MB.Please upload new image.</div>');
+                 window.setTimeout(function() {
+                    $(".alert").fadeTo(500, 0).slideUp(500, function(){
+                        $(this).remove(); 
+                    });
+                 }, 5000);
+                 $('.alert .close').on("click", function(e){
+                    $(this).parent().fadeTo(500, 0).slideUp(500);
+                 });
+                 document.getElementById("submit").disabled = true;
+          } else {
+             $(".product-image-file-default-img").html('');
+            document.getElementById("submit").disabled = false;
+          //alert('it okey, your file has ' + numb + 'MB')
+          }
+        });
+   $('.image-file-other').bind('change', function() {
+           
+             var numb = $(this)[0].files[0].size/1024/1024;
+          numb = numb.toFixed(5);
+          if(numb > 5){
+          //alert('to big, maximum is 5MB. You file size is: ' + numb +' MB');
+             $("#result").html('<div class="alert alert-fill-danger" style="z-index: 99999;position: fixed;width:100%"><button type="button" class="close">×</button>Image too large. Image must be less than 5MB.Please upload new image.</div>');
+
+                $(".product-image-file-other-img").html('<div style="color:red;">Image too large. Image must be less than 5MB.Please upload new image.</div>');
+                 window.setTimeout(function() {
+                    $(".alert").fadeTo(500, 0).slideUp(500, function(){
+                        $(this).remove(); 
+                    });
+                 }, 5000);
+                 $('.alert .close').on("click", function(e){
+                    $(this).parent().fadeTo(500, 0).slideUp(500);
+                 });
+                 document.getElementById("submit").disabled = true;
+          } else {
+            $(".product-image-file-other-img").html('');
+            document.getElementById("submit").disabled = false;
+          //alert('it okey, your file has ' + numb + 'MB')
+          }
+        });
+
+</script>
 
 </body>
 
