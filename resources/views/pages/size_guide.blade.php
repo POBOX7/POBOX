@@ -145,3 +145,9 @@
 }
 </style>
 @endsection
+<style type="text/css">
+  body {
+    font-family: Lato,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji!important;
+    font: 300 16px/22px -apple-system,BlinkMacSystemFont,"Lato","Open Sans","HelveticaNeue-Light","Helvetica Neue Light","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif!important;
+}
+</style>

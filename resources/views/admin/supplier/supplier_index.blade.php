@@ -55,8 +55,8 @@
                                 <td>{{$supplier->ifsc_code}}</td>
                                 <td><input id="status_{{$supplier->id}}" type="checkbox" <?php echo ($supplier->status == 1)?'Checked':'' ?> class="status" data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-style="ios"></td>
                                 <td>
-                                  <a href="{{route('edit.supplier',base64_encode($supplier->id) )}}"><i class="ti-pencil-alt" style="font-size: 2rem;"></i></a>
-                                  <a onclick="showSwal({{$supplier->id}})"><i class="ti-trash" style="font-size: 2rem;color: #007bfe;"></i></a>
+                                  <a href="{{route('edit.supplier',base64_encode($supplier->id) )}}" data-toggle="tooltip" title="Edit"><i class="ti-pencil-alt" style="font-size: 2rem;"></i></a>
+                                  <a onclick="showSwal({{$supplier->id}})" data-toggle="tooltip" title="Delete"><i class="ti-trash" style="font-size: 2rem;color: #007bfe;cursor: pointer;"></i></a>
                                 </td>
                             </tr>
                           @endforeach

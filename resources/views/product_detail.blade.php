@@ -14,7 +14,8 @@
     margin: 0px;
 }*/
 li.popup-size.disabled a.size {
-    background: #e1e1e1 url(../assets/images/icons/cross.png) no-repeat center top!important;
+    /*background: #e1e1e1 url(../assets/images/icons/cross.png) no-repeat center top!important;
+    */background: transparent url(../assets/images/icons/cross.png) no-repeat center top!important;
     background-size: 100% 100%;
 }
 .featured-section {
@@ -24,7 +25,8 @@ li.popup-size.disabled a.size {
     margin-bottom: 2.5rem!important;
 }
 .product-single-filter .config-size-list li a {
-    min-width: 5rem!important;
+    /*min-width: 5rem!important;*/
+    min-width: 38px!important;
     height: 37px;
     line-height: 2.4;
 }
@@ -342,30 +344,30 @@ button.accordion.active {
                                                $default_size_qty = 0;
                                               @endphp
 											 
-                                                @foreach ($sizeData as $keySizeData => $valueSizeData)
-                                                @if(in_array($valueSizeData->id, $product_size))
+                                                @foreach ($sizeDatass as $keySizeData => $valueSizeData)
+                                                @if(in_array($valueSizeData->size_id, $product_size))
                                                   <li class="popup-size
                                                  
-                                          @if($product_size_data[$valueSizeData->id] == 0)
+                                          @if($product_size_data[$valueSizeData->size_id] == 0)
                                                   disabled
                                               @endif
-                                                   " size_id="{{$valueSizeData->id}}" product_size_qty = "{{$product_size_data[$valueSizeData->id]}}">
+                                                   " size_id="{{$valueSizeData->size_id}}" product_size_qty = "{{$product_size_data[$valueSizeData->size_id]}}">
                                                     <a href="#sizedetail" class="size {{$active == "0" ? "active" : ""}}" style="background-color: white;">
-                                                      {{$valueSizeData->name}}
+                                                      {{$valueSizeData->size_name}}
                                                     </a>
                                                   </li>
                                                   @if($active == "0")
                                                     @php
                                                       $active  = 1;
-                                                      $default_size_qty = $product_size_data[$valueSizeData->id];
+                                                      $default_size_qty = $product_size_data[$valueSizeData->size_id];
                                                     @endphp
                                                   @endif
                                                   
                                                 @else
                                                   <li class="popup-size 
-                                                  disabled" size_id="{{$valueSizeData->id}}">
+                                                  disabled" size_id="{{$valueSizeData->size_id}}">
                                                   <a class="size " style="background-color: gray;" >
-                                                    {{$valueSizeData->name}}
+                                                    {{$valueSizeData-size_>name}}
                                                   </a>
                                                 </li>
                                                 @endif

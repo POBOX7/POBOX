@@ -41,7 +41,7 @@
                                  
                                 <td>
                                  
-                                  <a href="{{route('edit.contact_us_detail',base64_encode($contactUsDetail->id) )}}"><i class="ti-pencil-alt" style="font-size: 2rem;"></i></a>
+                                  <a href="{{route('edit.contact_us_detail',base64_encode($contactUsDetail->id) )}}" data-toggle="tooltip" title="Edit"><i class="ti-pencil-alt" style="font-size: 2rem;"></i></a>
                                   <!-- <a onclick="showSwal({{$contactUsDetail->id}})"><i class="ti-trash" style="font-size: 2rem;color: #007bfe;"></i></a> -->
                                 </td>
                             </tr>

@@ -37,7 +37,9 @@
     
 </head>
 <body>
-  
+
+	
+
     <div class="page-wrapper">
         @include('new_resources.layouts.header') 
         @yield('content')
@@ -142,13 +144,107 @@
           
        
   </style>
+  <!-- Loader css  start-->
+  <style type="text/css">
+  	 .loader,
+        .loader:after {
+            border-radius: 50%;
+            width: 10em;
+            height: 10em;
+        }
+        .loader {            
+            margin: 60px auto;
+            font-size: 10px;
+            position: relative;
+            text-indent: -9999em;
+            border-top: 1.1em solid rgba(255, 255, 255, 0.2);
+            border-right: 1.1em solid rgba(255, 255, 255, 0.2);
+            border-bottom: 1.1em solid rgba(255, 255, 255, 0.2);
+            border-left: 1.1em solid #ffffff;
+            -webkit-transform: translateZ(0);
+            -ms-transform: translateZ(0);
+            transform: translateZ(0);
+            -webkit-animation: load8 1.1s infinite linear;
+            animation: load8 1.1s infinite linear;
+        }
+        @-webkit-keyframes load8 {
+            0% {
+                -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+            100% {
+                -webkit-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+        @keyframes load8 {
+            0% {
+                -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+            100% {
+                -webkit-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+        #loadingDiv {
+            position:absolute;;
+            top:0;
+            left:0;
+            width:100%;
+            height:100%;
+            background-color:#000;
+        }
+  </style>
+  <!-- Loader css  start-->
+
+  <script>
+	$(document).ready(function(){
+     $(".success").click(function(){
+   alert("test");
+});
+
+</script>
+
+<style type="text/css">
+  div#myModal{
+    z-index: 1 !important;
+  }
+  .modal-backdrop.fade.show {
+    opacity: 0!important;
+}
+</style>
+
+
+<div class="preload"></div>
+<!-- <div class="preload"><div class="modal fade" id="myModal" aria-hidden="false" style="display: block;position: absolute;z-index: 99999;"><div class="modal-dialog"><div class="modal-content" style="margin-top: 0px;margin-bottom: 0px;height: 129px;width: 500px;margin: 20% auto;"><div class="modal-body"> <div class="preload" style="width: 100px;height: 100px;z-index: 99999;position: fixed;top: 8.5%;left: 38%;"><img src="{{asset('assets/images/icons/Loading.gif')}}" style="width: 40px;margin-left: 63px;"><p style="color: #0000;font-size: 14px;width: 500px;color: black;margin-left: -139px;margin-top: 15px;">Thank you for the purchase. Please wait while we confirm your order. Do not refresh the page</p></div></div></div></div></div></div> -->
+
+
+<script type="text/javascript">
+
+  $('#myModal').modal('show');
+</script>
   <script>
     function padStart(str) {
         return ('0' + str).slice(-2)
     }
 
     function demoSuccessHandler(transaction) {
-      
+    	//Loader script start
+            $('body').append('<div class="preload"><div class="modal fade" id="myModal" aria-hidden="false" style="display: block;position: absolute;z-index: 99999;margin-top:280px;"><div class="modal-dialog"><div class="modal-content" style="margin-top: 0px;margin-bottom: 0px;height: 129px;width: 500px;margin: 20% auto;"><div class="modal-body"> <div class="preload" style="width: 100px;height: 100px;z-index: 99999;position: fixed;top: 8.5%;left: 38%;"><img src="{{asset('assets/images/icons/Loading.gif')}}" style="width: 40px;margin-left: 63px;"><p style="color: #0000;font-size: 14px;width: 500px;color: black;margin-left: -139px;margin-top: 15px;">Thank you for the purchase. Please wait while we confirm your order. Do not refresh the page</p></div></div></div></div></div></div>');
+
+             $('#myModal').modal('show');
+			    $(window).on('load', function(){
+			    setTimeout(removeLoader, 2000); //wait for page load PLUS two seconds.
+			});
+
+          $('#myModal').modal('show');
+			function removeLoader(){
+			    $( "#loadingDiv" ).fadeOut(500, function() {
+			      // fadeOut complete. Remove the loading div
+			      $( "#loadingDiv" ).remove(); //makes page more lightweight 
+			  });  
+		    }
       	$("#paymentid").val(transaction.razorpay_payment_id);
 
         if($("#biiling_same_as_address").prop("checked") != true){
@@ -156,7 +252,7 @@
         }else{
           var billing_address = 'Same';
         }
-
+         
       	$.ajax({
           	url : '{{ route('checkoutPlaceOrder') }}',
           	headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
@@ -168,6 +264,7 @@
                 'gst_amount_total': $("#gst_amount_total").val(),
                 'order_total': 		$("#order_total").val(),
           },
+
         }).done(function(data) {
         
           window.location.href = 'order-summary/'+data.order_id;
@@ -184,7 +281,9 @@
     $( "#paybtn" ).click(function() {
       var options = {
                   key: "{{ env('RAZORPAY_KEY') }}",
-                  amount: Number($("#order_total").val())*100,
+                  amount: (parseFloat($("#order_total").val())*100).toFixed(2),
+                  
+                  payment_capture :  '3',
                   name: 'POBOX',
                   description: 'Purchase Product',
                   image: 'https://i.imgur.com/n5tjHFD.png',

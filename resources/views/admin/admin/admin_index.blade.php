@@ -31,6 +31,7 @@
                             <th>Name</th>
                             <th>Email</th>
                             <th>Status</th>
+                            <th>Date</th>
                             <th>Actions</th>
                         </tr>
                       </thead>
@@ -42,11 +43,12 @@
                                 <td>{{$admin->name}}</td>
                                 <td>{{$admin->email}}</td>
                                 <td><input id="status_{{$admin->id}}" type="checkbox" <?php echo ($admin->status == 1)?'Checked':'' ?> class="status" data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-style="ios"></td>
+                               <td>{{date('d-m-Y', strtotime($admin->created_at)) }}</td>
                                
                                 <td>
                                   {{-- <a href="{{route('edit.admin',base64_encode($admin->id) )}}" class="btn btn-outline-primary">Edit</a> --}}
-                                  <a href="{{route('edit.admin',base64_encode($admin->id) )}}"><i class="ti-pencil-alt" style="font-size: 2rem;"></i></a>
-                                  <a onclick="showSwal({{$admin->id}})"><i class="ti-trash" style="font-size: 2rem;color: #007bfe;"></i></a>
+                                  <a href="{{route('edit.admin',base64_encode($admin->id) )}}" data-toggle="tooltip" title="Edit"><i class="ti-pencil-alt" style="font-size: 2rem;"></i></a>
+                                  <a onclick="showSwal({{$admin->id}})"><i class="ti-trash" style="font-size: 2rem;color: #007bfe;cursor: pointer;" data-toggle="tooltip" title="Delete"></i></a>
                                 </td>
                             </tr>
                           @endforeach

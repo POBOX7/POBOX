@@ -30,8 +30,8 @@
                                 <td>{{$staticPage->title}}</td>
                                 {{-- <td>{!! $staticPage->content !!}</td> --}}
                                 <td>
-                                  <a href="{{route('edit.static-pages',base64_encode($staticPage->id) )}}"><i class="ti-pencil-alt" style="font-size: 2rem;"></i></a>
-                                  <a href="{{route('view.static-pages',base64_encode($staticPage->id) )}}" style="margin-left: 15px;"><i class="icon icon-eye" style="font-size: 2rem;"></i></a>
+                                  <a href="{{route('edit.static-pages',base64_encode($staticPage->id) )}}" data-toggle="tooltip" title="Edit"><i class="ti-pencil-alt" style="font-size: 2rem;"></i></a>
+                                  <a href="{{route('view.static-pages',base64_encode($staticPage->id) )}}" style="" data-toggle="tooltip" title="View"><i class="icon icon-eye" style="font-size: 2rem;"></i></a>
                                   {{-- <a onclick="showSwal({{$staticPage->id}})"><i class="ti-trash" style="font-size: 2rem;color: #007bfe;"></i></a> --}}
                                 </td>
                             </tr>

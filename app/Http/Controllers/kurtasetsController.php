@@ -75,7 +75,7 @@ class kurtasetsController extends Controller {
 
       $sizeData = Sizes::where('status',1)->where('is_deleted',0)->get();
 
-      $sizeData = Sizes::where('status',1)->where('is_deleted',0)->get();
+      //$sizeData = Sizes::where('status',1)->where('is_deleted',0)->orderBy('name','ASC')->get();
       //$colors data view
       $colorsData = Colors::where('status',1)->where('is_deleted',0)->get();
       

@@ -43,8 +43,8 @@
                                 <td>{{$color->name}}</td>
                                 <td><input id="status_{{$color->id}}" type="checkbox" <?php echo ($color->status == 1)?'Checked':'' ?> class="status" data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-style="ios"></td>
                                 <td>
-                                  <a href="{{route('edit.color',base64_encode($color->id) )}}"><i class="ti-pencil-alt" style="font-size: 2rem;"></i></a>
-                                  <a onclick="showSwal({{$color->id}})"><i class="ti-trash" style="font-size: 2rem;color: #007bfe;"></i></a>
+                                  <a href="{{route('edit.color',base64_encode($color->id) )}}" data-toggle="tooltip" title="Edit"><i class="ti-pencil-alt" style="font-size: 2rem;"></i></a>
+                                  <a onclick="showSwal({{$color->id}})" data-toggle="tooltip" title="Delete"><i class="ti-trash" style="font-size: 2rem;color: #007bfe;cursor: pointer;"></i></a>
                                 </td>
                             </tr>
                           @endforeach

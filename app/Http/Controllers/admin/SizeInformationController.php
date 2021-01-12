@@ -45,11 +45,11 @@ class SizeInformationController extends Controller
      */
     public function storeSizeInformation( Request $request ) {    
         $validatedData = $request->validate([
-            'chest' => 'required|max:4',
-            'waist' => 'required|max:4',
-            'hips' => 'required|max:4',
-            'length' => 'required|max:4',
-            'shoulder' => 'required|max:4',
+            'chest' => 'required|max:5',
+            'waist' => 'required|max:5',
+            'hips' => 'required|max:5',
+            'length' => 'required|max:5',
+            'shoulder' => 'required|max:5',
         ]); 
 
         $add_data = array(
@@ -76,11 +76,11 @@ class SizeInformationController extends Controller
 
     public function updateSizeInformation(Request $request ,$id){
         $validatedData = $request->validate([
-            'chest' => 'required|max:4',
-            'waist' => 'required|max:4',
-            'hips' => 'required|max:4',
-            'length' => 'required|max:4',
-            'shoulder' => 'required|max:4',
+            'chest' => 'required|max:5',
+            'waist' => 'required|max:5',
+            'hips' => 'required|max:5',
+            'length' => 'required|max:5',
+            'shoulder' => 'required|max:5',
         ]); 
         $update_data = array(
                                 'size_id'       => $request->size_id,

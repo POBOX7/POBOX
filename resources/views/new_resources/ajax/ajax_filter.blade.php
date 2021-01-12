@@ -55,7 +55,10 @@
                      
                     @endif
                     @if(count($productqty) != 0)
-                     <button class="btn-icon btn-add-cart view-details addcart" data-toggle="modal" data-size="{{$sizeData->id}}" data-qty="1" data-mid="{{$valueNewArrivalProductData->id}}" data-mrp="{{$valueNewArrivalProductData['mrp']}}" data-price="{{$valueNewArrivalProductData['price']}}" id="product_{{$valueNewArrivalProductData['id']}}"><i class="icon-bag"></i>ADD To Cart</button>
+                    <a href="{{route('productDetail',$valueNewArrivalProductData['id'])}}">
+                       <!--  addcart -->
+                     <button class="btn-icon btn-add-cart view-details " style=" text-transform: uppercase;" data-toggle="modal" data-size="{{$sizeData->id}}" data-qty="1" data-mid="{{$valueNewArrivalProductData->id}}" data-mrp="{{$valueNewArrivalProductData['mrp']}}" data-price="{{$valueNewArrivalProductData['price']}}" id="product_{{$valueNewArrivalProductData['id']}}"><i class="icon-bag"></i>ADD To Cart</button>
+                 </a>
                     @else
                        <a  class="paction add-cart cart"  title="Out of stock" style="margin-left: 10px;">
                                                         <span>Out of stock</span>
@@ -108,7 +111,12 @@ background: #1b65a9!important;color: #fff !important;border: 1px solid #ddd;
 
 <style>
 .toast{top:18%;right:1%;z-index:999999;margin-top:0;width:346px;position:fixed}.hidden{display:none}.add-cart::before:hover{color:#ffff!important;font-weight:500!important}
+
 </style>
-<div class="alert alert-success postition-fixed toast hidden wishlist-success"></div>   
+<script type="text/javascript">
+  $("#myElem1").show();
+setTimeout(function() { $("#myElem1").hide(); }, 7000);
+</script>
+<div class="alert alert-success postition-fixed toast hidden wishlist-success" id="myElem1"></div>   
 </div>
  

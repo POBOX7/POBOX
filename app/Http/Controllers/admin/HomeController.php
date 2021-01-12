@@ -43,7 +43,8 @@ class HomeController extends Controller
        // dd($dailySalesCount);
         $totalSaleAmount = Order::where('is_deleted',0)->sum('totalamount');
         $totalOrderCount = Order::where('is_deleted',0)->count();
-        $customersCount = User::where('status',1)->where('is_deleted',0)->count();
+        $customersCount = User::where('status',1)->where('role_id','2')->where('is_deleted',0)->count();
+        
         $suppliersCount = Suppliers::where('status',1)->where('is_deleted',0)->count();
         $productCount = Product::where('status',1)->where('is_deleted',0)->count();
         

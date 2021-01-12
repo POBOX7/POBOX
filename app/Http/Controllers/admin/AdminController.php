@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use App\User;
+use App\PaymentMode;
 use Mail;
 use Illuminate\Support\Facades\Auth;
 // use App\Terms;
@@ -26,8 +27,34 @@ class AdminController extends Controller
      * @return \Illuminate\Http\Response
      */
    /**/
+   public function paymentStatus(Request $request)
+   {
+    $PaymentMode = PaymentMode::first();
+    
+       
+      return view('admin.payment_mode.payment_index',compact('PaymentMode'));
+   }
+    public function paymentStatusChange()
+    {
+        extract($_POST);
+        
+        if($status == 'true' ){
+            $status = 1;
+        }else{
+            $status = 0;
+        }
+        $update_data = array(
+                                'status' => $status,
+                                'updated_at'    => date('Y-m-d H:i:s')
+                            );
+
+        $update = DB::table('payment_mode')->where('id',$id)
+        ->update($update_data);
+
+        echo '1';
+    }
     public function index(){
-        $admins = DB::table('users')->select('id','name','email','status')->where('role_id',1)->where('id','!=',1)->orderByDesc('id')->get();
+        $admins = DB::table('users')->select('id','name','email','status','created_at')->where('role_id',1)->where('id','!=',1)->orderByDesc('id')->get();
         return view('admin.admin.admin_index')->with('admins', $admins); 
     }
 
@@ -46,10 +73,15 @@ class AdminController extends Controller
         exit;*/
         $validatedData = $request->validate([
             'name'=> 'required', 
-            'email' => 'required|unique:users,email,2,role_id', 
+            //'email' => 'required|unique:users,email,2,role_id', 
             'password' => 'required|confirmed|min:6'       
         ]); 
+        //$check_user = User::where('email','=',$request->email)->where('role_id','=',1)->first();
+        
         $user = User::where('email','=',$request->email)->where('is_deleted','=',0)->where('role_id','=',1)->first();
+        if($user){
+             return redirect()->route('admin')->with('error', 'Email id already exist');
+        }
         
         if(empty($user)){
             $admin = new User(); 
@@ -130,6 +162,7 @@ class AdminController extends Controller
     }
 
     public function forgetPasswordEmail(Request $request){
+        
         $check_user = User::where('email',$request['email'])->first();
         if(isset($check_user)){
             Mail::send(['html'=>'email.forgotpassword_mail'],['check_user'=>$check_user],function($message) use ($check_user){

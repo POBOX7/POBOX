@@ -41,8 +41,8 @@
                                 <td>{{$size->name}}</td>
                                 <td><input id="status_{{$size->id}}" type="checkbox" <?php echo ($size->status == 1)?'Checked':'' ?> class="status" data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-style="ios"></td>
                                 <td>
-                                  <a href="{{route('edit.size',base64_encode($size->id) )}}"><i class="ti-pencil-alt" style="font-size: 2rem;"></i></a>
-                                  <a onclick="showSwal({{$size->id}})"><i class="ti-trash" style="font-size: 2rem;color: #007bfe;"></i></a>
+                                  <a href="{{route('edit.size',base64_encode($size->id) )}}" data-toggle="tooltip" title="Edit"><i class="ti-pencil-alt" style="font-size: 2rem;"></i></a>
+                                  <a onclick="showSwal({{$size->id}})"><i class="ti-trash" style="font-size: 2rem;color: #007bfe;cursor: pointer;" data-toggle="tooltip" title="Delete"></i></a>
                                 </td>
                             </tr>
                           @endforeach

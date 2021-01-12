@@ -20,8 +20,8 @@ use App\Sizes;
 use App\parsecsv;
 use Image;
 use Storage;
-use Milon\Barcode\DNS1D;
 use PDF;
+use Milon\Barcode\DNS1D;
 
 class ProductController extends Controller 
 {
@@ -44,12 +44,48 @@ class ProductController extends Controller
     {
         $productList = DB::table('products')
                             ->join('colors', 'colors.id', '=', 'products.color_id')
+                            ->join('category', 'category.id', '=', 'products.category_id')
                             ->select(\DB::raw('(SELECT GROUP_CONCAT(qty) as `qty` FROM product_size WHERE product_size.product_id = products.id) AS qty,(SELECT GROUP_CONCAT(name) as `size_name` FROM product_size INNER JOIN sizes ON sizes.id = product_size.size_id WHERE product_size.product_id = products.id) AS size_name,
-                                products.id,products.image,products.status,products.name,products.sku,products.price,colors.hex_code'))
+                                products.id,products.image,products.barcode,products.status,products.name,products.sku,products.price,colors.hex_code,category.name AS category_name'))
+                            ->where('products.is_deleted','0')
+                            ->where('products.status','1')
+                            ->orderByDesc('id')
+                            ->get();
+          $categoryData = Category::all();                  
+                          
+        return view('admin.product.product_index',compact('productList','categoryData')); 
+    }
+    public function categoryFilter(Request $request)
+    {
+       // dd($request['category_name']);
+        
+       $selected_value_category_id = $request['category_name'];
+       if (is_null($selected_value_category_id)) {
+            $productList = DB::table('products')
+                            ->join('colors', 'colors.id', '=', 'products.color_id')
+                            ->join('category', 'category.id', '=', 'products.category_id')
+                            ->select(\DB::raw('(SELECT GROUP_CONCAT(qty) as `qty` FROM product_size WHERE product_size.product_id = products.id) AS qty,(SELECT GROUP_CONCAT(name) as `size_name` FROM product_size INNER JOIN sizes ON sizes.id = product_size.size_id WHERE product_size.product_id = products.id) AS size_name,
+                                products.id,products.image,products.barcode,products.status,products.name,products.sku,products.price,colors.hex_code,category.name AS category_name'))
                             ->where('products.is_deleted','0')
                             ->orderByDesc('id')
                             ->get();
-        return view('admin.product.product_index')->with('productList', $productList); 
+        }
+       if (!is_null($selected_value_category_id)) {
+            $productList = DB::table('products')
+                            ->join('colors', 'colors.id', '=', 'products.color_id')
+                            ->join('category', 'category.id', '=', 'products.category_id')
+                            ->select(\DB::raw('(SELECT GROUP_CONCAT(qty) as `qty` FROM product_size WHERE product_size.product_id = products.id) AS qty,(SELECT GROUP_CONCAT(name) as `size_name` FROM product_size INNER JOIN sizes ON sizes.id = product_size.size_id WHERE product_size.product_id = products.id) AS size_name,
+                                products.id,products.image,products.barcode,products.barcode,products.status,products.name,products.sku,products.price,colors.hex_code,category.name AS category_name'))
+                            ->where('products.is_deleted','0')
+                            ->where('products.category_id',$selected_value_category_id)
+                            ->orderByDesc('id')
+                            ->get();
+        }
+        
+
+          $categoryData = Category::all();                  
+                          
+        return view('admin.product.product_index_category_filter',compact('productList','categoryData','selected_value_category_id'));
     }
 
     public function addProduct( Request $request ) {
@@ -386,9 +422,11 @@ class ProductController extends Controller
         // $pdf->loadHTML('<img src="data:image/png;base64,' . DNS1D::getBarcodePNG($productDetail->barcode, 'C39+',3,33) . '" alt="barcode"   />');
         // return $pdf->stream();
         $barcode = $productDetail->barcode;
+        /*print_r($barcode);
+        exit;*/
         //$barcode = '90907970';
         //Storage::disk('local')->put('test.png',DNS1D::getBarcodePNGPath($barcode, 'C128A'));
-        Storage::disk('public')->put('test.png',DNS1D::getBarcodePNGPath($barcode, 'C128A'));
+        Storage::disk('local')->put('test.png',DNS1D::getBarcodePNGPath($barcode, 'C128A'));
         //Storage::disk('local')->put('test.png',DNS1D::getBarcodePNG("4", "PDF417"));
         $myfile = public_path($barcode.'.png');
         return response()->download($myfile);

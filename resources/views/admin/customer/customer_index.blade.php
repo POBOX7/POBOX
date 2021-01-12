@@ -21,17 +21,18 @@
 
                   <form class="forms-sample" action="{{route('export.customer')}}" method="POST" enctype="multipart/form-data">
                   {{ csrf_field() }}
-                  <div class="row">
+                  <div class="row mobile-view-date-filter">
                     <div class="col-md-4" style="text-align: right">
-                      <span>From:</span>
-                      <input type="date" name="start_date">
+                      <span>From: </span>
+                      <input type="date" name="start_date" placeholder="mm/dd/yyyy" required>
                     </div>
                     <div class="col-md-4" style="text-align: right">
-                      <span>To:</span>
-                      <input type="date" name="end_date">
+                      <span>To: </span>
+                      <input type="date" name="end_date"  placeholder="mm/dd/yyyy" required>
                     </div>
                     <div class="col-md-4" style="text-align: right">
                       <button type="submit" class="btn btn-danger mr-2">Export</button>
+                      <a href="{{route('add.product')}}"   class="btn btn-success">Add New</a>
                     </div>
                   </div>
                   </form>
@@ -48,6 +49,7 @@
                             <th>Email</th>
                             <th>Phone no</th>
                             <th>Status</th>
+                            <th>Created date</th>
                             <th>Action</th>
                         </tr>
                       </thead>
@@ -60,9 +62,10 @@
                                 <td>{{$customer->email}}</td>
                                 <td>{{$customer->phone_number}}</td>
                                 <td><input id="status_{{$customer->id}}" type="checkbox" <?php echo ($customer->status == 1)?'Checked':'' ?> class="status" data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-style="ios"></td>
+                                <td>{{date('d-m-Y', strtotime($customer->created_at)) }}</td>
                                 <td>
                                   {{-- <a href="{{route('edit.customer',base64_encode($customer->id) )}}"><i class="ti-pencil-alt" style="font-size: 2rem;"></i></a> --}}
-                                  <a onclick="showSwal({{$customer->id}})"><i class="ti-trash" style="font-size: 2rem;color: #007bfe;"></i></a>
+                                  <a onclick="showSwal({{$customer->id}})" data-toggle="tooltip" title="Delete"><i class="ti-trash" style="font-size: 2rem;color: #007bfe;cursor: pointer;"></i></a>
                                 </td>
                             </tr>
                           @endforeach
@@ -124,5 +127,33 @@
               }
             })(jQuery);
           </script>
+<style type="text/css">
+                  input[type="date"]::before {
+                  color: #999999;
+                  content: attr(placeholder);
+                }
+                input[type="date"] {
+                  color: #ffffff;
+                }
 
+                input[type="date"]:valid {
+                  color: #666666;
+                }
+                input[type="date"]:valid::before {
+                  content: "" !important;
+                }
+                input[type="date"] {
+                    width: 163px;
+                    padding: 0px 10px 0px 10px;
+                }
+                @media only screen and (max-width: 768px){
+                 .row.mobile-view-date-filter span {
+                      float: left;
+                      margin-top: 15px;
+                  }
+                  select#category_name_filter {
+                      margin-bottom: 10px;
+                  }
+              }
+                </style>
 @endsection

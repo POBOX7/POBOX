@@ -92,7 +92,9 @@ $(document).ready(function(){
       </div>
       <div class="modal-body">
     <div class="login-form">
-     {!! Form::open(['route' => 'register.store' , 'enctype' => 'multipart/form-data']) !!}
+     <!-- {!! Form::open(['route' => 'register.store' , 'enctype' => 'multipart/form-data']) !!} -->
+     <form class="forms-sample"  action="{{ route('register.store') }}" method="POST" enctype="multipart/form-data"  runat="server" onsubmit="return get_action();">
+                                       {{ csrf_field() }}
         <h2 class="text-center">Sign Up</h2>        
         <div class="form-group">
             <div class="input-group">
@@ -184,9 +186,41 @@ $(document).ready(function(){
   }
 }
 </script>
+
+
+
+
+ <script src='https://www.google.com/recaptcha/api.js'></script>
+                                <script type="text/javascript">
+                                    function get_action() {
+                                        var v = grecaptcha.getResponse();
+                                       
+                                        console.log("Resp" + v);
+                                        if (v == '') {
+                                            document.getElementById('captcha').innerHTML = "You can't leave Captcha Code empty";
+                                            return false;
+                                        }
+                                        else {
+                                            document.getElementById('captcha').innerHTML = "Captcha completed";
+                                            return true;
+                                        }
+                                    }
+                                </script>
+
+                                
+                                <div>
+                                <div class="g-recaptcha" data-sitekey="6LdDm88ZAAAAAHm5sn99zTeRh2w0JT2NXZKWcXMZ"></div>
+                                </div>
+                                
+                                <div id="captcha"></div>
+                                <div style="margin-top: 10px;">
+                                  <input type="checkbox" name="is_checkbox" required="true">
+                                  <span>By creating an account, I consent <a href="{{route('PrivacyPolicy')}}" target="_blank" style="color: #1d70ba;text-decoration: none;font-weight: 500;"> Privacy
+Policy</a>  and <a href="{{route('termAndCondition')}}" target="_blank" style="color: #1d70ba;text-decoration: none;font-weight: 500;">Terms and Conditions</a>  of use of www.poboxfashion.com</span> 
+                                </div>
         <div class="form-group">
            
-            <button type="submit" id="submit" class="btn btn-success btn-block login-btn">Sign Up</button>
+            <button type="submit" id="submit" onclick="ValidateNo();" class="btn btn-success btn-block login-btn" style="margin-top: 10px;">Sign Up</button>
         </div>
      
     {!! Form::close() !!}
@@ -319,7 +353,10 @@ function validate() {
       </div>
       <div class="modal-body">
     <div class="login-form forgetPasswordEmail">
-     {!! Form::open(['route' => 'forgetPasswordEmail' , 'enctype' => 'multipart/form-data']) !!}
+        <form class="forms-sample"  action="{{ route('forgetPasswordEmail') }}" method="POST" enctype="multipart/form-data"  >
+         <!--  runat="server" onsubmit="return get_action_forgot_pwd();" -->
+                                       {{ csrf_field() }}
+    <!--  {!! Form::open(['route' => 'forgetPasswordEmail' , 'enctype' => 'multipart/form-data']) !!} -->
         <h2 class="text-center">Reset your Password</h2>        
         <div class="or-text"><p>Enter your email Address to reset your password</p></div>
         <div class="form-group">
@@ -328,9 +365,37 @@ function validate() {
             </div>
         </div>
        
+
+ <script src='https://www.google.com/recaptcha/api.js'></script>
+                                <script type="text/javascript">
+                                    function get_action_forgot_pwd() {
+                                        var v = grecaptcha.getResponse();
+                                        console.log("Resp" + v);
+                                        if (v == '') {
+                                            document.getElementById('captcha_forgot_pwd').innerHTML = "You can't leave Captcha Code empty";
+                                            return false;
+                                        }
+                                        else {
+                                            document.getElementById('captcha_forgot_pwd').innerHTML = "Captcha completed";
+                                            return true;
+                                        }
+                                    }
+                                </script>
+
+                                
+                                <div>
+                                <div class="g-recaptcha" data-sitekey="6LdDm88ZAAAAAHm5sn99zTeRh2w0JT2NXZKWcXMZ"></div>
+                                </div>
+
+                                <div id="captcha_forgot_pwd"></div>
+                                  <div style="margin-top: 10px;">
+                                  <input type="checkbox" name="is_checkbox" required="true">
+                                  <span>By creating an account, I consent <a href="{{route('PrivacyPolicy')}}" target="_blank" style="color: #1d70ba;text-decoration: none;font-weight: 500;"> Privacy
+Policy</a>  and <a href="{{route('termAndCondition')}}" target="_blank" style="color: #1d70ba;text-decoration: none;font-weight: 500;">Terms and Conditions</a>  of use of www.poboxfashion.com</span> 
+                                </div>
         <div class="form-group">
            
-            <button type="submit" class="btn btn-success btn-block login-btn">Reset Password</button>
+            <button type="submit" style="margin-top: 10px;" class="btn btn-success btn-block login-btn" onclick="ValidateNo();">Reset Password</button>
         </div>
          <div class="col-sm-12">
         <div class="hint-text small">Already have an Account?   <a href="#" id="login" data-toggle="modal" data-dismiss="modal"  data-target="#login" class="text-success">Sign In</a></div>

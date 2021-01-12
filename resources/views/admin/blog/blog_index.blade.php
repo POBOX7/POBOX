@@ -23,7 +23,7 @@
                             <th>Sr. No #</th>
                             
                             <th>Image</th>
-                            <th>Date</th>
+                            <th>Created date</th>
                             <th>Title</th>
                             <th>Category</th>
                             <th>Author</th>
@@ -43,9 +43,9 @@
                                 
                                 <td>{!! $blog->author !!}</td>
                                 <td style="width: 113px;">
-                                   <a href="{{route('view.blog_comment',base64_encode($blog->id) )}}"><i class="ti-eye" style="font-size: 2rem;color: #007bfe;"></i></a>
-                                  <a href="{{route('edit.blog',base64_encode($blog->id) )}}"><i class="ti-pencil-alt" style="font-size: 2rem;"></i></a>
-                                  <a onclick="showSwal({{$blog->id}})"><i class="ti-trash" style="font-size: 2rem;color: #007bfe;"></i></a>
+                                   <a href="{{route('view.blog_comment',base64_encode($blog->id) )}}" data-toggle="tooltip" title="View"><i class="ti-eye" style="font-size: 2rem;color: #007bfe;"></i></a>
+                                  <a href="{{route('edit.blog',base64_encode($blog->id) )}}" data-toggle="tooltip" title="Edit"><i class="ti-pencil-alt" style="font-size: 2rem;"></i></a>
+                                  <a onclick="showSwal({{$blog->id}})" data-toggle="tooltip" title="Delete"><i class="ti-trash" style="font-size: 2rem;color: #007bfe;cursor: pointer;"></i></a>
                                 </td>
                             </tr>
                           @endforeach

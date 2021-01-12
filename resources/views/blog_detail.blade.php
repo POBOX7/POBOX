@@ -51,23 +51,18 @@
 
                                    
 
-                                    <div class="entry-author">
+                                    <!-- <div class="entry-author">
                                         <h3><i class="icon-user"></i>Comment</h3>
 
-                                       <!--  <figure>
-                                            <a href="#">
-                                                <img src="assets/images/blog/author.jpg" alt="author">
-                                            </a>
-                                        </figure> -->
                                         @foreach($blogLeaveReplyData as $key => $value )
                                         <div class="author-content">
                                             <h4><a style="color: #1d70ba;">{{$value->name}}</a></h4>
                                             <p>{{$value->comment}}</p>
-                                        </div><!-- End .author.content -->
+                                        </div>
                                         @endforeach
-                                    </div><!-- End .entry-author -->
+                                    </div> -->
 
-                                    <div class="comment-respond">
+                        <!--             <div class="comment-respond">
                                         <h3>Leave a Reply</h3>
                                         <p>Your email address will not be published. Required fields are marked *</p>
                                 <form class="forms-sample"  action="{{ route('blogLeaveReply') }}" method="POST" enctype="multipart/form-data" id="form1" runat="server" onsubmit="return get_action();">
@@ -75,20 +70,19 @@
                                             <div class="form-group required-field">
                                                 <label>Comment</label>
                                                 <textarea cols="30" name="comment" rows="1" class="form-control" required></textarea>
-                                            </div><!-- End .form-group -->
+                                            </div>
 
                                             <div class="form-group required-field">
                                                 <label>Name</label>
                                                 <input type="text" name="name" class="form-control" required>
-                                            </div><!-- End .form-group -->
+                                            </div>
 
                                             <div class="form-group required-field">
                                                 <label>Email</label>
                                                 <input type="email" name="email" class="form-control" required>
-                                            </div><!-- End .form-group -->
+                                            </div>
                                        
-               <!--  <script src="https://www.google.com/recaptcha/api.js"></script>
-    <div class="g-recaptcha" data-sitekey="6Le-38AZAAAAADGLrQlWLqWHgOBvIcAEF_Y3kpDN"></div> -->
+             
       
     <script src='https://www.google.com/recaptcha/api.js'></script>
     <script type="text/javascript">
@@ -122,9 +116,7 @@
                                                 @if (Auth::check() == 1)
                                                 <button type="submit" class="btn btn-primary">Post Comment</button>
                                                 @else
-                                                <!--  <button type="submit" id="login" data-toggle="modal" data-dismiss="modal"  data-target="#login" class="btn btn-primary">Post Comment</button> -->
                                               
-  
                                                   <script type="text/javascript">
                                                   $(document).ready(function(){
                                                   $("p").click(function(){
@@ -139,10 +131,10 @@
     
                                                 @endif
 
-                                            </div><!-- End .form-footer -->
+                                            </div>
                                         </form>
-                                    </div><!-- End .comment-respond -->
-                                </div><!-- End .entry-body -->
+                                    </div> -->
+                                </div>
                             </article><!-- End .entry -->
                             @endforeach
                         </div><!-- End .col-lg-9 -->

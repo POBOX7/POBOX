@@ -56,7 +56,7 @@ class NewArrivalOldController extends Controller {
      
      //sizes data view 
       $sizeData = Sizes::where('status',1)->where('is_deleted',0)->get();
- 
+ //dd($sizeData);
       //$colors data view
       $colorsData = Colors::where('status',1)->where('is_deleted',0)->get();
       

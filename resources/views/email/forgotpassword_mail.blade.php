@@ -264,7 +264,7 @@
                                             <table cellspacing="0" cellpadding="0" style="font-family: Open Sans, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, Helvetica, Arial, sans-serif; border-collapse: collapse; width: 100%;">
                                                 <tr>
                                                     <td style="font-family: Open Sans, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, Helvetica, Arial, sans-serif;text-align: center;">
-                                                        <a href="{{url('/')}}" style="color: #467fcf; text-decoration: none;"><img src="http://admin.poboxfashion.com/assets/upload_images/favicon.png" width="116" height="34" alt="" style="line-height: 100%; outline: none; text-decoration: none; vertical-align: baseline; font-size: 0; border: 0 none; " /></a>
+                                                        <a href="{{url('/')}}" style="color: #467fcf; text-decoration: none;"><img src="https://www.poboxfashion.com/images/logo.png" width="116" height="34" alt="" style="line-height: 100%; outline: none; text-decoration: none; vertical-align: baseline; font-size: 0; border: 0 none; " /></a>
                                                     </td>
                                                     <td class="text-right" style="font-family: Open Sans, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, Helvetica, Arial, sans-serif;" align="right">
                                                       
@@ -286,7 +286,7 @@
 
                                                            <h1 style="font-weight: 300; font-size: 28px; line-height: 130%; margin: 0 0 .5em; text-align: center; color: black;">Forgot Password</h1>
 
-                                                         <p style="margin: 0 0 1em; text-align: left; color: black;">We have sent you this email in response to your request to reset your password on Pobox.</p>
+                                                         <p style="margin: 0 0 1em; text-align: left; color: black;">Hi {{$check_user->name}}, We have sent you this email in response to your request to reset your password on Pobox.</p>
 
                                                          <p style="margin: 0 0 1em; text-align: left; color: black;">
                                                           Please click here to reset your password  

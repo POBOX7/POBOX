@@ -45,8 +45,8 @@
                                 <td>{{$shippings->rate}}</td>
                                 <td><input id="status_{{$shippings->id}}" type="checkbox" <?php echo ($shippings->status == 1)?'Checked':'' ?> class="status" data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-style="ios"></td>
                                 <td>
-                                 <a href="{{route('edit.shipping',base64_encode($shippings->id) )}}"><i class="ti-pencil-alt" style="font-size: 2rem;"></i></a>
-                                  <a onclick="showSwal({{$shippings->id}})"><i class="ti-trash" style="font-size: 2rem;color: #007bfe;"></i></a>
+                                 <a href="{{route('edit.shipping',base64_encode($shippings->id) )}}" data-toggle="tooltip" title="Edit"><i class="ti-pencil-alt" style="font-size: 2rem;"></i></a>
+                                  <a onclick="showSwal({{$shippings->id}})" data-toggle="tooltip" title="Delete"><i class="ti-trash" style="font-size: 2rem;color: #007bfe;cursor: pointer;"></i></a>
                               
                                 </td>
                             </tr>

@@ -30,7 +30,7 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        $customers = DB::table('users')->select('id','name','email','phone_number','status')->where('role_id','2')->where('is_deleted',0)->orderByDesc('id')->get();
+        $customers = DB::table('users')->select('id','name','email','phone_number','status','created_at')->where('role_id','2')->where('is_deleted',0)->orderByDesc('id')->get();
         return view('admin.customer.customer_index')->with('customers', $customers); 
     }
 

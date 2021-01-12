@@ -113,7 +113,7 @@
                     <td colspan="2" style="text-align: center;background-color: #E0E0E0;">
                         <!--<span class="high-text bg-gray" style="font-weight: bold;">RETAIL INVOICE</span>-->
                         <br />
-                        <span style="font-size: 16px;font-weight: bold;">RETAIL INVOICE</span>
+                        <span style="font-size: 16px;font-weight: bold;">TAX INVOICE</span>
                         <br />
                     </td>
                 </tr>

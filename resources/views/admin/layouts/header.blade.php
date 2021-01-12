@@ -2,7 +2,8 @@
       <div class="text-center navbar-brand-wrapper d-flex align-items-top justify-content-center">
         <a class="navbar-brand brand-logo" href="{{route('home')}}"><img src="{{ asset('admin/images/favicon.png') }}" style="height: 50px;" alt="logo"/></a>
         {{-- <a class="navbar-brand brand-logo" href="#" style="color: #16bec4;">Po Box</a> --}}
-        <a class="navbar-brand brand-logo-mini" href="{{ asset('admin/index.html') }}"><img src="{{ asset('admin/images/logo-mini.png') }}" alt="logo"/></a>
+        <!-- <a class="navbar-brand brand-logo-mini" href="{{ asset('admin/index.html') }}"><img src="{{ asset('admin/images/logo-mini.png') }}" alt="logo"/></a> -->
+        <a  class="brand-logo-mini" href="{{route('home')}}"><img style="height: 57px;padding: 5px;" src="{{ asset('admin/images/favicon.png') }}" alt="logo"/></a>
       </div>
       <div class="navbar-menu-wrapper d-flex align-items-center">
         <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
@@ -13,8 +14,9 @@
           <li class="nav-item dropdown d-none d-lg-flex">
             <a class="nav-link dropdown-toggle" id="languageDropdown" href="#" data-toggle="dropdown">
               <i class="icon-user"></i>
-              @if(Auth::id() == 1)
+             
               {{ Auth::user()->name}} ({{ Auth::user()->email}})
+               @if(Auth::id() == 1)
                @endif
             </a>
             <div class="dropdown-menu navbar-dropdown" aria-labelledby="languageDropdown">
@@ -22,10 +24,11 @@
                 <i class="fa fa-gears"></i>Logout
               </a>
               @if(Auth::id() == 1)
+               @endif
               <a class="dropdown-item font-weight-medium" href="{{ route('admin.changepassword') }}">
                 <i class="fa fa-gears"></i>Change Password
               </a>
-              @endif
+             
               <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
                   {{ csrf_field() }}
               </form>
@@ -155,3 +158,26 @@
         </button>
       </div>
     </nav>
+
+  <style type="text/css">
+  @media screen and (max-width: 991px){
+    .navbar .navbar-brand-wrapper {
+   width: 80%;
+}
+.navbar .navbar-menu-wrapper {
+    width: 20%;
+}
+    .navbar .navbar-brand-wrapper .brand-logo-mini img {
+    max-width: 70%!important;
+    height: 30px!important;
+    margin: 10px 10px auto!important;
+   }
+   .navbar .navbar-brand-wrapper .brand-logo-mini img {
+    width: calc(115px - 50px)!important;
+  }
+}
+
+.container-fluid {
+    margin-top: 45px;
+}
+  </style>

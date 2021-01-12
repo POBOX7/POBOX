@@ -43,9 +43,11 @@ class LoginController extends Controller
     }
     public function login(Request $request)
     {
+        //dd($request);
         $email = $request->email;
         $password = $request->password;
-        $user = User::where('email',$email)->where('role_id','!=','0')->where('role_id','!=','2')->first(); 
+        $user = User::where('email',$email)->where('role_id','=','1')->where('role_id','!=','0')->where('role_id','!=','2')->first(); 
+       
 
         if(is_null($user)){ 
            return redirect()->route('login')->with('error', 'Email address is not registered.');

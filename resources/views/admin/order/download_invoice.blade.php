@@ -97,7 +97,7 @@
 <table class="maintable" style="border: 0px !important;">
     <tr style="text-align: center!important;">
         <td style="width: 100%;" style="text-align: center;">
-            <img style="text-align: center;" src="http://admin.poboxfashion.com/assets/upload_images/favicon.png" style="width: 200px;">
+            <img style="text-align: center;" src="assets/upload_images/favicon.png" style="width: 200px;">
             <!-- <img style="text-align: center;" src="{{asset('assets/images/product/favicon.png')}}" style="width: 200px;"> -->
         </td>
     </tr>
@@ -108,7 +108,7 @@
                     <td colspan="2" style="text-align: center;background-color: #E0E0E0;">
                         <!--<span class="high-text bg-gray" style="font-weight: bold;">RETAIL INVOICE</span>-->
                         <br />
-                        <span style="font-size: 16px;font-weight: bold;">RETAIL INVOICE</span>
+                        <span style="font-size: 16px;font-weight: bold;">TAX INVOICE</span>
                         <br />
                     </td>
                 </tr>
@@ -137,7 +137,7 @@
                     <td class="part1" style="text-transform: uppercase;width: 49%;">
                        <strong>Shipping Address : </strong><br/>
                         <b>Name:</b> {{$OderDatas->getAddress->name}}  <br/>
-                        <b>Address:</b>{{$OderDatas->getAddress->address_line_one}}<br>
+                        <b>Address:</b><span style="text-align: initial;"><?php echo  wordwrap($OderDatas->getAddress->address_line_one, 8, "\n", true); ?></span><br>
                         <b>Address Line 2 :</b> {{$OderDatas->getAddress->address_line_two}}<br>
                         <b>Address Line 3 :</b> {{$OderDatas->getAddress->address_line_three}}  <br/>
                             
@@ -150,11 +150,12 @@
                         <b>Pincode:</b>{{$OderDatas->getAddress->pincode}}  <br/>
                     </td>
                     <td class="part2" style="text-transform: uppercase;width: 49%;">
-                        <br />
+                        
                         <strong>Billing Address : </strong><br/>
                         @if($OderDatas->bill_address == 'New')
                             <b>Name:</b> {{$billAddress->name}}  <br/>
-                            <b>Address:</b>{{$billAddress->address_line_one}}<br>
+                            <b>Address:</b><span style="text-align: initial;"><?php echo  wordwrap($OderDatas->getAddress->address_line_one, 8, "\n", true); ?>
+                        </span><br>
                             <b>Address Line 2 :</b> {{$billAddress->address_line_two}}<br>
                             <b>Address Line 3 :</b> {{$billAddress->address_line_three}}  <br/>
                             <b>City:</b> {{$billAddress->city}}  <br>
@@ -165,7 +166,7 @@
                         @else
                         
                             <b>Name:</b> {{$OderDatas->getAddress->name}}  <br/>
-                            <b>Address:</b>{{$OderDatas->getAddress->address_line_one}}<br>
+                            <b>Address:</b><span style="text-align: initial;"><?php echo  wordwrap($OderDatas->getAddress->address_line_one, 8, "\n", true); ?></span><br>
                             <b>Address Line 2 :</b> {{$OderDatas->getAddress->address_line_two}}<br>
                             <b>Address Line 3 :</b> {{$OderDatas->getAddress->address_line_three}}  <br/>
                             <b>City:</b> {{$OderDatas->getAddress->city}}  <br>
@@ -211,7 +212,7 @@
                                                         <tr>
                                                     <td>{{$keyProduct_data + 1 }}</td>
                                                     <td>
-                                                        <img src="http://admin.poboxfashion.com/assets/upload_images/product/{{$product_data->getProduct->image}}" alt="product" style="width: 50px!important;height: 50px!important;">
+                                                        <img src="assets/upload_images/product/{{$product_data->getProduct->image}}" alt="product" style="width: 50px!important;height: 50px!important;">
                                                     </td>
                                                     <td>{{$product_data->getProduct['name'] }}</td>
                                                     

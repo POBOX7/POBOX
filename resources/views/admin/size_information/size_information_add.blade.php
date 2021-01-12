@@ -30,7 +30,7 @@
                 <label for="chest" class="col-sm-1 col-form-label">Chest</label>
                 <div class="col-sm-3">
                   <input type="text" class="form-control" id="chest" name="chest" placeholder="" maxlength="5" required onkeyup="countChar(this)">
-                  <span id="nameLimit_chest" style="color: red;">(4/4)</span>
+                  <span id="nameLimit_chest" style="color: red;">(5/5)</span>
                   @if ($errors->has('chest'))
                     <span style="color: red">{{ $errors->first('chest') }}</span>
                   @endif
@@ -39,7 +39,7 @@
                 <label for="waist" class="col-sm-1 col-form-label">Waist</label>
                 <div class="col-sm-3">
                   <input type="text" class="form-control" id="waist" name="waist" placeholder="" maxlength="5" required onkeyup="countChar(this)">
-                  <span id="nameLimit_waist" style="color: red;">(4/4)</span>
+                  <span id="nameLimit_waist" style="color: red;">(5/5)</span>
                   @if ($errors->has('waist'))
                     <span style="color: red">{{ $errors->first('waist') }}</span>
                   @endif
@@ -50,7 +50,7 @@
                 <label for="hips" class="col-sm-1 col-form-label">Hips</label>
                 <div class="col-sm-3">
                   <input type="text" class="form-control" id="hips" name="hips" placeholder="" maxlength="5" required onkeyup="countChar(this)">
-                  <span id="nameLimit_hips" style="color: red;">(4/4)</span>
+                  <span id="nameLimit_hips" style="color: red;">(5/5)</span>
                   @if ($errors->has('hips'))
                     <span style="color: red">{{ $errors->first('hips') }}</span>
                   @endif
@@ -59,7 +59,7 @@
                 <label for="length" class="col-sm-1 col-form-label">Length</label>
                 <div class="col-sm-3">
                   <input type="text" class="form-control" id="length" name="length" placeholder="" maxlength="5" required onkeyup="countChar(this)">
-                  <span id="nameLimit_length" style="color: red;">(4/4)</span>
+                  <span id="nameLimit_length" style="color: red;">(5/5)</span>
                   @if ($errors->has('length'))
                     <span style="color: red">{{ $errors->first('length') }}</span>
                   @endif
@@ -68,7 +68,7 @@
                 <label for="shoulder" class="col-sm-1 col-form-label">Shoulder</label>
                 <div class="col-sm-3">
                   <input type="text" class="form-control" id="shoulder" name="shoulder" placeholder="" maxlength="5" required onkeyup="countChar(this)">
-                  <span id="nameLimit_shoulder" style="color: red;">(4/4)</span>
+                  <span id="nameLimit_shoulder" style="color: red;">(5/5)</span>
                   @if ($errors->has('shoulder'))
                     <span style="color: red">{{ $errors->first('shoulder') }}</span>
                   @endif
@@ -91,7 +91,7 @@
     console.log(id);
     var len = val.value.length;
     tlength = len,
-    set = 4,
+    set = 5,
     remain = parseInt(set - tlength);
 
     if(remain > -1){

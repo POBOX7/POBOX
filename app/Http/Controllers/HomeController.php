@@ -19,6 +19,7 @@ use App\Sizes;
 use App\ContactUs;
 use App\ContactUsDetail;
 use Mail;
+use Auth;
 class HomeController extends Controller 
 
 {
@@ -101,7 +102,9 @@ class HomeController extends Controller
 
     //DiscountBanners
     $static_banners = DiscountBanners::take(3)->get();
-    return view('new_resources.home',compact('newArrival','trendingData','category','testinomials','banners_slider','static_banners')); 
+    $user = Auth::user();
+    
+    return view('new_resources.home',compact('newArrival','trendingData','category','testinomials','banners_slider','static_banners','user')); 
   }
 
    public function aboutUs(){
@@ -114,6 +117,11 @@ class HomeController extends Controller
     return view('contact_us',compact('ContactUsDetail'));
   }
   public function contactUsStore(Request $request){
+    if (is_null($request['g-recaptcha-response'])) {
+       return redirect()->route('contactUs')->with('status','You can not leave Captcha Code empty');
+    }
+
+    
         $addContactUsData = new ContactUs;   
         $addContactUsData->name = $request['name'];
         $addContactUsData->email = $request['email'];

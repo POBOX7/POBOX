@@ -30,7 +30,7 @@
                       @if(is_null($bannerPageNewArrival))
                         <option value="2">New arrival Page</option>
                       @endif
-                      @if(is_null($bannerPageTrending))
+                     <!--  @if(is_null($bannerPageTrending))
                         <option value="3">Trending Page</option>
                       @endif
                       @if(is_null($bannerPageKurties))
@@ -53,7 +53,7 @@
                        @endif
                       @if(is_null($bannerPageSizeGuide))
                       <option value="10">Size Guide</option>
-                       @endif
+                       @endif -->
                      
                     </select>
                   @if ($errors->has('page_id'))

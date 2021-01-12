@@ -83,6 +83,9 @@ setTimeout(function() { $("#myElem").hide(); }, 7000);
       </h2>
          <div class="row row-sm justify-content-center">
             @foreach($trendingData as $trendingDatas )
+     @php($product_size = App\ProductSize::select('size_id')->where('qty','!=',0)->where('product_size.product_id',$trendingDatas->id)->pluck('size_id')->first())
+     @php($productqty = App\ProductSize::select('size_id')->where('qty','!=',0)->where('product_size.product_id',$trendingDatas->id)->get())
+            @php($sizeData = App\Sizes::where('id',$product_size)->where('is_deleted',0)->first())
             <div class="col-6 col-md-4 col-lg-3 col-xl-6col">
                <div class="product-default home-featured-product">
                    @if($trendingDatas->discount !== 0)
@@ -115,7 +118,18 @@ setTimeout(function() { $("#myElem").hide(); }, 7000);
                      </div>
                      <!-- End .price-box -->
                      <div class="product-action">
-                      
+                      @if(count($productqty) != 0)
+                      <a href="{{route('productDetail',$trendingDatas['id'])}}">
+                        <!-- addcart -->
+                       <button style="text-transform: uppercase;" class="btn-icon btn-add-cart view-details " data-toggle="modal" data-size="{{$sizeData->id}}" data-qty="1" data-mid="{{$trendingDatas->id}}" data-mrp="{{$trendingDatas['mrp']}}" data-price="{{$trendingDatas['price']}}" id="product_{{$trendingDatas['id']}}"><i class="icon-bag"></i>ADD To Cart</button>
+                     </a>
+                       @else
+                       <a  class="paction add-cart cart"  title="Out of stock" style="margin-left: 10px;">
+                                                        <span>Out of stock</span>
+                                                        </a>
+                       @endif            
+
+                     <input type="hidden" name="user_id" name="user_id" id="user_id" value="{{$user}}">
                      </div>
                   </div>
                   <!-- End .product-details -->
@@ -174,6 +188,9 @@ setTimeout(function() { $("#myElem").hide(); }, 7000);
       </h2>
          <div class="row row-sm justify-content-center">
             @foreach( $newArrival as $top_product )
+             @php($product_size = App\ProductSize::select('size_id')->where('qty','!=',0)->where('product_size.product_id',$top_product->id)->pluck('size_id')->first())
+     @php($productqty = App\ProductSize::select('size_id')->where('qty','!=',0)->where('product_size.product_id',$top_product->id)->get())
+            @php($sizeData = App\Sizes::where('id',$product_size)->where('is_deleted',0)->first())
             <div class="col-6 col-md-4 col-lg-3 col-xl-6col">
                <div class="product-default home-featured-product">
                   @if($top_product->discount !== 0)
@@ -204,7 +221,18 @@ setTimeout(function() { $("#myElem").hide(); }, 7000);
                      </div>
                      <!-- End .price-box -->
                      <div class="product-action">
-                     
+                         @if(count($productqty) != 0)
+                         <a href="{{route('productDetail',$top_product['id'])}}">
+                          <!-- addcart -->
+                       <button style="text-transform: uppercase;" class="btn-icon btn-add-cart view-details " data-toggle="modal" data-size="{{$sizeData->id}}" data-qty="1" data-mid="{{$top_product->id}}" data-mrp="{{$top_product['mrp']}}" data-price="{{$top_product['price']}}" id="product_{{$top_product['id']}}"><i class="icon-bag"></i>ADD To Cart</button>
+                     </a>
+                       @else
+                       <a  class="paction add-cart cart"  title="Out of stock" style="margin-left: 10px;">
+                                                        <span>Out of stock</span>
+                                                        </a>
+                       @endif            
+
+                     <input type="hidden" name="user_id" name="user_id" id="user_id" value="{{$user}}">
                        
                      </div>
                   </div>
@@ -222,7 +250,7 @@ setTimeout(function() { $("#myElem").hide(); }, 7000);
    <div class="mb-3"></div>
    <div class="mb-3"></div>
    <div class="mb-3"></div>
-<div class="container">
+<!-- <div class="container">
          <h2 class="text-5xl text-blue-600 text-center home-title">
        Testimonials
       </h2>
@@ -242,7 +270,7 @@ setTimeout(function() { $("#myElem").hide(); }, 7000);
                     <div class="testimonial-profile">
                         <h3 class="title"> {{$testinomials_value->name}}</h3>
                     </div>
-                    <!-- The Modal --> 
+                   
                 </div>
                @endforeach
           @endif
@@ -260,7 +288,7 @@ setTimeout(function() { $("#myElem").hide(); }, 7000);
                     <div class="testimonial-profile">
                         <h3 class="title"> {{$testinomials_value->name}}</h3>
                     </div>
-                    <!-- The Modal --> 
+                    
                 </div>
                @endforeach
                @endif
@@ -271,7 +299,8 @@ setTimeout(function() { $("#myElem").hide(); }, 7000);
               
             </div>
         </div>
-    </div>  
+    </div> 
+    </div> --> 
 </main>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.carousel.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.theme.min.css">

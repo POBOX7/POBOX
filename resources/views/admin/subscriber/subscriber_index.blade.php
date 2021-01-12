@@ -39,7 +39,7 @@
                                 <td>{{$key + 1}}</td>
                                 <td>{{$subscriber->email}}</td>
                                 <td>
-                                  <a onclick="showSwal({{$subscriber->id}})"><i class="ti-trash" style="font-size: 2rem;color: #007bfe;"></i></a>
+                                  <a onclick="showSwal({{$subscriber->id}})" data-toggle="tooltip" title="Delete"><i class="ti-trash" style="font-size: 2rem;color: #007bfe;cursor: pointer;"></i></a>
                                 </td>
                             </tr>
                           @endforeach

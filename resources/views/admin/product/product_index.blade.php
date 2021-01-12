@@ -13,22 +13,59 @@
 </style>
 <div class="card">
             <div class="card-body">
-              <div class="row">
-                <div class="col-md-3">
+              <div class="row" style="padding-bottom: 15px;">
+                
+                <div class="col-md-12">
                   <h4 class="card-title">PRODUCT DETAILS</h4>
+                </div>
+                <div class="col-md-3">
+                   <script type="text/javascript">
+                $(document).ready(function(e) {
+              $("[name='category_name']").on('change', function() {
+                        var  url: "{{ route('categoryFilter') }}",
+                         var selected_value_category = document.getElementById("case_title_filter").value;
+                         
+                        $.ajax({
+                                type: "get",
+                                url: "{{ route('categoryFilter') }}",
+                                cache: 1,
+                                data: {
+                                    selected_value_category: selected_value_category,
+                                    _token: "{{ csrf_token() }}",
+                                }, 
+                                success: function(data){
+                                        //console.log($data);
+                                    $('.category_filter_div').html(data);
+                                }
+                            });
+                        e.preventDefault();
+                    });
+                });
+            </script>
+                     <div style="width: 50%;float: left;">
+              <!-- <label style="width: 140px;float: left;">Category Filter</label> -->
+              {!! Form::open(['route' => ['categoryFilter'] , 'enctype' => 'multipart/form-data']) !!}
+               <select onchange="this.form.submit()" name="category_name" id="category_name_filter" style="padding: 4px 11px;font-size: 14px;line-height: 1.42857143;color: black;background-color: #fff;background-image: none;border: 1px solid black;border-radius: 0;">
+                  <option value="">Select Category </option>
+                 @foreach($categoryData as $categoryDatas)
+                  <option value="{{$categoryDatas['id']}}">{{$categoryDatas['name']}}</option>
+                  @endforeach
+               </select>
+                {!! Form::close() !!}
+            </div>
                 </div>
                 <div class="col-md-9" style="text-align: right">
 
                   <form class="forms-sample" action="{{route('export.product')}}" method="GET" enctype="multipart/form-data">
                   {{ csrf_field() }}
-                  <div class="row">
+                  <div class="row mobile-view-date-filter">
                     <div class="col-md-4" style="text-align: right">
                       <span>From: </span>
-                      <input type="date" name="start_date">
+                      <input type="date" name="start_date" placeholder="mm/dd/yyyy" required>
                     </div>
                     <div class="col-md-4" style="text-align: right">
                       <span>To: </span>
-                      <input type="date" name="end_date">
+                      <input type="date" name="end_date"  placeholder="mm/dd/yyyy" required>
                     </div>
                     <div class="col-md-4" style="text-align: right">
                       <button type="submit" class="btn btn-danger mr-2">Export</button>
@@ -38,15 +75,18 @@
                   </form>
                 </div>
               </div>
+             
               <div class="row">
                 <div class="col-12">
+                 
                   <div class="table-responsive">
-                    <table id="order-listing" class="table">
+                    <table id="order-listing" class="table category_filter_div">
                       <thead>
                         <tr>
                             <th>Sr. No #</th>
                             <th>Image</th>
                             <th>Name</th>
+                            <th>Category Name</th>
                             <th>SKU</th>
                             <th>Price</th>
                             <th>Color</th>
@@ -66,6 +106,7 @@
                                   <a class="fancybox" href="{{url('assets/upload_images/product')}}/{{$product->image}}"><img src="{{url('assets/upload_images/product')}}/thumb/{{$product->image}}"  style="width:50px;height: 50px;"> </a>
                                 </td>
                                 <td>{{$product->name}}</td>
+                                <td>{{$product->category_name}}</td>
                                 <td>{{$product->sku}}</td>
                                 <td>{{$product->price}}</td>
                                 <td><p style="background: {{$product->hex_code}};height: 20px;width: 20px;"></p> </td>
@@ -91,12 +132,14 @@
                                     {{$finalStr}}
                                 </td>
                                 <td><input id="status_{{$product->id}}" type="checkbox" <?php echo ($product->status == 1)?'Checked':'' ?> class="status" data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-style="ios"></td>
-                                <td>
+                                <td style="width: 180px;float: left;">
                                   {{-- <a href="{{route('edit.product',base64_encode($product->id) )}}" class="btn btn-outline-primary">Edit</a> --}}
-                                  <a href="{{route('edit.product',base64_encode($product->id) )}}"><i class="ti-pencil-alt" style="font-size: 2rem;"></i></a>
-                                  <a onclick="showSwal({{$product->id}})"><i class="ti-trash" style="font-size: 2rem;color: #007bfe;"></i></a>
-                                  <a href="{{route('view.product',base64_encode($product->id) )}}"><i class="ti-eye" style="font-size: 2rem;"></i></a>
-                                  <a href="{{route('print.product',base64_encode($product->id) )}}" target="_blank"><i class="ti-printer" style="font-size: 2rem;"></i></a>
+                                  <a href="{{route('edit.product',base64_encode($product->id) )}}" data-toggle="tooltip" title="Edit"><i class="ti-pencil-alt" style="font-size: 2rem;"></i></a>
+                                  <a onclick="showSwal({{$product->id}})" data-toggle="tooltip" title="Delete"><i class="ti-trash" style="font-size: 2rem;color: #007bfe;cursor: pointer;"></i></a>
+                                  <a href="{{route('view.product',base64_encode($product->id) )}}"><i class="ti-eye" style="font-size: 2rem;" data-toggle="tooltip" title="View"></i></a>
+                                  @if($product->barcode !== null )
+                                  <a href="{{route('print.product',base64_encode($product->id) )}}" target="_blank" data-toggle="tooltip" title="Print"><i class="ti-printer" style="font-size: 2rem;"></i></a>
+                                  @endif
                                 </td>
                             </tr>
                           @endforeach
@@ -179,5 +222,33 @@
               }
             })(jQuery);
           </script>
+ <style type="text/css">
+                  input[type="date"]::before {
+                  color: #999999;
+                  content: attr(placeholder);
+                }
+                input[type="date"] {
+                  color: #ffffff;
+                }
 
+                input[type="date"]:valid {
+                  color: #666666;
+                }
+                input[type="date"]:valid::before {
+                  content: "" !important;
+                }
+                input[type="date"] {
+                    width: 163px;
+                    padding: 0px 10px 0px 10px;
+                }
+                @media only screen and (max-width: 768px){
+                 .row.mobile-view-date-filter span {
+                      float: left;
+                      margin-top: 15px;
+                  }
+                  select#category_name_filter {
+                      margin-bottom: 10px;
+                  }
+              }
+                </style>
 @endsection

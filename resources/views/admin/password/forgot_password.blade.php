@@ -34,7 +34,8 @@
                 	<h2 class="text-black">Forgot Password </h2>
                 </div>
                 {{-- <h4 class="font-weight-light">Hello! let's get started</h4> --}}
-                <form class="pt-5" action="{{ route('check.forgotpassword') }}" method="POST">
+                <!-- form class="pt-5" action="{{ route('check.forgotpassword') }}" method="POST"> -->
+                <form class="forms-sample"  action="{{ route('check.forgotpassword') }}" method="POST" enctype="multipart/form-data"  runat="server" onsubmit="return get_action();">
                   {{ csrf_field() }}
                   @error('email')
                     <div class="form-group">
@@ -58,10 +59,31 @@
                     <input type="email" class="form-control" name="email" id="email" placeholder="Enter email " autofocus required>
                     <i class="mdi mdi-account" style="top: 35px;"></i>
                   </div>
-                  
+                    <script src='https://www.google.com/recaptcha/api.js'></script>
+                                <script type="text/javascript">
+                                    function get_action() {
+                                        var v = grecaptcha.getResponse();
+                                        console.log("Resp" + v);
+                                        if (v == '') {
+                                            document.getElementById('captcha').innerHTML = "You can't leave Captcha Code empty";
+                                            return false;
+                                        }
+                                        else {
+                                            document.getElementById('captcha').innerHTML = "Captcha completed";
+                                            return true;
+                                        }
+                                    }
+                                </script>
+
+                                
+                                <div>
+                                <div class="g-recaptcha" data-sitekey="6LdDm88ZAAAAAHm5sn99zTeRh2w0JT2NXZKWcXMZ"></div>
+                                </div>
+
+                                <div id="captcha"></div>
                   <div class="mt-5">
                     
-                    <button type="submit" class="btn btn-block btn-lg font-weight-medium" style="background-color: #1b5da9;border-color:#1b5da9;color: white">Reset Password</button>
+                    <button type="submit"  onclick="ValidateNo();" class="btn btn-block btn-lg font-weight-medium" style="background-color: #1b5da9;border-color:#1b5da9;color: white">Reset Password</button>
                   </div>
                   <div class="mt-3 text-center">
                     <a href="{{route('login')}}" class="auth-link text-black"> < Login</a>

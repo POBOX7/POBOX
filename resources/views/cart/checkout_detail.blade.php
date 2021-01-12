@@ -143,14 +143,42 @@ select {
       
       <div class="row">
     <div class="col-sm-4 col-md-7 col-xs-12" style="background: #ffffff none repeat scroll 0 0;border-radius: 3px;float: left;<!--padding: 30px;-->line-height: 35px;">
-        @if(!Auth::check())
+       <!--  @if(!Auth::check()) -->
           <div class=""> 
               <h1>Contact Information</h1>
+             <!--  onblur="checkmain(this.value)"  id="guest_email" --> 
               <label for="address1">Email<span class="redColor">*</span></label>
-              <input type="email" name="email" id="guest_email" value="" class="address_address form-control" required="required" >
-              <span class="text-danger" class="error"></span>     
+              <input type="email"  name="email" value="" class="address_address form-control" required="required" >
+              <span class="text-danger" class="error"></span>  
+
           </div>
+         <!--  <script type="text/javascript">
+          function checkmain(email)
+            {
+              $.ajax({
+              url : '{{ url("/checkGuestEmail") }}',
+              headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+              type: 'POST',
+              data: { email: email ,
+            },
+
+            }).done(function(response) {
+            if(response == "Email Already In Use.")
+            {
+              
+                $('#guest_email').siblings("span").text('This email has already been taken');
+                document.getElementById("confirm_order").disabled = true;
+
+            //alert("Email Already In Use.");
+            }else{
+              $('#guest_email').siblings("span").text('')
+              document.getElementById("confirm_order").disabled = false;
+            }
+            });
+            }
+        </script>
         @endif
+         <span id="myElem1"></span> -->
         <h1>Checkout Details </h1>
        <div class="panel-group" id="accordion">
         <div class="panel panel-default">
@@ -211,12 +239,12 @@ select {
 
                 <div class="col-md-12 col-xs-12 float-left">
                   <label for="address1">Address<span class="redColor">*</span></label>
-                  <input type="text" name="address_line_one" id="address_line_one" type="text" maxlength="30" class="address_address form-control" required="required" {{Auth::check()? "disabled":""}}>
+                  <input type="text" name="address_line_one" id="address_line_one" type="text" maxlength="200" class="address_address form-control" required="required" {{Auth::check()? "disabled":""}}>
                   <span class="text-danger" class="error"></span>                  
                 </div>
                 <div class="col-md-12 col-xs-12 float-left">
                   <label for="address1">Apartment suite,etc.(optional)<!-- <span class="redColor">*</span> --></label>
-                  <input type="text" name="address_line_two" id="address_line_two" type="text" maxlength="30" class="address_address form-control"  {{Auth::check()? "disabled":""}}>
+                  <input type="text" name="address_line_two" id="address_line_two" type="text" maxlength="200" class="address_address form-control"  {{Auth::check()? "disabled":""}}>
                   <span class="text-danger" class="error"></span>                   
                 </div>
 
@@ -315,12 +343,12 @@ select {
                       </div>
                        <div class="col-md-6 col-xs-12 float-left" style="display:none;" id="test5">
                           <label for="address1">Address<span class="redColor">*</span></label>
-                          <input type="text"  name="billing_address_line_one" id="billing_address_line_one" type="text" class="address_address form-control">
+                          <input type="text"  name="billing_address_line_one" id="billing_address_line_one" maxlength="200" type="text" class="address_address form-control">
                           <span class="text-danger" class="error"></span>      
                       </div>
                        <div class="col-md-6 col-xs-12 float-left" style="display:none;" id="test6">
                          <label for="address1">Apartment suite,etc.(optional)<!-- <span class="redColor">*</span> --></label>
-                            <input type="text" name="billing_address_line_two" id="billing_address_line_two" type="text" class="address_address form-control">
+                            <input type="text" maxlength="200" name="billing_address_line_two" id="billing_address_line_two" type="text" class="address_address form-control">
                          <span class="text-danger" class="error"></span>     
                       </div>
                      
@@ -358,6 +386,82 @@ select {
                     </div>
                 </div>
             </div>
+        </div>
+        <style type="text/css">
+          .payment-icon--visa {
+            background-image: url(https://cdn.shopify.com/shopifycloud/shopify/assets/payment_icons/visa-319d545c6fd255c9aad5eeaad21fd6f7f7b4fdbdb1a35ce83b89cca12a187f00.svg),none;
+            background-size: 100% 100%;
+        }
+        .payment-icon--master {
+            background-image: url(https://cdn.shopify.com/shopifycloud/shopify/assets/payment_icons/master-173035bc8124581983d4efa50cf8626e8553c2b311353fbf67485f9c1a2b88d1.svg),none;
+            background-size: 100% 100%;
+        }
+        .icon--offsite {
+          width: 163px;
+          height: 81px;
+          background-image: url(https://cdn.shopify.com/shopifycloud/shopify/assets/checkout/offsite-3fb5510f40334eb36b02464148c05acb98079f9f0f6ed8c1f629c0cf7a506ac8.png);
+          background-image: url(https://cdn.shopify.com/shopifycloud/shopify/assets/checkout/offsite-908d79d8d532f6af67d7cc99244ede733729c29379c349ee015fbcea71fd8274.svg), none;
+      }
+      .blank-slate {
+          padding-left: 4.5em;
+          padding-right: 4.5em;
+      }
+      .blank-slate {
+          padding: 1.1428571429em;
+          text-align: center;
+      }
+      .blank-slate .icon {
+          background-position: center center;
+          background-repeat: no-repeat;
+          display: inline-block;
+      }
+      .blank-slate {
+          padding-left: 4.5em;
+          padding-right: 4.5em;
+      }
+      .blank-slate p {
+          padding: 1.1428571429em;
+          text-align: center;
+      }
+      .payment-icon {
+          width: 50px;
+          height: 33px;
+          margin-right: 10px;
+        }
+        </style>
+        <div class="panel panel-default ">
+            </a>
+              <div class="panel-heading" style="border: 1px solid #ddd!important;border-top: 0px !important;float: left;width: 100%;">
+                  <h4 class="panel-title pull-left">
+                      3. Payment Details
+                  </h4>
+
+                    
+                      <span data-brand-icons-for-gateway="39491797040" class="pull-right">
+                          <span class="payment-icon payment-icon--visa" data-payment-icon="visa" style="padding-right: 15px;background-repeat: repeat-y;float: left">
+                             <span class="visually-hidden" style="visibility: hidden;">
+                              Visa, 
+                              </span>
+                          </span>  
+                         <span class="payment-icon payment-icon--master" data-payment-icon="master" style="background-repeat: repeat-y;float: left">
+                               <span class="visually-hidden" style="visibility: hidden;">
+                          Mcard, 
+                              </span>
+                        </span>              
+                      </span>
+                  
+              </div>
+               <div id="collapseTwo" class="panel-collapse collapse in show" style="width: 100%">
+                <div class="panel-body" style="border:1px solid #ddd;border-bottom: 1px solid #ddd!important">
+                  <span style="padding-left: 15px;">Razorpay (Cards, UPI, NetBanking, Wallets)</span>
+                      <div class="radio-wrapper content-box__row content-box__row--secondary" data-subfields-for-gateway="39491797040" id="payment-gateway-subfields-39491797040">
+                          <div class="blank-slate">
+                            <i class="blank-slate__icon icon icon--offsite"></i>
+                            <p class="shown-if-js">After clicking “Confirm order”, you will be redirected to Razorpay (Cards, UPI, NetBanking, Wallets) to complete your purchase securely.</p>
+                          </div>
+                      </div>
+                </div>
+              </div>
         </div>
     </div>
   </div>
@@ -511,15 +615,16 @@ select {
                                 @else
                           
 
-                                  <script type="text/javascript">
+                                  <!-- <script type="text/javascript">
                                   $(document).ready(function(){
                                   $("p").click(function(){
                                     alert("Please login to apply coupon");
                                   });
                                 });
-                                </script>
+                                </script> -->
 
-                                        <a  href="javascript:void(0);" class="button btn btn-sm btn-primary" style="float: left;width: 32%;margin-left: 5px;padding: 13px;color: #ffff !important;" id="login" data-toggle="modal" data-dismiss="modal"  data-target="#login">Apply coupon</a>
+                                      <!--   <a  href="javascript:void(0);" class="button btn btn-sm btn-primary" style="float: left;width: 32%;margin-left: 5px;padding: 13px;color: #ffff !important;" id="login" data-toggle="modal" data-dismiss="modal"  data-target="#login">bb Apply coupon</a> -->
+                                       <a  href="javascript:void(0);" class="couponButton button btn btn-sm btn-primary" style="float: left;width: 32%;margin-left: 5px;padding: 13px;">Apply coupon</a>
                     
                                 @endif
 
@@ -531,7 +636,7 @@ select {
                             <div class="row">
                             <div class="col-lg-12">
                                 <div class="checkout-steps-action">
-                                    <input type="submit" class="btn btn-primary float-right" value="Confirm Order" />
+                                    <input type="submit" id="confirm_order" class="btn btn-primary float-right" value="Confirm Order" />
                                     
                                 </div><!-- End .checkout-steps-action -->
                             </div><!-- End .col-lg-8 -->

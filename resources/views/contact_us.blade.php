@@ -21,7 +21,8 @@ setTimeout(function() { $("#myElem").hide(); }, 12000);
                             <h2 class="light-title">Write <strong>Us</strong></h2>
 
                             <!-- {!! Form::open(['route' => 'contactUsStore' , 'enctype' => 'multipart/form-data']) !!} -->
-                            <form class="forms-sample"  action="{{ route('contactUsStore') }}" method="POST" enctype="multipart/form-data"  runat="server" onsubmit="return get_action();">
+                            <form class="forms-sample"  action="{{ route('contactUsStore') }}" method="POST" enctype="multipart/form-data" >
+                              <!-- runat="server" onsubmit="return get_action();" -->
                                        {{ csrf_field() }}
                                 <div class="form-group required-field">
                                     <label for="contact-name">Name</label>
@@ -33,20 +34,49 @@ setTimeout(function() { $("#myElem").hide(); }, 12000);
                                     <input type="email" pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}" class="form-control" id="contact-email" name="email" required>
                                 </div><!-- End .form-group -->
 
-                                <div class="form-group">
+                                <div class="form-group required-field">
                                     <label for="contact-phone">Phone Number</label>
-                                    <input type="tel" class="form-control" id="contact-phone" name="phone_number" maxlength="14"  required>
+                                    <input type="tel" onkeypress="return isNumber(event)" class="form-control" id="contact-phone" name="phone_number" maxlength="14"  required>
                                 </div><!-- End .form-group -->
                                <!--  onKeyPress = "return isNumberKey(event);" -->
+                                 <script type="text/javascript">
+                                     function isNumber(evt) {
+  evt = (evt) ? evt : window.event;
+  var charCode = (evt.which) ? evt.which : evt.keyCode;
+  if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+    //alert("Please enter only Numbers.");
+    return false;
+  }
 
+  return true;
+}
+
+function ValidateNo() {
+  var phoneNo = document.getElementById('txtPhoneNo');
+
+  if (phoneNo.value == "" || phoneNo.value == null) {
+    //alert("Please enter your Mobile No.");
+    return false;
+  }
+  if (phoneNo.value.length < 10 || phoneNo.value.length > 10) {
+    alert("Mobile No. is not valid, Please Enter 10 Digit Mobile No.");
+    return false;
+  }
+
+  //alert("Success ");
+  return true;
+}
+                                 </script>
                                 <div class="form-group required-field">
                                     <label for="contact-message">What’s on your mind?</label>
                                     <textarea cols="30" rows="1" id="contact-message" class="form-control" name="contact_message" required></textarea>
                                 </div><!-- End .form-group -->
-                               <script src='https://www.google.com/recaptcha/api.js'></script>
+                              
+                                <script src='https://www.google.com/recaptcha/api.js'></script>
                                 <script type="text/javascript">
                                     function get_action() {
                                         var v = grecaptcha.getResponse();
+                                       
                                         console.log("Resp" + v);
                                         if (v == '') {
                                             document.getElementById('captcha').innerHTML = "You can't leave Captcha Code empty";
@@ -60,13 +90,18 @@ setTimeout(function() { $("#myElem").hide(); }, 12000);
                                 </script>
 
                                 
-                                <div>
+                              <div>
                                 <div class="g-recaptcha" data-sitekey="6LdDm88ZAAAAAHm5sn99zTeRh2w0JT2NXZKWcXMZ"></div>
                                 </div>
 
-                                <div id="captcha"></div>
+                               <div id="captcha"></div>
+                                <div style="margin-top: 10px;">
+                                  <input type="checkbox" name="is_checkbox" required="true">
+                                  <span>By creating an account, I consent <a href="{{route('PrivacyPolicy')}}" target="_blank" style="color: #1d70ba;text-decoration: none;font-weight: 500;"> Privacy
+Policy</a>  and <a href="{{route('termAndCondition')}}" target="_blank" style="color: #1d70ba;text-decoration: none;font-weight: 500;">Terms and Conditions</a>  of use of www.poboxfashion.com</span> 
+                                </div>
                                 <div class="form-footer">
-                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                    <button type="submit" onclick="ValidateNo();" class="btn btn-primary">Submit</button>
                                 </div><!-- End .form-footer -->
                             </form>
                         </div><!-- End .col-md-8 -->
@@ -82,12 +117,12 @@ setTimeout(function() { $("#myElem").hide(); }, 12000);
                                 </div> -->
                                 <div>
                                     <i class="icon-mobile"></i>
-                                    <p><a href="">{{$ContactUsDetail['phone_number']}}</a></p>
+                                    <p><a href="tel:+91{{$ContactUsDetail->phone_number}}">{{$ContactUsDetail['phone_number']}}</a></p>
                                    
                                 </div>
                                 <div>
                                     <i class="icon-mail-alt"></i>
-                                    <p><a href="">{{$ContactUsDetail['email']}}</a></p>
+                                    <p><a href="mailto:{{$ContactUsDetail->email}}">{{$ContactUsDetail['email']}}</a></p>
                                 </div>
                                  <div>
                                     <i class="fa fa-address-card-o"></i>

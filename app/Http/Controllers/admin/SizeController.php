@@ -27,7 +27,7 @@ class SizeController extends Controller
      */
     public function index()
     {
-        $sizes = Sizes::select('id','name','status')->where('is_deleted','0')->orderByDesc('id')->get();
+        $sizes = Sizes::select('id','name','status')->where('is_deleted','0')->get();
         return view('admin.size.size_index')->with('sizes', $sizes); 
     }
 
@@ -77,17 +77,29 @@ class SizeController extends Controller
 
     public function updateSize(Request $request ,$id)
     {
-        $request->validate([
+        /*$request->validate([
                 'name' => 'required|max:3|unique:sizes,name,'.$id  
-        ]);
+        ]);*/
 
-        $update_data = array(
-                                'name' => $request->name,
-                                'updated_at'    => date('Y-m-d H:i:s')
+        $sizeDetail = Sizes::select('id','name')->where('name',$request->name)->where('is_deleted',1)->get()->first();
+        //dd($sizeDetail);
+        if(!empty($sizeDetail)){
+            $update_data = array(
+                                'is_deleted' => 0
                             );
 
-        $update = Sizes::where('id',$id)->update($update_data);
+        $update = Sizes::where('id',$sizeDetail->id)->update($update_data);
         return redirect()->route('size')->with('success', 'Size Details updated successfully.');
+        }else{
+
+            $update_data = array(
+                                    'name' => $request->name,
+                                    'updated_at'    => date('Y-m-d H:i:s')
+                                );
+
+            $update = Sizes::where('id',$id)->update($update_data);
+            return redirect()->route('size')->with('success', 'Size Details updated successfully.');
+        }
     }
 
     public function sizeDestroy($id)

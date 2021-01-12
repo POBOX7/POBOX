@@ -30,6 +30,10 @@ class RegisterController extends Controller
     }
     public function registerStore(Request $request)
     {
+       if (is_null($request['g-recaptcha-response'])) {
+       return redirect()->route('contactUs')->with('status','You can not leave Captcha Code empty');
+    }
+
        $checkEmail = User::where('email',$request['email'])->first();
        
         /* $request->validate([
@@ -266,7 +270,9 @@ class RegisterController extends Controller
        return redirect()->route('home_1')->with('status','Thank you for subscribe. Please check your email');
      }
      public function forgetPasswordEmail(Request $request){
-//dd($request);
+       if (is_null($request['g-recaptcha-response'])) {
+             return redirect()->route('contactUs')->with('status','You can not leave Captcha Code empty');
+          }
              $check_user = User::where('email',$request['email'])->first();
              if(isset($check_user)){
                 Mail::send(['html'=>'email.forgotpassword_mail'],['check_user'=>$check_user],function($message) use ($check_user){

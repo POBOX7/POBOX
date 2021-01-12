@@ -246,7 +246,7 @@
 
                 <label class="col-sm-1 col-form-label">HSN No</label>
                 <div class="col-sm-2">
-                  <input type="text" class="form-control" id="hsn_no" name="hsn_no" placeholder="HSN No" required>
+                  <input type="text" class="form-control" id="hsn_no" name="hsn_no" placeholder="HSN No" required maxlength="100">
                   @if ($errors->has('hsn_no'))
                     <span style="color: red">{{ $errors->first('hsn_no') }}</span>
                   @endif

@@ -11,11 +11,15 @@
                         <span class="contact-info-label"><i class="fa fa-clock"></i></span>11:00 A.M. to 07:00 P.M.
                     </li> -->
                     <li>
-                        <span class="contact-info-label"><i class="fa fa-mobile" aria-hidden="true"></i></span><a href="">{{$ContactUsDetails->phone_number}}</a>
+                        <span class="contact-info-label"><i class="fa fa-mobile" aria-hidden="true"></i></span><a href="tel:+91{{$ContactUsDetails->phone_number}}">{{$ContactUsDetails->phone_number}}</a>
                     </li>
                     <li>
-                        <span class="contact-info-label"><i class="fa fa-envelope" aria-hidden="true"></i></span><a href="">{{$ContactUsDetails->email}}</a>
+                        <span class="contact-info-label"><i class="fa fa-envelope" aria-hidden="true"></i></span><a href="mailto:{{$ContactUsDetails->email}}">{{$ContactUsDetails->email}}</a>
                     </li>
+                    <li><span class="contact-info-label"><i class="fa fa-map-marker" aria-hidden="true" style="background: transparent;color: black;width: 22px;font-size: 24px;margin-right: 2px;margin-bottom: 85px;margin-top: -9px;"></i></span>
+                        <a href="https://www.google.com/maps/place/Sumel+Business+Park+2/@23.0126619,72.6020635,15z/data=!4m5!3m4!1s0x0:0xe840717a1b442845!8m2!3d23.0126619!4d72.6020635">{{$ContactUsDetails->address}} </a>
+                    </li>
+                       <li><b>GST :</b>  24AAECV5166F1ZC</li>
 
                 </ul>
                 <div class="social-icons">
@@ -23,6 +27,7 @@
                             <a href="{{$ContactUsDetails['twitter_link']}}" class="social-icon" target="_blank"><i class="fab fa-twitter"></i></a>
                             <a href="{{$ContactUsDetails['linkedin_link']}}" class="social-icon" target="_blank"><i class="fab fa-linkedin-in"></i></a>
                         </div>
+
             </div><!-- End .widget -->
         </div><!-- End .col-lg-3 -->
 
@@ -57,14 +62,14 @@
                     <div class="">
                         <h4 class="widget-title">Get in touch</h4>
                         <p>Get all the latest information on Events,Sales and Offers. Sign up for newsletter today</p>
-                        {!! Form::open(['route' => 'customerSubcribe.store' , 'enctype' => 'multipart/form-data']) !!}
+                        <!-- {!! Form::open(['route' => 'customerSubcribe.store' , 'enctype' => 'multipart/form-data']) !!}
                         <p>
                             Enter your E-mail Address
                           </p>
                             <input type="email" name="email" class="form-control" placeholder="Email address" required="">
 
                             <input type="submit" class="btn" value="Subscribe">
-                         {!! Form::close() !!}
+                         {!! Form::close() !!} -->
                     </div><!-- End .col-lg-6 -->
                 </div><!-- End .row -->
             </div><!-- End .widget -->
@@ -336,6 +341,11 @@ $("body").addClass("" + userversion + "");
     });
 </script>
 <style type="text/css">
+.contact-info li {
+    position: relative;
+    line-height: 1.4;
+    margin-bottom: 10px;
+}
     ul.links {
     list-style: none!important;
 }

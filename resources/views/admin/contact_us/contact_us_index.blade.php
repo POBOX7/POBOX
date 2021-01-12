@@ -24,6 +24,7 @@
                             <th>Email</th>
                             <th>Phone</th>
                             <th>Message</th>
+                            <th>Created date</th>
                             <th>Actions</th>
                         </tr>
                       </thead>
@@ -36,9 +37,10 @@
                                 <td>{{$contactUs->email}}</td>
                                 <td>{{$contactUs->phone_number}}</td>
                                 <td>{{$contactUs->contact_message}}</td>
+                                <td>{{date('d-m-Y', strtotime($contactUs->created_at)) }}</td>
                                 <td>
                                  
-                                  <a onclick="showSwal({{$contactUs->id}})"><i class="ti-trash" style="font-size: 2rem;color: #007bfe;"></i></a>
+                                  <a onclick="showSwal({{$contactUs->id}})" data-toggle="tooltip" title="Delete"><i class="ti-trash" style="font-size: 2rem;color: #007bfe;cursor: pointer;"></i></a>
                                 </td>
                             </tr>
                           @endforeach

@@ -23,6 +23,8 @@ Route::get('home', 'admin\AdminController@index')->name('admin');
 Route::get('home', 'admin\HomeController@index')->name('home');
 Route::get('admin', 'admin\AdminController@index')->name('admin');
 
+Route::get('payment-status', 'admin\AdminController@paymentStatus')->name('paymentStatus');
+Route::post('payment-status-change', 'admin\AdminController@paymentStatusChange')->name('paymentStatusChange');
 
 Route::get('/admin/404','admin\HomeController@adminErrors')->name('404_page');
 
@@ -33,7 +35,7 @@ Route::any('revenue-year', 'admin\HomeController@revenueYearAjax')->name('revenu
 
 	
     Route::post('/login', 'Auth\LoginController@login')->name('admin.login.submit');	
-    Route::post('logout', '\App\Http\Controllers\Auth\LoginController@logout')->name('admin.logout');
+    Route::any('logout', '\App\Http\Controllers\Auth\LoginController@logout')->name('admin.logout');
 	Route::get('/login', 'Auth\AdminLoginController@showLoginForm')->name('login');
 	
 
@@ -135,7 +137,9 @@ Route::any('revenue-year', 'admin\HomeController@revenueYearAjax')->name('revenu
 	Route::post('color/{id}','admin\ColorController@updateColor')->name('update.color');
 	Route::get('color-destroy/{id}', 'admin\ColorController@colorDestroy')->name('destroy.color');
 	Route::post('color-status', 'admin\ColorController@colorStatus')->name('status.color');
-
+    //product all
+    
+    Route::any('categoryFilter', 'admin\ProductController@categoryFilter')->name('categoryFilter');
 	Route::get('product', 'admin\ProductController@index')->name('product');
 	Route::get('product/add','admin\ProductController@addProduct')->name('add.product');
 	Route::post('product/store','admin\ProductController@storeProduct')->name('store.product');
@@ -150,6 +154,44 @@ Route::any('revenue-year', 'admin\HomeController@revenueYearAjax')->name('revenu
 
 	Route::get('allProduct', 'admin\ProductController@allProduct')->name('allproduct');
 	Route::get('allSize', 'admin\ProductController@allSize')->name('allsize');
+
+   //Trending Products
+	Route::get('trending-product', 'admin\TrendingProductController@trendingProductIndex')->name('trendingProductIndex');
+	Route::get('trending-product/add','admin\TrendingProductController@addProductTrending')->name('add.product.trending');
+	Route::post('trending-product/store','admin\TrendingProductController@storeProductTrending')->name('store.product.trending');
+	Route::get('trending-product/edit/{id}','admin\TrendingProductController@editProductTrending')->name('edit.product.trending');
+	Route::post('trending-product/{id}','admin\TrendingProductController@updateProductTrending')->name('update.product.trending');
+	Route::get('trending-product-destroy/{id}', 'admin\TrendingProductController@productDestroyTrending')->name('destroy.product.trending');
+	Route::post('trending-product-status', 'admin\TrendingProductController@productStatusTrending')->name('status.product.trending');
+	Route::get('trending-remove-product-image/{id}', 'admin\TrendingProductController@productImageDestroyTrending')->name('removeproductimage.trending');
+	Route::get('trending-product/view/{id}', 'admin\TrendingProductController@viewProductTrending')->name('view.product.trending');
+	Route::get('trending-product/print/{id}', 'admin\TrendingProductController@printProductTrending')->name('print.product.trending');
+	Route::any('trending-product/export', 'admin\TrendingProductController@exportTrending')->name('export.product.trending');
+
+	Route::get('trending-allProduct', 'admin\TrendingProductController@allProductTrending')->name('allproduct.trending');
+	Route::get('trending-allSize', 'admin\TrendingProductController@allSizeTrending')->name('allsize.trending');
+
+
+	//New Arrivals Products
+	Route::get('new-arrivals-product', 'admin\NewArrivalsProductController@newArrivalsProductIndex')->name('newArrivalsProductIndex');
+	Route::get('new-arrivals-product/add','admin\NewArrivalsProductController@addProductNewArrivals')->name('add.product.newarrivals');
+	Route::post('new-arrivals-product/store','admin\NewArrivalsProductController@storeProductNewArrivals')->name('store.product.newarrivals');
+	Route::get('new-arrivals-product/edit/{id}','admin\NewArrivalsProductController@editProductNewArrivals')->name('edit.product.newarrivals');
+	Route::post('new-arrivals-product/{id}','admin\NewArrivalsProductController@updateProductNewArrivals')->name('update.product.newarrivals');
+	Route::get('new-arrivals-product-destroy/{id}', 'admin\NewArrivalsProductController@productDestroyNewArrivals')->name('destroy.product.newarrivals');
+	Route::post('new-arrivals-product-status', 'admin\NewArrivalsProductController@productStatusNewArrivals')->name('status.product.newarrivals');
+	Route::get('new-arrivals-remove-product-image/{id}', 'admin\NewArrivalsProductController@productImageDestroyNewArrivals')->name('removeproductimage.newarrivals');
+	Route::get('new-arrivals-product/view/{id}', 'admin\NewArrivalsProductController@viewProductNewArrivals')->name('view.product.newarrivals');
+	Route::get('new-arrivals-product/print/{id}', 'admin\NewArrivalsProductController@printProductNewArrivals')->name('print.product.newarrivals');
+	Route::any('new-arrivals-product/export', 'admin\NewArrivalsProductController@exportNewArrivals')->name('export.product.newarrivals');
+
+	Route::get('new-arrivals-allProduct', 'admin\NewArrivalsProductController@allProductNewArrivals')->name('allproduct.newarrivals');
+	Route::get('new-arrivals-allSize', 'admin\NewArrivalsProductController@allSizeNewArrivals')->name('allsize.newarrivals');
+
+
+
+
+
 
 	Route::get('customer', 'admin\CustomerController@index')->name('customer');
 	Route::post('customer-status', 'admin\CustomerController@customerStatus')->name('status.customer');
@@ -249,6 +291,7 @@ Route::get('/','HomeController@index')->name('home_1');
 
 Route::post('/register', 'RegisterController@registerStore')->name('register.store');
 Route::post('/checkemail', 'RegisterController@checkemail')->name('checkemail');
+Route::post('/checkGuestEmail', 'NewCartController@checkGuestEmail')->name('checkGuestEmail');
 Route::post('/login', 'LoginController@userLogin')->name('userLogin');
 Route::any('/forgetPasswordEmail','RegisterController@forgetPasswordEmail')->name('forgetPasswordEmail');
 Route::get('/forgotpassword/{id}','RegisterController@forgotpassword')->name('forgot.password');

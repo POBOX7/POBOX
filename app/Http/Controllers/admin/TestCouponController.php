@@ -83,7 +83,7 @@ class TestCouponController extends Controller
       $coupon = Coupon::where('id',$id)->first();
 
       //view order
-      $orderCouponData = Order::where('coupon_id',$id)->orderBy('id','DESC')->get();
+      $orderCouponData = Order::where('coupon_id',$id)->where('is_deleted','0')->orderBy('id','DESC')->get();
      
 
       return view('admin.coupon.view_coupon',compact('coupon','id','orderCouponData'));

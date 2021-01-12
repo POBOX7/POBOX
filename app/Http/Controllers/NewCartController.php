@@ -1,6 +1,5 @@
 <?php
 namespace App\Http\Controllers;
-
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -19,15 +18,29 @@ use App\Coupon;
 use App\UserCoupons;
 use App\Country;
 use App\State;
+use App\PaymentMode;
 use Mail;
 use PDF;
 use Session;
+use Razorpay\Api\Api;
 class NewCartController extends Controller {
 
+  public function checkGuestEmail(Request $req)
+    {
+        $email = $req->email;
+        if (!is_null($req->email)) {
+          $emailcheck = User::where('email',$email)->count();
 
+          if($emailcheck > 0)
+          {
+          echo "Email Already In Use.";
+          }
+        }
+        
+    }
   public function cartPage() 
   {
-
+    
      session()->forget('coupon_discount_data');
      session()->forget('coupon_code_data');
      session()->forget('coupon_id_data');
@@ -632,6 +645,7 @@ public function cartPageQtyUpdate(Request $request)
 	
 	public function checkoutPlaceOrder(Request $request)
 	{
+
 	    $coupon_discount_datas = Session::get('coupon_discount_data');
 	    $coupon_id_datas = Session::get('coupon_id_data');
 	    $coupon_code_datas = Session::get('coupon_code_data');
@@ -676,36 +690,9 @@ public function cartPageQtyUpdate(Request $request)
 	                                  'user_id' => $userData->id,
 	                                  
 	                                ]); 
-            /*if (!is_null($request->state)) {  
-              $state = $request->state;
-               
-            }
-            if (!is_null($request->state_textbox)) {
-               $state = $request->state_textbox;
-            }
-            $arry_address = array(
-              'user_id'     =>$userData->id,
-              'name'        =>$request['first_name'],
-              'last_name'   =>$request['last_name'],
-              'company_name'=>$request['company_name'],
-              'email'       =>$request['guest_email'],
-              'phone_number'=>$request['phone_number'],
-              'pincode'     =>$request['pincode'],
-              'address_line_one'  =>$request['address_line_one'],
-              'address_line_two'  =>$request['address_line_two'],
-             // 'address_line_three'=>$request['address_line_three'],
-              'city'        =>$request['city'],
-              'country'     =>$request['country'],
-              'isGuest'     =>1,
-              'state'       =>$state,
-              'address_type'=>3,
-              'is_permanent'=>0);
-               
-            $newaddress = Useraddresses::create($arry_address);*/
-
+            
             $productDetail =  DB::table('cart')
                             ->join('products', 'products.id', '=', 'cart.product_id')
-                            // ->join('product_size', 'product_size.size_id', '=', 'cart.size')
                             ->join('sizes', 'cart.size', '=', 'sizes.id')
                             ->join('colors', 'colors.id', '=', 'products.color_id')
                             ->select('products.id as product_id','products.name','products.image','cart.id AS cart_id','cart.size as size_id','cart.qty','sizes.name as size_name','products.price','products.mrp','hex_code','discount','gst','gstper','hsn_no')
@@ -720,6 +707,19 @@ public function cartPageQtyUpdate(Request $request)
 		    $you_save_amounts = 0;
 		    $bag_totals = $request->bag_total;
 		    $afterDiscountTotalPrice = $bag_totals + $gst_amount_totals;
+        
+        //Captured add in razor pay
+        $finalAmtRound = $afterDiscountTotalPrice;
+        $Finalcapturedamt= round($finalAmtRound* 100);
+        //dd($Finalcapturedamt);
+        $api_key = env('RAZORPAY_KEY');
+        $api_secret = env('RAZORPAY_SECRET');
+        $api = new Api($api_key, $api_secret);
+        $payment = $api->payment->fetch($request['paymentid']);
+        $payment->capture(array(
+          'amount' => $Finalcapturedamt,
+           'currency' => 'INR'
+         ));
 
 			$order = Order::create([
 								   'user_id'         =>Auth::check()?auth()->user()->id:$userData->id,
@@ -746,8 +746,14 @@ public function cartPageQtyUpdate(Request $request)
 	                                ->update([
 	                                  'usage' => $couponDetail->usage - 1,
 	                                  'total_used' => $couponDetail->total_used + 1,
-	                                ]);    
-	          	$user_id = Auth::user()->id;   
+	                                ]);  
+                    if (is_null(Auth::user())) {
+                        $user_id = Auth::check()?auth()->user()->id:$userData->id;
+                      }  
+                      if (!is_null(Auth::user())) {
+                          $user_id = Auth::user()->id;
+                      }  
+	          	$user_id = $user_id;   
 	          	$addUserCoupons = new UserCoupons;
 	          	$addUserCoupons->order_id = $order->id;
 	          	$addUserCoupons->user_id = $user_id;
@@ -820,12 +826,22 @@ public function cartPageQtyUpdate(Request $request)
 					                            'hsn_no'		=>$value->hsn_no,
 		                  						'discount'      =>$value->discount,	
 		                  				]);
-		            $product_size_data = ProductSize::where('product_id',$value->product_id)
-		                                        ->where('size_id',$value->size_id)
-		                                        ->first();
-		            $old_stock = $product_size_data->qty;
+		            //$product_size_data = ProductSize::where('product_id',$value->product_id)
+		                                        //->where('size_id',$value->size_id)
+		                                        //->first();
+            $product_size_data = ProductSize::where('product_id',$value->product_id)
+                                            ->where('size_id',$value->size_id)
+                                            ->where('qty','!=',0)
+                                            ->first();
+              if (is_null($product_size_data)) {
+                 $updated_stock = 0;
+              }
+              if (!is_null($product_size_data)) {
+                  $old_stock = $product_size_data->qty;
+                  $updated_stock = $old_stock - $value->qty;
+              }
 
-		            $updated_stock = $old_stock - $value->qty;
+		           
 
 		            ProductSize::where('product_id',$value->product_id)
 		                     ->where('size_id',$value->size_id)
@@ -851,6 +867,7 @@ public function cartPageQtyUpdate(Request $request)
             $orderNumberGet = Order::where('id',$order->id)->first();
 
             $order_detail_product_id = OrderDetail::where('order_id',$orderNumberGet->id)->pluck('product_id');
+            $user_id = Auth::check()?auth()->user()->id:$userData->id;
             $user_data = User::where('id',$user_id)->first();
             $apiKey = urlencode('8IQV4ZXumYQ-tOLYwsFk9H3PUHJW1BEaLI6tFMIjqM');
                  // Message details
@@ -902,24 +919,23 @@ public function cartPageQtyUpdate(Request $request)
         	$productDetail = OrderDetail::where('order_id',$orderNumberGet->id)->get();
         	//Customer send mail
         	$pdf = PDF::loadView('email.order_confirm_mail', ['oderData' => $oderData , 'productDetail' => $productDetail]);
-
 	       Mail::send(['html'=>'email.order_confirm_mail'],['oderData' => $oderData , 'productDetail' => $productDetail] ,function($message) use ($user_data,$pdf){
 	                      $message->to($user_data['email'])->subject('Your order has been confirmed-po box')
 	                      ->attachData($pdf->output(), "invoice.pdf");
 	                      $message->from('info@poboxfashion.com','pobox');
-
 	                  });
 
 	        //Admin send mail
 	        $adminData = User::where('role_id','1')->where('status',1)->where('is_deleted',0)->get();
 	        $pdf = PDF::loadView('email.admin_new_order_received_mail', ['oderData' => $oderData , 'productDetail' => $productDetail]);
-
 	        Mail::send(['html'=>'email.admin_new_order_received_mail'],['oderData' => $oderData , 'productDetail' => $productDetail] ,function($message) use ($pdf){
 	              $message->to('info@poboxfashion.com')->subject('New order received')
 	              ->attachData($pdf->output(), "invoice.pdf");
 	              $message->from('info@poboxfashion.com','pobox');
 
 	          });
+        
+
       		return response()->json(array('success' => true, 'order_id'=>$order->id));
 			  //return redirect()->route('orderSummary',$order->id);
 			}
@@ -968,7 +984,8 @@ public function cartPageQtyUpdate(Request $request)
     $coupon_discount_per = Session::get('coupon_discount_per');
     $addresses = Useraddresses::where('id',$address_id)->first();
 
-    return view('order.order_confirm',compact('productDetail','addresses','coupon_discount_per'));
+    $paymentMode = PaymentMode::first();
+    return view('order.order_confirm',compact('productDetail','addresses','coupon_discount_per','paymentMode'));
   }
 
   public function checkCoupon(Request $request){
@@ -978,7 +995,31 @@ public function cartPageQtyUpdate(Request $request)
     ->whereDate('valid_to', '>=', $now)
     ->first();
 
-    $userCouponsUseOneTime = UserCoupons::where('coupon_id',$coupon_id['id'])->where('user_id',auth()->user()['id'])->where('usage',1)->first();
+    if (is_null($coupon_id)) {
+
+        $userCouponsUseOneTime  =  0;
+    }
+    if ($coupon_id != null) {
+      
+        $userCouponsUseOneTime  =  0;
+        if (is_null(Auth::user())) {
+         // dd("here");
+          //$userCouponsUseOneTime = UserCoupons::where('coupon_id',$coupon_id['id'])->where('usage',1)->first();
+          $userCouponsUseOneTime  =  0;
+        }
+         if (!is_null(Auth::user())) {
+           $userCouponsUseOneTimess = UserCoupons::where('coupon_id',$coupon_id['id'])->where('user_id',auth()->user()['id'])->where('usage',1)->first();
+           if (!is_null($userCouponsUseOneTimess)) {
+              $userCouponsUseOneTime  =  1;
+           }
+         }
+        
+    }
+  
+                           // dd(Auth::user());
+  
+   //  $userCouponsUseOneTimess = UserCoupons::where('coupon_id',$coupon_id['id'])->where('user_id',auth()->user()['id'])->where('usage',1)->first();
+    
 //dd($userCouponsUseOneTime);
     if (is_null($userCouponsUseOneTime)) {
 
@@ -988,18 +1029,29 @@ public function cartPageQtyUpdate(Request $request)
       
         $userCouponsUseOneTime  =  1;
     }
-    
+    //dd($userCouponsUseOneTime);
 
  //Check usage
   $userUsageCoupon = Coupon::where('code', $request->coupon)->where('status',1)->where('is_deleted',0)->whereDate('valid_form', '<=', $now)
     ->whereDate('valid_to', '>=', $now)
     ->first();
-   
-     if ($userUsageCoupon['usage'] == 0) {
+
+   if (is_null($userUsageCoupon)) {
+         $userUsageOrNotCoupon   = 0;
+  }
+  if (!is_null($userUsageCoupon)) {
+    $userUsageOrNotCoupon   = 1;
+    if ($userUsageCoupon['usage'] == 0) {
          $userUsageOrNotCoupon   = 0;
   }else{
      $userUsageOrNotCoupon   = 1;
   }
+  }
+
+
+
+
+     
 
 //Expired date
   if ($userUsageOrNotCoupon == 0) {
@@ -1038,6 +1090,34 @@ public function cartPageQtyUpdate(Request $request)
     ->whereDate('valid_to', '>=', $now)
     ->first();
 
+
+    if (is_null($couponData)) {
+       $coupon_discount_db =0;
+      $coupon_code  = 0;
+      $coupon_id = 0;
+      $total_price = 0;
+      $main_price = 0;
+      $tax_percentage = 0;
+      $original_price_with_tax =  0;
+      $discount =  0;
+      $afterdiscount = 0;
+
+      $message = "Coupon Invalid";
+    $type = "success";
+    $data = array(
+      'message' => $message,
+      'type' => $type,
+      'discount' => $discount,
+      'afterdiscount' => $afterdiscount,
+      'coupon_code' => $coupon_code,
+      'coupon_id' => $coupon_id,
+      'expired_coupon' =>$expired_coupon,
+      'couponInvalid' =>$couponInvalid,
+      'userCouponsUseOneTime' =>$userCouponsUseOneTime
+    );  
+    }
+    if (!is_null($couponData)) {
+
     $coupon_discount_db =$couponData['total'];
     $coupon_code  = $couponData['code'];
     $coupon_id = $couponData['id'];
@@ -1059,11 +1139,11 @@ public function cartPageQtyUpdate(Request $request)
         }
       }
 
+
     $afterdiscount =round($total_price - $discount);
 
     $message = "Coupon Successfully applied";
     $type = "success";
-
     $data = array(
       'message' => $message,
       'type' => $type,
@@ -1076,6 +1156,10 @@ public function cartPageQtyUpdate(Request $request)
       'userCouponsUseOneTime' =>$userCouponsUseOneTime
     );        
 
+
+  }
+
+    
    // Session::put('coupon_data', $data);
     
    

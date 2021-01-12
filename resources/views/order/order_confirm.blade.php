@@ -64,6 +64,9 @@ div#order {
     vertical-align: top;
     padding-top: 31px;
 }
+.delivery-to p {
+    line-height: 1;
+}
 </style>
 
 
@@ -192,7 +195,7 @@ div#order {
                 </span><br>
               <input type="hidden" name="gst_amount_total" id="gst_amount_total" value="{{$total_tax}}">
                <label style="color: #151515!important;font-weight: 600!important;">Order Total</label> <span style="color: #151515;font-weight: 600!important;">₹ {{$bag_amount + $total_tax}}</span>
-               <input type="hidden" id="order_total" value="{{$bag_amount + $total_tax}}">
+               <input type="hidden" id="order_total" value="{{round($bag_amount + $total_tax, 2)}}">
                
             </div>
             @if($coupon_discount_per > 0)
@@ -204,8 +207,8 @@ div#order {
               <p style="color: #000;">
                 {{$addresses->name}} {{$addresses->last_name}} 
               </p>
-              <p>{{$addresses->address_line_one}} </p>
-              <p>{{$addresses->address_line_two}}</p>
+              <p class="a">{{$addresses->address_line_one}} </p>
+              <p class="b">{{$addresses->address_line_two}}</p>
               
               <p>{{$addresses->city}},{{$addresses->state}}</p>
               <p>{{$addresses->country}} - {{$addresses->pincode}}</p>
@@ -219,12 +222,42 @@ div#order {
 
 
             <div class="row">
+              @if($paymentMode['status'] == 1)
               <div class="col-lg-12">
                   <div class="checkout-steps-action" style="margin-top: 10px;">
                     <input type="button" class="btn btn-primary float-right" id="paybtn" value="Place order">                        
                   </div><!-- End .checkout-steps-action -->
               </div><!-- End .col-lg-8 -->
+              @endif
+               @if($paymentMode['status'] == 0)
+               <div class="col-lg-12">
+                   <div class="checkout-steps-action"  data-toggle="modal" data-target="#exampleModal" style="margin-top: 10px;">
+                    <input type="button" class="btn btn-primary float-right"  value="Place order">                        
+                  </div>
+
+              <!-- Modal -->
+              <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h3 class="modal-title" id="exampleModalLabel">Payment Mode</h3>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <h4 style="padding: 20px;"> Sorry due to some technical issue currently we are not accepting any orders</h4>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                     
+                    </div>
+                  </div>
+                </div>
+              </div>
+               @endif
           </div>
+        </div>
         </div>
 
     </div>

@@ -59,12 +59,12 @@ footer.footer {
                 <tr class="product-row">
                   <td class="product-col">
                     <figure class="product-image-container">
-                      <a href="http://pobox.rethinksoft.com/product-detail/33" class="product-image" target="_blank"> 
-                        <img src="http://pobox.rethinksoft.com/assets/upload_images/product/15937727405.jpg" alt="product">
+                      <a href="https://poboxfashion.com/product-detail/33" class="product-image" target="_blank"> 
+                        <img src="https://poboxfashion.com/assets/upload_images/product/15937727405.jpg" alt="product">
                       </a>
                     </figure>
                     <h2 class="product-title">
-                      <a href="http://pobox.rethinksoft.com/product-detail/33" target="_blank">Women Kurta Set</a>
+                      <a href="https://poboxfashion.com/product-detail/33" target="_blank">Women Kurta Set</a>
                       <div class="cart_size">
                         <ul>
                           <li><span>S</span></li>
@@ -95,7 +95,7 @@ footer.footer {
            <label>Order ID : </label><span style="padding-left: 5px;">FL0156322243</span>
            <div class="col-sm-12 col-xs-12 col-md-12 col-lg-12 order-details" style="border: 1px solid #f0f0f0;height: 100%;float: left;padding: 20px 0px 20px 0px;">
                <div class="col-sm-12 col-xs-12 col-md-12 col-lg-2 float-left" style="padding-right: 0;">
-                   <img width="100" src="http://pobox.rethinksoft.com/assets/upload_images/product/15937727405.jpg">
+                   <img width="100" src="https://poboxfashion.com/assets/upload_images/product/15937727405.jpg">
                </div>
                 <div class="col-sm-12 col-xs-12 col-md-12 col-lg-10 float-left" style="padding-left: 0;">
                      <span class="order-status" style="font-weight: 600;color: #d53939;font-size: 16px;">Cancelled</span>

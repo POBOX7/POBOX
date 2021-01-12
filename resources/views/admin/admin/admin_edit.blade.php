@@ -39,23 +39,36 @@
               <div class="form-group row">
                 <label for="email" class="col-sm-3 col-form-label">New Password</label>
                 <div class="col-sm-4">
-                  <input type="password" class="form-control" id="password" name="password" placeholder="Password">
-                  @if ($errors->has('password'))
+                  <input type="password" onChange="onChange()" class="form-control" id="password" name="password" placeholder="Password">
+                 <!--  @if ($errors->has('password'))
                     <span style="color: red">{{ $errors->first('password') }}</span>
-                  @endif
+                  @endif -->
                 </div>
+                <span class="focus-input100"></span>
               </div>
 
               <div class="form-group row">
                 <label for="password_confirmation" class="col-sm-3 col-form-label">Confirm Password</label>
                 <div class="col-sm-4">
-                  <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="Confirm Password">
-                  @if ($errors->has('password_confirmation'))
+                  <input type="password" onChange="onChange()" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="Confirm Password">
+                 <!--  @if ($errors->has('password_confirmation'))
                     <span style="color: red">{{ $errors->first('password_confirmation') }}</span>
-                  @endif
+                  @endif -->
                 </div>
+                 <span class="focus-input100">
               </div>
-
+              
+<script type="text/javascript">
+  function onChange() {
+  const password = document.querySelector('input[name=password]');
+  const confirm = document.querySelector('input[name=password_confirmation]');
+  if (confirm.value === password.value) {
+    confirm.setCustomValidity('');
+  } else {
+    confirm.setCustomValidity('Passwords do not match');
+  }
+}
+</script>
 
               <button type="submit" class="btn btn-success mr-2">Submit</button>
               <a href="{{route('admin')}}"   class="btn btn-light">Cancel</a>
@@ -87,6 +100,9 @@
     remain = parseInt(set - tlength);
     $('#nameLimit').text('('+remain+'/'+set+')');
   };
+
+
+ 
 
 </script>
 @endsection

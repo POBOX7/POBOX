@@ -43,7 +43,7 @@
                                 <td>{{$product->size_name}}</td>
                                 <td>{{$product->qty}}</td>
                                 <td>
-                                  <a href="{{route('stock.history',['product_id'=> base64_encode($product->product_id) ,'size_id'=>base64_encode($product->size_id) ] )}}" target="_blank">History</a>
+                                  <a href="{{route('stock.history',['product_id'=> base64_encode($product->product_id) ,'size_id'=>base64_encode($product->size_id) ] )}}" target="_blank" data-toggle="tooltip" title="History">History</a>
                                   
                                 </td>
                             </tr>

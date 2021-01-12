@@ -37,14 +37,15 @@ option:disabled selected {
 
                   <form class="forms-sample" action="{{route('export.order')}}" method="GET" enctype="multipart/form-data">
                   {{ csrf_field() }}
-                  <div class="row">
+                  <div class="row mobile-view-date-filter">
                     <div class="col-md-4" style="text-align: right">
                       <span>From:</span>
-                      <input type="date" name="start_date">
+                
+                      <input type="date" name="start_date" placeholder="mm/dd/yyyy" required>
                     </div>
                     <div class="col-md-4" style="text-align: right">
                       <span>To: </span>
-                      <input type="date" name="end_date">
+                      <input type="date" name="end_date" placeholder="mm/dd/yyyy" required>
                     </div>
                     <div class="col-md-4" style="text-align: right">
                       <button type="submit" class="btn btn-danger mr-2">Export</button>
@@ -52,6 +53,7 @@ option:disabled selected {
                   </div>
                   </form>
                 </div>
+               
                 <!-- <div class="col-md-6" style="text-align: right">
                   <a href=""   class="btn btn-success">Add New</a>
                 </div> -->
@@ -137,14 +139,14 @@ option:disabled selected {
                                     </script>
                                 </td>
                                 
-                                <td>
+                                <td style="min-width: 180px;">
                                  
                                  
-                                  <a href="{{route('edit.order',$OderDatas->id)}}"><i class="ti-pencil-alt" style="font-size: 2rem;"></i></a>
-                                  <a onclick="showSwal({{$OderDatas->id}})"><i class="ti-trash" style="font-size: 2rem;color: #007bfe;"></i></a>
-                                  <a href="{{route('view.order',$OderDatas->id)}}"><i class="ti-eye" style="font-size: 2rem;"></i></a>
-                                  <a href="" id="myBtn_{{$OderDatas->id}}" data-toggle="modal" data-target="#myModal_{{$OderDatas->id}}"><i class="ti-truck" style="font-size: 2rem;"></i></a>
-                                   <a href="{{route('admin.viewInvoice',$OderDatas->id)}}"><i class="fa fa-files-o" style="font-size: 2rem;"></i></a>
+                                  <a href="{{route('edit.order',$OderDatas->id)}}" data-toggle="tooltip" title="Edit"><i class="ti-pencil-alt" style="font-size: 2rem;"></i></a>
+                                  <a onclick="showSwal({{$OderDatas->id}})" data-toggle="tooltip" title="Delete"><i class="ti-trash" style="font-size: 2rem;color: #007bfe;cursor: pointer;"></i></a>
+                                  <a href="{{route('view.order',$OderDatas->id)}}" data-toggle="tooltip" title="View"><i class="ti-eye" style="font-size: 2rem;"></i></a>
+                                  <a href="" id="myBtn_{{$OderDatas->id}}" data-toggle="modal" data-target="#myModal_{{$OderDatas->id}}" data-toggle="tooltip" title="Shipping"><i class="ti-truck" style="font-size: 2rem;"></i></a>
+                                   <a href="{{route('admin.viewInvoice',$OderDatas->id)}}"><i class="fa fa-files-o" style="font-size: 2rem;" data-toggle="tooltip" title="View Invoice"></i></a>
 
 
                                   <!-- Show order data code start -->
@@ -356,5 +358,36 @@ option:disabled selected {
 
 <!-- Add Media helper (this is optional) -->
 <script type="text/javascript" src="{{ asset('assets/fancybox/source/helpers/jquery.fancybox-media.js?v=1.0.6') }}"></script>
+ <style type="text/css">
+                  input[type="date"]::before {
+                  color: #999999;
+                  content: attr(placeholder);
+                }
+                input[type="date"] {
+                  color: #ffffff;
+                }
 
+                input[type="date"]:valid {
+                  color: #666666;
+                }
+                input[type="date"]:valid::before {
+                  content: "" !important;
+                }
+                input[type="date"] {
+                  width: 163px;
+                  padding: 0px 10px 0px 10px;
+              }
+              @media only screen and (max-width: 768px){
+                 .row.mobile-view-date-filter span {
+                      float: left;
+                      margin-top: 15px;
+                  }
+                  select#category_name_filter {
+                      margin-bottom: 10px;
+                  }
+              }
+              .modal-dialog.modal-lg {
+    width: auto !important;
+}
+                </style>
 @endsection

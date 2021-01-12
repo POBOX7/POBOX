@@ -54,6 +54,12 @@ class ProductController extends Controller {
                                             ->join('sizes', 'sizes.id', '=', 'size_information.size_id')
                                             ->orderByDesc('size_information.id')->get();
     
+     $sizeDatass = DB::table('product_size')
+     ->where('product_size.product_id',$id)
+     ->join('sizes', 'sizes.id', '=', 'product_size.size_id')
+     ->select('sizes.name as size_name','product_size.product_id','product_size.size_id')
+     ->get();
+     //dd($sizeDatass);
     // $returnHTML = view('ajax.pop_up_div_badal')->with('productDetail', $productDetail)->render();
     // return response()->json(array('success' => true, 'html'=>$returnHTML));
     $wishlist = Wishlist::where('user_id',$user_id)->where('product_id',$id)->first();
@@ -69,7 +75,7 @@ class ProductController extends Controller {
    $selectedBrandAndCat_diffsss = array_diff($all_pro_id, $product_detail_idss);
 
   $reletedProduct = Product::whereIn('id',$selectedBrandAndCat_diffsss)->where('status','1')->where('is_deleted','0')->get();
-    return view('product_detail',compact('productDetail','sizeData','sizeInformation','product_size','product_size_data','user_id','wishlist','reletedProduct','id'));
+    return view('product_detail',compact('productDetail','sizeData','sizeInformation','product_size','product_size_data','user_id','wishlist','reletedProduct','id','sizeDatass'));
   }
 
 }

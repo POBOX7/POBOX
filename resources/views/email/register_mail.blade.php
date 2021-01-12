@@ -291,11 +291,11 @@
 
                                                         
 
-                                                         <p style="margin: 0 0 1em; text-align: left; color: black;">Please login  <a href="http://pobox.rethinksoft.com/home">http://pobox.rethinksoft.com/home
-                                                         </a> , your login details are below:</p>
+                                                         <p style="margin: 0 0 1em; text-align: left; color: black;">Please login  <a href="https://www.poboxfashion.com">https://www.poboxfashion.com
+                                                         </a> <!-- , your login details are below: --></p>
 
-                                                         <p style="margin: 0 0 1em; text-align: left; color: black;">Username : {{$addRegisterData['email']}} </p> 
-                                                           <p style="margin: 0 0 1em; text-align: left; color: black;">Password : {{$password}} </p> 
+                                                         <!-- <p style="margin: 0 0 1em; text-align: left; color: black;">Username : {{$addRegisterData['email']}} </p> 
+                                                           <p style="margin: 0 0 1em; text-align: left; color: black;">Password : {{$password}} </p> --> 
 
                                                          <p style="margin: 0 0 1em; text-align: left; color: black;">If you need any support then please email us at  info@poboxfashion.com</p>
 

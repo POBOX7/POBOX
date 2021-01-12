@@ -90,7 +90,7 @@
               <div id="allProduct">
                 <div class="row">
                   <div class="col-sm-3">
-                    <select class="form-control product" name="product[]" id="product_0" style="width:100%">
+                    <select class="form-control product" name="product[]" id="product_0" style="width:100%" required="required">
                         <option value="">Select product</option>
                         @foreach($productList as $key => $product)
                           <option value="{{$product->id}}" color = "{{$product->hex_code}}" sku = "{{$product->sku}}" image = "{{$product->image}}">{{$product->name}}</option>
@@ -107,18 +107,18 @@
                     <input type="text" class="form-control" id="color_0" readonly>
                   </div>
                   <div class="col-sm-1">
-                    <select class="form-control" name="size[]" style="width:100%">
+                    <select class="form-control" name="size[]" style="width:100%" required>
                         @foreach($sizeList as $key => $size)
                           <option value="{{$size->id}}">{{$size->name}}</option>
                         @endforeach
                       </select>
                   </div>
                   <div class="col-sm-1">
-                    <input type="number" class="form-control" name="qty[]" min="1">
+                    <input type="number" class="form-control" name="qty[]" min="1" required>
                   </div>
                   
                   <div class="col-sm-2">
-                    <input type="number" class="form-control" id="price_0" name="price[]">
+                    <input type="text" class="form-control" id="price_0" maxlength="30" name="price[]" required>
                   </div>
                   <div class="col-sm-2">
                       <button data-repeater-delete type="button" class="btn btn-info btn-sm icon-btn ml-2 mb-2 addProduct" >

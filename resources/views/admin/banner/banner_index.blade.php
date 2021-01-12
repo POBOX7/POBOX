@@ -61,8 +61,8 @@
                       </td>
                       <td>
                         {{-- <a href="{{route('edit.banner',base64_encode($banner->id) )}}" class="btn btn-outline-primary">Edit</a> --}}
-                        <a href="{{route('edit.banner',base64_encode($banner->id) )}}"><i class="ti-pencil-alt" style="font-size: 2rem;"></i></a>
-                        <a onclick="showSwal({{$banner->id}})"><i class="ti-trash" style="font-size: 2rem;color: #007bfe;"></i></a>
+                        <a href="{{route('edit.banner',base64_encode($banner->id) )}}" data-toggle="tooltip" title="Edit"><i class="ti-pencil-alt" style="font-size: 2rem;"></i></a>
+                        <a onclick="showSwal({{$banner->id}})" data-toggle="tooltip" title="Delete"><i class="ti-trash" style="font-size: 2rem;color: #007bfe;cursor: pointer;"></i></a>
                       </td>
                   </tr>
                 @endforeach

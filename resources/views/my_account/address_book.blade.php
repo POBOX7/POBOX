@@ -126,7 +126,7 @@
         <div class="form-group">
             <div class="input-group">
                 <!-- {!! Form::text('address_line_one', null, ['class' => 'col-md-12 col-xs-12 form-control','placeholder' => 'Locality/Area/Street','required' => 'required']) !!} -->
-                <input type="text" name="address_line_one" value="{{$address->address_line_one}}" class="col-md-12 col-xs-12 form-control" maxlength="30" placeholder="Address" maxlength="30" required>
+                <input type="text" name="address_line_one" value="{{$address->address_line_one}}" class="col-md-12 col-xs-12 form-control"  placeholder="Address" maxlength="200" required>
                  @if ($errors->has('address_line_one'))
                  <span class="help-block">
                  <strong>{{ $errors->first('address_line_one') }}</strong>
@@ -139,7 +139,7 @@
         <div class="form-group">
             <div class="input-group">
                 <!-- {!! Form::text('address_line_two', null, ['class' => 'col-md-12 col-xs-12 form-control','placeholder' => 'Flat number / Building Name','required' => 'required']) !!} -->
-                <input type="text" maxlength="30" name="address_line_two" value="{{$address->address_line_two}}" class="col-md-12 col-xs-12 form-control" placeholder="Apartment suite,etc.(optional)" maxlength="30">
+                <input type="text"  name="address_line_two" value="{{$address->address_line_two}}" class="col-md-12 col-xs-12 form-control" placeholder="Apartment suite,etc.(optional)" maxlength="200">
                  @if ($errors->has('address_line_two'))
                  <span class="help-block">
                  <strong>{{ $errors->first('address_line_two') }}</strong>
@@ -232,8 +232,8 @@
    </form>
  </div>
       </div>
-      <div class="modal-footer">
-      </div>
+    <!--   <div class="modal-footer">
+      </div> -->
     </div>
   </div>
 </div>  
@@ -270,8 +270,8 @@
     </form>
  </div>
       </div>
-      <div class="modal-footer">
-      </div>
+     <!--  <div class="modal-footer">
+      </div> -->
     </div>
   </div>
 </div>   
@@ -281,7 +281,14 @@
     </div> 
   </div>  
 </div> 
-
+<style type="text/css">
+  div#add_new_address .modal-content {
+    margin-top: 8px;
+}
+.modal-header {
+    height: 25px!important;
+}
+</style>
 <!-- Add new address pop start -->
 <div class="modal fade" id="add_new_address" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -355,7 +362,7 @@
 
         <div class="form-group">
             <div class="input-group">
-                {!! Form::text('address_line_one', null, ['class' => 'col-md-12 col-xs-12 form-control','placeholder' => 'Address','maxlength' => '30','required' => 'required']) !!}
+                {!! Form::text('address_line_one', null, ['class' => 'col-md-12 col-xs-12 form-control','placeholder' => 'Address','maxlength' => '200','required' => 'required']) !!}
                  @if ($errors->has('address_line_one'))
                  <span class="help-block">
                  <strong>{{ $errors->first('address_line_one') }}</strong>
@@ -367,7 +374,7 @@
         
         <div class="form-group">
             <div class="input-group">
-                {!! Form::text('address_line_two', null, ['class' => 'col-md-12 col-xs-12 form-control','placeholder' => 'Apartment suite,etc.(optional)','maxlength' => '30']) !!}
+                {!! Form::text('address_line_two', null, ['class' => 'col-md-12 col-xs-12 form-control','placeholder' => 'Apartment suite,etc.(optional)','maxlength' => '200']) !!}
                  @if ($errors->has('address_line_two'))
                  <span class="help-block">
                  <strong>{{ $errors->first('address_line_two') }}</strong>
@@ -490,8 +497,8 @@
     {!! Form::close() !!}
  </div>
       </div>
-      <div class="modal-footer">
-      </div>
+      <!-- <div class="modal-footer">
+      </div> -->
     </div>
   </div>
 </div>  

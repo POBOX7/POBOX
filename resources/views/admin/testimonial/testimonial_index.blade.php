@@ -39,8 +39,8 @@
                                   <a class="fancybox" href="{{url('assets/upload_images/testimonial')}}/{{$testimonial->image}}" ><img src="{{url('assets/upload_images/testimonial/thumb')}}/{{$testimonial->image}}"  style="width:100px;height: 100px;"> </a>
                                 </td>
                                 <td>
-                                  <a href="{{route('edit.testimonial',base64_encode($testimonial->id) )}}"><i class="ti-pencil-alt" style="font-size: 2rem;"></i></a>
-                                  <a onclick="showSwal({{$testimonial->id}})"><i class="ti-trash" style="font-size: 2rem;color: #007bfe;"></i></a>
+                                  <a href="{{route('edit.testimonial',base64_encode($testimonial->id) )}}" data-toggle="tooltip" title="Edit"><i class="ti-pencil-alt" style="font-size: 2rem;"></i></a>
+                                  <a onclick="showSwal({{$testimonial->id}})" data-toggle="tooltip" title="Delete"><i class="ti-trash" style="font-size: 2rem;color: #007bfe;cursor: pointer;"></i></a>
                                 </td>
                             </tr>
                           @endforeach

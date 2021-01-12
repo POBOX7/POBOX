@@ -55,9 +55,9 @@
                                 <td>{{$purchase->total_product}}</td>
                                 <td>
                                   {{-- <a href="{{route('edit.product',base64_encode($purchase->id) )}}" class="btn btn-outline-primary">Edit</a> --}}
-                                  <a href="{{route('edit.purchase',base64_encode($purchase->id) )}}"><i class="ti-pencil-alt" style="font-size: 2rem;"></i></a>
-                                  <a onclick="showSwal({{$purchase->id}})"><i class="ti-trash" style="font-size: 2rem;color: #007bfe;"></i></a>
-                                  <a href="{{route('detail.purchase',base64_encode($purchase->id) )}}" target="_blank"><i class="ti-eye" style="font-size: 2rem;"></i></a>
+                                  <a href="{{route('edit.purchase',base64_encode($purchase->id) )}}" data-toggle="tooltip" title="Edit"><i class="ti-pencil-alt" style="font-size: 2rem;"></i></a>
+                                  <a onclick="showSwal({{$purchase->id}})" data-toggle="tooltip" title="Delete"><i class="ti-trash" style="font-size: 2rem;color: #007bfe;cursor: pointer;"></i></a>
+                                  <a href="{{route('detail.purchase',base64_encode($purchase->id) )}}" target="_blank" data-toggle="tooltip" title="View"><i class="ti-eye" style="font-size: 2rem;cursor: pointer;"></i></a>
                                 </td>
                             </tr>
                           @endforeach

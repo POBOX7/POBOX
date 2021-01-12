@@ -58,6 +58,7 @@ class OrderController extends Controller
            $productData = Product::whereIn('id',$order_detail_product_id)->get();
            foreach ($productData as $keyProductData => $valueProductData) {
             $proData[$keyProductData]= $valueProductData;
+           
             
               $OrderDetailData[$keyProductData]= OrderDetail::where('order_id',$valueOderData->id)->where('product_id',$valueProductData->id)->first();
              foreach ($OrderDetailData as $key => $value) {
@@ -393,7 +394,7 @@ class OrderController extends Controller
         'phone_number'=> $request->shippinig_phone_number,
         'address_line_one'=> $request->address_line_one,
         'address_line_two'=> $request->address_line_two,
-        'address_line_three'=> $request->address_line_three,
+        //'address_line_three'=> $request->address_line_three,
         'city'=> $request->city,
         'state'=> $request->state
       ]);

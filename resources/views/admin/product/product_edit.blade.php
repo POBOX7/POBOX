@@ -283,7 +283,7 @@
 
                 <label for="exampleInputPassword2" class="col-sm-2 col-form-label">HSN No</label>
                 <div class="col-sm-2">
-                  <input type="text" class="form-control" id="hsn_no" name="hsn_no" placeholder="HSN No" value="{{$productDetail->hsn_no}}">
+                  <input type="text" class="form-control" id="hsn_no" name="hsn_no" placeholder="HSN No" value="{{$productDetail->hsn_no}}" maxlength="100">
                   @if ($errors->has('hsn_no'))
                     <span style="color: red">{{ $errors->first('hsn_no') }}</span>
                   @endif

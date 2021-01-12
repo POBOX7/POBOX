@@ -26,7 +26,7 @@
                 	<select class="form-control" id="page" name="page_id" style="width:100%">
 	                  	<option value="1" <?php echo ($bannerDetail->page_id == 1)?'selected':'' ?>>Home Page</option>
 	                  	<option value="2" <?php echo ($bannerDetail->page_id == 2)?'selected':'' ?>>New arrival Page</option>
-	                  	<option value="3" <?php echo ($bannerDetail->page_id == 3)?'selected':'' ?>>Trending Page</option>
+	                  	<!-- <option value="3" <?php echo ($bannerDetail->page_id == 3)?'selected':'' ?>>Trending Page</option>
 	                  	<option value="4" <?php echo ($bannerDetail->page_id == 4)?'selected':'' ?>>Kurties Page</option>
 	                  	<option value="5" <?php echo ($bannerDetail->page_id == 5)?'selected':'' ?>>Kurta Set Page</option>
 	                  	<option value="6" <?php echo ($bannerDetail->page_id == 6)?'selected':'' ?>>Dress Page</option>
@@ -34,7 +34,7 @@
                       <option value="8" <?php echo ($bannerDetail->page_id == 8)?'selected':'' ?>>Blog Page</option>
 
                       <option value="9" <?php echo ($bannerDetail->page_id == 9)?'selected':'' ?>>Contact Us Page</option>
-                       <option value="10" <?php echo ($bannerDetail->page_id == 10)?'selected':'' ?>>Size Guide</option>
+                       <option value="10" <?php echo ($bannerDetail->page_id == 10)?'selected':'' ?>>Size Guide</option> -->
                   	</select>
                   @if ($errors->has('page_id'))
                     <span style="color: red">{{ $errors->first('page_id') }}</span>

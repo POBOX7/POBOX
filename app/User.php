@@ -17,7 +17,7 @@ protected $table = 'users';
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password','role_id','phone_number'
+        'name', 'email', 'password','role_id','phone_number','created_at'
     ];
 
     /**

@@ -73,7 +73,7 @@ class TrendingController extends Controller {
      
      //sizes data view
 
-      $sizeData = Sizes::where('status',1)->where('is_deleted',0)->get();
+      //$sizeData = Sizes::where('status',1)->where('is_deleted',0)->orderBy('name','ASC')->get();
 
       $sizeData = Sizes::where('status',1)->where('is_deleted',0)->get();
       //$colors data view

@@ -97,8 +97,9 @@
 <table class="maintable" style="border: 0px !important;width: 100%;">
     <tr style="text-align: center!important;">
         <td style="width: 100%;" style="text-align: center;">
-            <img style="text-align: center;" src="http://admin.poboxfashion.com/assets/upload_images/favicon.png" style="width: 200px;">
+            <img style="text-align: center;" src="{{ asset('assets/upload_images/favicon.png') }}" style="width: 200px;">
         </td>
+
     </tr>
         <td style="width: 55%;">
           @foreach($oderData as $keyOderData => $OderDatas)
@@ -110,7 +111,7 @@
                     <td colspan="2" style="text-align: center;background-color: #E0E0E0;">
                         <!--<span class="high-text bg-gray" style="font-weight: bold;">RETAIL INVOICE</span>-->
                         <br />
-                        <span style="font-size: 16px;font-weight: bold;">RETAIL INVOICE</span>
+                        <span style="font-size: 16px;font-weight: bold;">TAX INVOICE</span>
                         <br />
                     </td>
                 </tr>

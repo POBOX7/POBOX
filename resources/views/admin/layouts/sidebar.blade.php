@@ -38,13 +38,14 @@
       </a>
       <div class="collapse {{ Request::is('admin/admin','admin/category','admin/category/add','admin/brand','admin/brand/add','admin/size','admin/size/add','admin/color','admin/color/add','admin/size-information','admin/size-information/add') ? 'show' : '' }}" id="master">
         <ul class="nav flex-column sub-menu">
-          {{-- <li class="nav-item d-none d-lg-block"> <a class="nav-link {{ Request::is('admin/role','admin/role/add') ? 'active' : '' }}" href="{{ route('role') }}">Role</a></li> --}}
-          <li class="nav-item d-none d-lg-block"> <a class="nav-link {{ Request::is('admin/admin','admin/admin/add') ? 'active' : '' }}" href="{{ route('admin') }}">Admin</a></li>
-          <li class="nav-item d-none d-lg-block"> <a class="nav-link {{ Request::is('admin/category','admin/category/add') ? 'active' : '' }}" href="{{ route('category') }}">Category</a></li>
-          <li class="nav-item d-none d-lg-block"> <a class="nav-link {{ Request::is('admin/brand','admin/brand/add') ? 'active' : '' }}" href="{{ route('brand') }}">Brand</a></li>
-          <li class="nav-item d-none d-lg-block"> <a class="nav-link {{ Request::is('admin/size','admin/size/add') ? 'active' : '' }}" href="{{ route('size') }}">Size</a></li>
-          <li class="nav-item d-none d-lg-block"> <a class="nav-link {{ Request::is('admin/color','admin/color/add') ? 'active' : '' }}" href="{{ route('color') }}">Color</a></li>
-          <li class="nav-item d-none d-lg-block"> <a class="nav-link {{ Request::is('admin/size-information','admin/size-information/add') ? 'active' : '' }}" href="{{ route('sizeinformation') }}">Size Information</a></li>
+          {{-- <li class="nav-item  d-lg-block"> <a class="nav-link {{ Request::is('admin/role','admin/role/add') ? 'active' : '' }}" href="{{ route('role') }}">Role</a></li> --}}
+          <li class="nav-item  d-lg-block"> <a class="nav-link {{ Request::is('admin/admin','admin/admin/add') ? 'active' : '' }}" href="{{ route('admin') }}">Admin</a></li>
+          <li class="nav-item  d-lg-block"> <a class="nav-link {{ Request::is('admin/category','admin/category/add') ? 'active' : '' }}" href="{{ route('category') }}">Category</a></li>
+          <li class="nav-item  d-lg-block"> <a class="nav-link {{ Request::is('admin/brand','admin/brand/add') ? 'active' : '' }}" href="{{ route('brand') }}">Brand</a></li>
+          <li class="nav-item  d-lg-block"> <a class="nav-link {{ Request::is('admin/size','admin/size/add') ? 'active' : '' }}" href="{{ route('size') }}">Size</a></li>
+          <li class="nav-item  d-lg-block"> <a class="nav-link {{ Request::is('admin/color','admin/color/add') ? 'active' : '' }}" href="{{ route('color') }}">Color</a></li>
+          <li class="nav-item  d-lg-block"> <a class="nav-link {{ Request::is('admin/size-information','admin/size-information/add') ? 'active' : '' }}" href="{{ route('sizeinformation') }}">Size Information</a></li>
+          <li class="nav-item  d-lg-block"> <a class="nav-link {{ Request::is('admin/payment-status') ? 'active' : '' }}" href="{{ route('paymentStatus') }}">Payment mode</a></li>
         </ul>
       </div>
     </li>
@@ -57,8 +58,8 @@
       </a>
       <div class="collapse {{ Request::is('admin/banner','admin/banner/add','admin/discount-banner') ? 'show' : '' }}" id="home-page">
         <ul class="nav flex-column sub-menu">
-          <li class="nav-item d-none d-lg-block"> <a class="nav-link {{ Request::is('admin/banner') ? 'active' : '' }}" href="{{ route('banner') }}">Banner</a></li>
-          <li class="nav-item d-none d-lg-block"> <a class="nav-link {{ Request::is('admin/discount-banner') ? 'active' : '' }}" href="{{ route('edit.discountbanner') }}">Discount Banner</a></li>
+          <li class="nav-item  d-lg-block"> <a class="nav-link {{ Request::is('admin/banner') ? 'active' : '' }}" href="{{ route('banner') }}">Banner</a></li>
+          <li class="nav-item  d-lg-block"> <a class="nav-link {{ Request::is('admin/discount-banner') ? 'active' : '' }}" href="{{ route('edit.discountbanner') }}">Discount Banner</a></li>
           
         </ul>
       </div>
@@ -71,6 +72,19 @@
       </a>
     </li>
 
+    <li class="nav-item {{ Request::is('admin/trending-product') ? 'active' : '' }}">
+      <a class="nav-link" href="{{ route('trendingProductIndex') }}">
+        <i class="icon-list menu-icon"></i>
+        <span class="menu-title">Trending Products</span>
+      </a>
+    </li>
+
+    <li class="nav-item {{ Request::is('admin/new-arrivals-product') ? 'active' : '' }}">
+      <a class="nav-link" href="{{ route('newArrivalsProductIndex') }}">
+        <i class="icon-list menu-icon"></i>
+        <span class="menu-title">New Arrivals Products</span>
+      </a>
+    </li>
     <li class="nav-item ">
       <a class="nav-link" data-toggle="collapse" href="#order" aria-expanded="false" aria-controls="master">
         <i class=" icon-layers  menu-icon"></i>
@@ -79,7 +93,7 @@
       </a>
      <div class="collapse " id="order">
         <ul class="nav flex-column sub-menu">
-          <li class="nav-item d-none d-lg-block"> <a class="nav-link {{ Request::is('admin/role','admin/role/add') ? 'active' : '' }}" href="{{route('admin.order')}}">View orders</a></li>
+          <li class="nav-item  d-lg-block"> <a class="nav-link {{ Request::is('admin/role','admin/role/add') ? 'active' : '' }}" href="{{route('admin.order')}}">View orders</a></li>
          <!--  <li class="nav-item d-none d-lg-block"> <a class="nav-link {{ Request::is('admin/role','admin/role/add') ? 'active' : '' }}" href="">Cancel orders</a></li> -->
         </ul>
       </div>
@@ -92,7 +106,7 @@
       </a>
      <div class="collapse " id="coupon">
         <ul class="nav flex-column sub-menu">
-          <li class="nav-item d-none d-lg-block"> <a class="nav-link {{ Request::is('admin/role','admin/role/add') ? 'active' : '' }}" href="{{route('coupon-lists')}}">Coupons List</a></li>
+          <li class="nav-item  d-lg-block"> <a class="nav-link {{ Request::is('admin/role','admin/role/add') ? 'active' : '' }}" href="{{route('coupon-lists')}}">Coupons List</a></li>
         
         </ul>
       </div>
@@ -105,9 +119,9 @@
       </a>
      <div class="collapse {{ Request::is('admin/supplier','admin/supplier/add','admin/purchase','admin/purchase/add','admin/stock') ? 'show' : '' }}" id="stock">
         <ul class="nav flex-column sub-menu">
-          <li class="nav-item d-none d-lg-block"> <a class="nav-link {{ Request::is('admin/supplier','admin/supplier/add') ? 'active' : '' }}" href="{{route('supplier')}}">Supplier</a></li>
-          <li class="nav-item d-none d-lg-block"> <a class="nav-link {{ Request::is('admin/purchase','admin/purchase/add') ? 'active' : '' }}" href="{{route('purchase')}}">Purchase</a></li>
-          <li class="nav-item d-none d-lg-block"> <a class="nav-link {{ Request::is('admin/stock') ? 'active' : '' }}" href="{{route('stock')}}">Stock</a></li>
+          <li class="nav-item  d-lg-block"> <a class="nav-link {{ Request::is('admin/supplier','admin/supplier/add') ? 'active' : '' }}" href="{{route('supplier')}}">Supplier</a></li>
+          <li class="nav-item  d-lg-block"> <a class="nav-link {{ Request::is('admin/purchase','admin/purchase/add') ? 'active' : '' }}" href="{{route('purchase')}}">Purchase</a></li>
+          <li class="nav-item  d-lg-block"> <a class="nav-link {{ Request::is('admin/stock') ? 'active' : '' }}" href="{{route('stock')}}">Stock</a></li>
          <!--  <li class="nav-item d-none d-lg-block"> <a class="nav-link {{ Request::is('admin/role','admin/role/add') ? 'active' : '' }}" href="">Cancel orders</a></li> -->
         </ul>
       </div>
@@ -141,8 +155,8 @@
       </a>
      <div class="collapse " id="blog">
         <ul class="nav flex-column sub-menu">
-          <li class="nav-item d-none d-lg-block"> <a class="nav-link {{ Request::is('admin/role','admin/blog') ? 'active' : '' }}" href="{{ route('admin.blog') }}">View Blog</a></li>
-          <li class="nav-item d-none d-lg-block"> <a class="nav-link {{ Request::is('admin/role','blog_category/add') ? 'active' : '' }}" href="{{ route('admin.blog_category.index') }}">View Blog Category</a></li>
+          <li class="nav-item  d-lg-block"> <a class="nav-link {{ Request::is('admin/role','admin/blog') ? 'active' : '' }}" href="{{ route('admin.blog') }}">View Blog</a></li>
+          <li class="nav-item  d-lg-block"> <a class="nav-link {{ Request::is('admin/role','blog_category/add') ? 'active' : '' }}" href="{{ route('admin.blog_category.index') }}">View Blog Category</a></li>
         </ul>
       </div>
     </li>
@@ -175,8 +189,8 @@
       </a>
      <div class="collapse " id="contact">
         <ul class="nav flex-column sub-menu">
-          <li class="nav-item d-none d-lg-block"> <a class="nav-link {{ Request::is('admin/role','admin/blog') ? 'active' : '' }}" href="{{ route('admin.contact_us.index') }}">Customer Inquiry Details</a></li>
-          <li class="nav-item d-none d-lg-block"> <a class="nav-link {{ Request::is('admin/role','blog_category/add') ? 'active' : '' }}" href="{{ route('admin.contact_us_detail.index') }}">Contact Us Details</a></li>
+          <li class="nav-item  d-lg-block"> <a class="nav-link {{ Request::is('admin/role','admin/blog') ? 'active' : '' }}" href="{{ route('admin.contact_us.index') }}">Customer Inquiry Details</a></li>
+          <li class="nav-item  d-lg-block"> <a class="nav-link {{ Request::is('admin/role','blog_category/add') ? 'active' : '' }}" href="{{ route('admin.contact_us_detail.index') }}">Contact Us Details</a></li>
         </ul>
       </div>
     </li>
@@ -187,9 +201,37 @@
         <span class="menu-title">Shipping</span>
       </a>
     </li>
+
+     @if(Auth::id() == 1)
+    <li class="nav-item {{ Request::is('admin/adminchangepassword') ? 'active' : '' }} d-md-none">
+      <a class="nav-link" href="{{ route('admin.changepassword') }}">
+        <i class="fa fa-gears" style="margin-right: 20px;"></i>
+        <span class="menu-title">Change Password</span>
+      </a>
+    </li>
+    @endif
+
+    <li class="nav-item {{ Request::is('admin/logout') ? 'active' : '' }} d-md-none">
+      <a class="nav-link" href="{{ route('admin.logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+        <i class="fa fa-gears" style="margin-right: 20px;"></i>
+        <span class="menu-title">Logout</span>
+      </a>
+      <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
+                  {{ csrf_field() }}
+              </form>
+    </li>
     
     
   </ul>
   
 </nav>
+
+<style type="text/css">
+@media screen and (max-width: 991px){
+    nav#sidebar {
+      overflow: auto;
+      height: 200px;
+  }
+}
+</style>
 

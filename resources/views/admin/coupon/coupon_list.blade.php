@@ -55,10 +55,10 @@
                                  <td>{{$couponList['usage']}}  / {{$couponList['total_used']}} <!-- (Total available / Total used) --></td>
                                 <td>
                                   
-                                  <a href="{{route('edit-coupon',base64_encode($couponList->id) )}}"><i class="ti-pencil-alt" style="font-size: 2rem;"></i></a>
-                                  <a onclick="showSwal({{$couponList->id}})"><i class="ti-trash" style="font-size: 2rem;color: #007bfe;"></i></a>
+                                  <a href="{{route('edit-coupon',base64_encode($couponList->id) )}}" data-toggle="tooltip" title="Edit"><i class="ti-pencil-alt" style="font-size: 2rem;"></i></a>
+                                  <a onclick="showSwal({{$couponList->id}})" data-toggle="tooltip" title="Delete"><i class="ti-trash" style="font-size: 2rem;color: #007bfe;cursor: pointer;"></i></a>
                                   
-                                  <a href="{{route('view-coupon',base64_encode($couponList->id) )}}"><i class="ti-eye" style="font-size: 2rem;"></i></a>
+                                  <a href="{{route('view-coupon',base64_encode($couponList->id) )}}"><i class="ti-eye" style="font-size: 2rem;" data-toggle="tooltip" title="View"></i></a>
                                 </td>
                             </tr>
                           @endforeach

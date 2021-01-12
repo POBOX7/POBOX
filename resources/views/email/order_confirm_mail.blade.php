@@ -97,7 +97,8 @@
 <table class="maintable" style="border: 0px !important;width: 100%;">
     <tr style="text-align: center!important;">
         <td style="width: 100%;" style="text-align: center;">
-            <img style="text-align: center;" src="http://admin.poboxfashion.com/assets/upload_images/favicon.png" style="width: 200px;">
+            <!-- <img style="text-align: center;" src="http://admin.poboxfashion.com/assets/upload_images/favicon.png" style="width: 200px;"> -->
+             <img style="text-align: center;" src="{{ asset('assets/upload_images/favicon.png') }}" style="width: 200px;">
         </td>
     </tr>
 
@@ -113,7 +114,7 @@
                     <td colspan="2" style="text-align: center;background-color: #E0E0E0;">
                         <!--<span class="high-text bg-gray" style="font-weight: bold;">RETAIL INVOICE</span>-->
                         <br />
-                        <span style="font-size: 16px;font-weight: bold;">RETAIL INVOICE</span>
+                        <span style="font-size: 16px;font-weight: bold;">TAX INVOICE</span>
                         <br />
                     </td>
                 </tr>
@@ -211,7 +212,7 @@
                                                         <tr>
                                                     <td>{{$keyProduct_data + 1 }}</td>
                                                     
-                                                    <td><img src="http://admin.poboxfashion.com/assets/upload_images/product/{{$product_data->getProduct->image}}"  style="width: 50px!important;height: 50px!important;"></td>
+                                                    <td><img src="{{ asset('assets/upload_images/product') }}/{{$product_data->getProduct->image}}"  style="width: 50px!important;height: 50px!important;"></td>
                                                     <td>{{$product_data->getProduct['name'] }}</td>
                                                     
                                                        <td>{{$product_data['size_name'] }}</td>

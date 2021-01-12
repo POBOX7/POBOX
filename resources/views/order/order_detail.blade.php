@@ -93,12 +93,12 @@ div#order {
                   <tr class="product-row">
                     <td class="product-col">
                       <figure class="product-image-container">
-                        <a href="http://pobox.rethinksoft.com/product-detail/33" class="product-image" target="_blank"> 
-                          <img src="http://pobox.rethinksoft.com/assets/upload_images/product/15937727405.jpg" alt="product">
+                        <a href="https://poboxfashion.com/product-detail/33" class="product-image" target="_blank"> 
+                          <img src="https://poboxfashion.com/assets/upload_images/product/15937727405.jpg" alt="product">
                         </a>
                       </figure>
                       <h2 class="product-title">
-                        <a href="http://pobox.rethinksoft.com/product-detail/33" target="_blank">Women Kurta Set</a>
+                        <a href="https://poboxfashion.com/product-detail/33" target="_blank">Women Kurta Set</a>
                         <div class="cart_size">
                           <ul>
                             <li><span>S</span></li>
